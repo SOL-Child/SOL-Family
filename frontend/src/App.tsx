@@ -1,8 +1,13 @@
-import React from 'react';
 import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import SignupPage from './pages/SignupPage';
 
 function App() {
-    return <div>메인</div>;
+    return (
+        <Routes>
+            <Route path="signup" element={<SignupPage />} />
+        </Routes>
+    );
 }
 
 export default App;
