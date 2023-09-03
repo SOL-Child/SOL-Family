@@ -16,8 +16,6 @@ public class KmsConfig {
     @Value("${aws.kms.region}")
     private String REGION;
 
-    @Value("${aws.kms.encryption-algorithm}")
-    private String ENCRYPTION_ALGORITHM;
 
     @Bean
     public AWSKMS kmsClient() {
@@ -31,9 +29,5 @@ public class KmsConfig {
         return KEY_ID;
     }
 
-    @Bean
-    public String encryptionAlgorithm() {
-        return ENCRYPTION_ALGORITHM;
-    }
 }
 
