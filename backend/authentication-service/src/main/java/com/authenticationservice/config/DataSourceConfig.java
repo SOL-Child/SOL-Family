@@ -15,15 +15,18 @@ public class DataSourceConfig {
     private final String url;
     private final String username;
     private final String password;
+    private final String driver_class_name;
 
     public DataSourceConfig(KmsService kmsService,
-                                   @Value("${spring.datasource.url}") String url,
-                                   @Value("${spring.datasource.username}") String username,
-                                   @Value("${spring.datasource.password}") String password) {
+                            @Value("${spring.datasource.url}") String url,
+                            @Value("${spring.datasource.username}") String username,
+                            @Value("${spring.datasource.password}") String password,
+                            @Value("${spring.datasource.driver-class-name}") String driver_class_name) {
         this.kmsService = kmsService;
         this.url = url;
         this.username = username;
         this.password = password;
+        this.driver_class_name = driver_class_name;
     }
 
     @Bean
@@ -47,7 +50,7 @@ public class DataSourceConfig {
                 .url(decryptedDatabaseUrl)
                 .username(decryptedDatabaseUsername)
                 .password(decryptedDatabasePassword)
-                .driverClassName("com.mysql.cj.jdbc.Driver");
+                .driverClassName(driver_class_name);
 
         return dataSourceBuilder.build();
     }
