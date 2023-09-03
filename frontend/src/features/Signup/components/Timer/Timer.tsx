@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../Timer/Timer.module.css';
 
-const Timer = () => {
+const Timer = ({ setIsExpired }: { setIsExpired: (flag: boolean) => void }) => {
     const [seconds, setSeconds] = useState<number>(180);
 
     useEffect(() => {
@@ -11,7 +11,8 @@ const Timer = () => {
         }, 1000);
 
         if (seconds === 0) {
-            alert('시간 초과');
+            alert('인증 시간이 만료되었습니다. 인증번호를 재발급해주세요.');
+            setIsExpired(true);
         }
 
         return () => clearInterval(timer);

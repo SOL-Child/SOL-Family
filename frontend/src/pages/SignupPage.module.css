@@ -171,7 +171,6 @@
     font-family: 'LINESeedKR-Rg';
     font-size: 13px;
     color:white;
-    background-color: #0046FF;
     border-radius: 5px;
     line-height: 40px;
 }
@@ -317,10 +316,11 @@
     border-radius: 10px;
     font-size: 20px;
     color: white;
-    background-color: #0046FF;
+    /* background-color: #0046FF; */
+    background-color: #D9D9D9;
 }
 
-.buttonBox button:hover {
+/* .buttonBox button:hover {
     box-shadow: 0px 4px 10px 6px rgba(0, 0, 0, 0.3);
     cursor: pointer;
-}
+} */
