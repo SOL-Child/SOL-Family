@@ -1,4 +1,4 @@
-package com.authenticationservice.global.kms;
+package com.authenticationservice.kms;
 
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.kms.AWSKMS;
