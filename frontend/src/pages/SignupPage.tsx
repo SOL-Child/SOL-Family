@@ -123,41 +123,43 @@ const SignupPage = () => {
     };
 
     return (
-        <div className={styles.SignupPage}>
+        <ContentsFrame page={Pages.SIGN_UP}>
             {/* 헤더 */}
             <div className={styles.headBox}>
                 <div className={styles.prevImgBox}>
-                    {/* {page === 0 ? (
-                        <img src={logoSrc} alt="로고 아이콘" onClick={() => navigate('/')} />
+                    {page === 0 ? (
+                        <img src={logoSrc} className={styles.logoImg} alt="로고 아이콘" onClick={() => navigate('/')} />
                     ) : (
-                        <img src={backArrowSrc} alt="뒤로가기 아이콘" onClick={handleClickPrev} />
-                    )} */}
+                        <img
+                            src={backArrowSrc}
+                            className={styles.backImg}
+                            alt="뒤로가기 아이콘"
+                            onClick={handleClickPrev}
+                        />
+                    )}
                 </div>
             </div>
             {/* 컨텐츠 */}
-            <ContentsFrame page={Pages.SIGN_UP}>
-                <div className={page === 0 ? styles.contentBox : styles.contentBox2}>
-                    {/* 프로그레스 바 */}
-                    {page != 0 && typeof page === 'number' && (
-                        <>
-                            <div className={styles.progressBar}>
-                                <div style={{ width: `${(page / 4) * 100}%` }}></div>
-                            </div>
-                            <div className={styles.progressBarText}>{page} / 4</div>
-                        </>
-                    )}
-                    {/* 실제 컨텐츠 */}
-                    <div className={styles.contentFrame}>{content}</div>
+            <div className={styles.contentBox}>
+                {page != 0 && typeof page === 'number' && (
+                    <>
+                        <div className={styles.progressBar}>
+                            <div style={{ width: `${(page / 4) * 100}%` }}></div>
+                        </div>
+                        <div className={styles.progressBarText}>{page} / 4</div>
+                    </>
+                )}
+                {/* 실제 컨텐츠 */}
+                <div className={styles.contentFrame}>{content}</div>
+            </div>
+            {/* 하단 버튼 */}
+            <div className={styles.buttonBox}>
+                <div>
+                    이미 가입하셨나요? &nbsp;&nbsp;&nbsp;<span>로그인하기</span>
                 </div>
-                {/* 하단 버튼 */}
-                <div className={styles.buttonBox}>
-                    <div>
-                        이미 가입하셨나요? &nbsp;&nbsp;&nbsp;<span>로그인하기</span>
-                    </div>
-                    <button onClick={() => setPage(page + 1)}>{setBtnText()}</button>
-                </div>
-            </ContentsFrame>
-        </div>
+                <button onClick={() => setPage(page + 1)}>{setBtnText()}</button>
+            </div>
+        </ContentsFrame>
     );
 };
 
