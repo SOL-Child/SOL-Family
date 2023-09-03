@@ -1,0 +1,112 @@
+.inputTitle {
+    margin: 10px;
+    font-size: 18px;
+    color: #363636;
+}
+
+.phoneBox button:hover, .certifBox button:hover  {
+    box-shadow: 0px 4px 10px 2px rgba(0, 0, 0, 0.1);
+}
+
+.phoneBox button, .show, .unshow,  .certifBox button {
+    transition: all 0.2s linear;
+}
+
+/* 전화번호 페이지 */
+.phoneBox {
+    height: 50px;
+    margin: 10px;
+    border-bottom: 1px solid #D9D9D9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.phoneBox img {
+    width: 25px;
+    margin: 0px 10px;
+}
+
+.phoneBox input {
+    width: calc(100% - 150px);
+    height: 100%;
+    padding: 0px;
+    border: none;
+    font-family: 'LINESeedKR-Rg';
+    font-size: 17px;
+    outline: none;
+}
+
+.phoneBox button {
+    width: 90px;
+    height: 40px;
+    margin-left: 10px;
+    outline: none;
+    border: none;
+    font-family: 'LINESeedKR-Rg';
+    font-size: 13px;
+    color:white;
+    border-radius: 5px;
+    line-height: 40px;
+}
+
+.phoneBox button:hover {
+    cursor: pointer;
+}
+
+.show {
+    opacity: 1;
+}
+
+.unshow {
+    opacity: 0;
+}
+
+.orderText {
+    font-size: 13px;
+    margin: 0px 10px;
+    color:#0046FF;
+}
+
+.certifBox {
+    height: 50px;
+    margin: 10px;
+    border-bottom: 1px solid #D9D9D9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.certifBox input {
+    width: calc(100% - 160px);
+    height: 100%;
+    padding: 0px;
+    border: none;
+    font-family: 'LINESeedKR-Rg';
+    font-size: 17px;
+    outline: none;
+}
+
+.certifBox button {
+    width: 90px;
+    height: 40px;
+    margin-left: 10px;
+    outline: none;
+    border: none;
+    font-family: 'LINESeedKR-Rg';
+    font-size: 15px;
+    color:white;
+    background-color: #0046FF;
+    border-radius: 5px;
+    line-height: 40px;
+}
+
+.certifBox div {
+    width: 50px;
+    margin-left: 5px;
+}
+
+.certifBox button:hover {
+    cursor: pointer;
+}
