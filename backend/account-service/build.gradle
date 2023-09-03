@@ -26,7 +26,38 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	// querydsl
+	// https://mvnrepository.com/artifact/com.querydsl/querydsl-jpa
+	implementation 'com.querydsl:querydsl-jpa:5.0.0'
+	// https://mvnrepository.com/artifact/com.querydsl/querydsl-apt
+	implementation 'com.querydsl:querydsl-apt:5.0.0'
+	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jpa"
+
+	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
+	implementation 'mysql:mysql-connector-java:8.0.28'
+	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+	// https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations
+	implementation 'io.swagger.core.v3:swagger-annotations:2.2.15'
+
+	//kms
+	// https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-core
+	implementation 'com.amazonaws:aws-java-sdk-core:1.11.1019'
+	// https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-kms
+	implementation 'com.amazonaws:aws-java-sdk-kms:1.11.1019'
+	// https://mvnrepository.com/artifact/com.amazonaws/jmespath-java
+	implementation 'com.amazonaws:jmespath-java:1.11.1019'
+	// https://mvnrepository.com/artifact/software.amazon.awssdk/kms
+	implementation 'software.amazon.awssdk:kms:2.20.115'
+
+	//test
+	// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {
