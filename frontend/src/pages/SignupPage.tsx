@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import ContentsFrame from '../common/components/ContentsFrame/ContentsFrame';
 import Pages from '../common/constants/Pages';
+import Timer from '../features/Signup/components/Timer/Timer';
 import backArrowSrc from '../common/images/SF_back_arrow.png';
 import nameSrc from '../common/images/SF_name_icon.png';
 import phoneSrc from '../common/images/SF_phone_icon.png';
@@ -9,7 +12,6 @@ import logoSrc from '../common/images/SF_full_logo.png';
 
 // css
 import styles from './SignupPage.module.css';
-import { useNavigate } from 'react-router-dom';
 
 const IntroPage = () => {
     return (
@@ -34,7 +36,6 @@ const NamePage = () => {
                 <img src={nameSrc} alt="사람 아이콘" />
                 <input type="text" placeholder="이름을 입력하세요." />
             </div>
-            <div className="tempBox"></div>
         </>
     );
 };
@@ -45,38 +46,69 @@ const PasswordPage = () => {
             <div className={styles.inputTitle}>비밀번호</div>
             <div className={styles.inputBox}>
                 <img src={pwSrc} alt="자물쇠 아이콘" />
-                <input type="text" placeholder="비밀번호를 입력하세요." />
+                <input type="password" placeholder="비밀번호를 입력하세요." />
             </div>
-            <div className="tempBox"></div>
         </>
     );
 };
 
 const PhonePage = () => {
+    const [isCheckReceive, setIsCheckReceive] = useState<boolean>(true); // 인증번호 받기 체크 여부
+
     return (
         <>
-            <div className={styles.inputTitle}>전화번호</div>
-            <div className={styles.inputBox}>
-                <img src={phoneSrc} alt="사람 아이콘" />
-                <input type="text" placeholder="전화번호를 입력하세요." />
+            {/* 전화번호 */}
+            <div>
+                <div className={styles.inputTitle}>전화번호</div>
+                <div className={styles.phoneBox}>
+                    <img src={phoneSrc} alt="휴대폰 아이콘" />
+                    <input type="number" placeholder="전화번호를 입력하세요." />
+                    <button>인증번호 받기</button>
+                </div>
+                <div className={styles.orderText}>하이픈(-)을 제외한 11자리 숫자로 입력해주세요.</div>
             </div>
-            <div className="tempBox"></div>
+            <br />
+            {/* 인증번호 */}
+            <div className={isCheckReceive ? styles.show : styles.unshow}>
+                <div className={styles.inputTitle}>인증번호</div>
+                <div className={styles.certifBox}>
+                    <input type="password" placeholder="인증번호를 입력하세요." />
+                    <div>
+                        <Timer />
+                    </div>
+                    <button>확인하기</button>
+                </div>
+                <div className={styles.orderText}>휴대폰으로 수신받은 인증번호를 입력해주세요.</div>
+            </div>
         </>
     );
 };
 
 const RolePage = () => {
+    const [role, setRole] = useState<null | string>(null);
+
     return (
         <>
-            <div className={styles.inputTitle}>역할</div>
+            <div className={styles.inputTitle}>아이 / 부모</div>
             <div className={styles.roleBox}>
                 <div className={styles.roleText}>아이 또는 부모 자격을 선택해주세요.</div>
                 <div className={styles.roleButtonBox}>
-                    <button>아이</button>
-                    <button>부모</button>
+                    <button
+                        className={role === 'child' ? styles.clicked : styles.nonClicked}
+                        onClick={() => {
+                            setRole('child');
+                        }}
+                    >
+                        <div>아이</div>
+                    </button>
+                    <button
+                        className={role === 'parent' ? styles.clicked : styles.nonClicked}
+                        onClick={() => setRole('parent')}
+                    >
+                        <div>부모</div>
+                    </button>
                 </div>
             </div>
-            <div className="tempBox"></div>
         </>
     );
 };

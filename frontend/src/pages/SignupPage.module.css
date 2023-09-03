@@ -28,13 +28,13 @@
 }
 
 /* box shadow */
-.buttonBox button, .roleButtonBox, .headBox {
+.buttonBox button, .roleButtonBox, .headBox, .phoneBox button:hover, .certifBox button:hover {
     box-shadow: 0px 4px 10px 2px rgba(0, 0, 0, 0.1);
 }
 
 /* animation */
-.buttonBox button, .progressBar {
-    transition: all 0.3s linear;
+.buttonBox button, .progressBar, .roleButtonBox button, .show, .unshow, .phoneBox button, .certifBox button {
+    transition: all 0.2s linear;
  }
 
 
@@ -137,6 +137,107 @@
     outline: none;
 }
 
+/* 전화번호 페이지 */
+.phoneBox {
+    height: 50px;
+    margin: 10px;
+    border-bottom: 1px solid #D9D9D9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.phoneBox img {
+    width: 25px;
+    margin: 0px 10px;
+}
+
+.phoneBox input {
+    width: calc(100% - 150px);
+    height: 100%;
+    padding: 0px;
+    border: none;
+    font-family: 'LINESeedKR-Rg';
+    font-size: 17px;
+    outline: none;
+}
+
+.phoneBox button {
+    width: 90px;
+    height: 40px;
+    margin-left: 10px;
+    outline: none;
+    border: none;
+    font-family: 'LINESeedKR-Rg';
+    font-size: 13px;
+    color:white;
+    background-color: #0046FF;
+    border-radius: 5px;
+    line-height: 40px;
+}
+
+.phoneBox button:hover {
+    cursor: pointer;
+}
+
+.show {
+    opacity: 1;
+}
+
+.unshow {
+    opacity: 0;
+}
+
+.orderText {
+    font-size: 13px;
+    margin: 0px 10px;
+    color:#0046FF;
+}
+
+.certifBox {
+    height: 50px;
+    margin: 10px;
+    border-bottom: 1px solid #D9D9D9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.certifBox input {
+    width: calc(100% - 160px);
+    height: 100%;
+    padding: 0px;
+    border: none;
+    font-family: 'LINESeedKR-Rg';
+    font-size: 17px;
+    outline: none;
+}
+
+.certifBox button {
+    width: 90px;
+    height: 40px;
+    margin-left: 10px;
+    outline: none;
+    border: none;
+    font-family: 'LINESeedKR-Rg';
+    font-size: 15px;
+    color:white;
+    background-color: #0046FF;
+    border-radius: 5px;
+    line-height: 40px;
+}
+
+.certifBox div {
+    width: 50px;
+    margin-left: 5px;
+}
+
+.certifBox button:hover {
+    cursor: pointer;
+}
+
+/* 역할 페이지 */
 .roleBox {
     height: 100px;
     margin: 0px 10px;
@@ -154,7 +255,7 @@
 
 .roleButtonBox {
     width: 100%;
-    height: calc(80% - 20px);
+    height: 60%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -164,10 +265,28 @@
 .roleButtonBox button {
     width: 46%;
     height: 80%;
-    border-radius: 7px;
+    border-radius: 10px;
     border: none;
     outline: none;
     font-size: 18px;
+}
+
+.roleButtonBox button div {
+    line-height: 53px;
+}
+
+.roleButtonBox button:hover {
+    cursor: pointer;
+    background-color: #0036cc;
+    color: white;
+}
+
+.clicked {
+    background-color: #0046FF;
+    color: white;
+}
+
+.nonClicked {
     color: #8A8A8A;
     background-color: white;
 }
