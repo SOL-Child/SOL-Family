@@ -1,14 +1,14 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import ContentsFrame from '../common/components/ContentsFrame/ContentsFrame';
-import Pages from '../common/constants/Pages';
-import Timer from '../features/Signup/components/Timer/Timer';
-import backArrowSrc from '../common/images/SF_back_arrow.png';
-import nameSrc from '../common/images/SF_name_icon.png';
-import phoneSrc from '../common/images/SF_phone_icon.png';
-import pwSrc from '../common/images/SF_password_icon.png';
-import logoSrc from '../common/images/SF_full_logo.png';
+import ContentsFrame from '../../common/components/ContentsFrame/ContentsFrame';
+import Pages from '../../common/constants/Pages';
+import Timer from '../../features/Signup/components/Timer/Timer';
+import backArrowSrc from '../../common/images/SF_back_arrow.png';
+import nameSrc from '../../common/images/SF_name_icon.png';
+import phoneSrc from '../../common/images/SF_phone_icon.png';
+import pwSrc from '../../common/images/SF_password_icon.png';
+import logoSrc from '../../common/images/SF_full_logo.png';
 
 // css
 import styles from './SignupPage.module.css';
