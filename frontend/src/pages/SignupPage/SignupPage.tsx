@@ -315,7 +315,6 @@ const SignupPage = () => {
 
     const [userInfo, setUserInfo] = useState<UserInfo>(initialState);
 
-    console.log(userInfo);
     useEffect(() => {
         if (page === 0) {
             setIsPossibleInput(true);
@@ -458,7 +457,7 @@ const SignupPage = () => {
                         <div className={styles.progressBar}>
                             <div style={{ width: `${(page / 4) * 100}%` }}></div>
                         </div>
-                        <div className={styles.progressBarText}>{page} / 4</div>
+                        <div className={styles.progressBarText}>{`${(page / 4) * 100} %`} </div>
                     </>
                 )}
                 {/* 실제 컨텐츠 */}
