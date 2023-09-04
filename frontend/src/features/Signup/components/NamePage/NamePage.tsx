@@ -37,8 +37,16 @@ const NamePage = ({
                     onChange={handleInputName}
                     type="text"
                     placeholder="이름을 입력하세요."
+                    autoFocus
                 />
             </div>
+            <div
+                className={
+                    name && name?.length > 0
+                        ? [styles.bottomBlueBorder, styles.bottomLine].join(' ')
+                        : [styles.nonBorder, styles.bottomLine].join(' ')
+                }
+            ></div>
             <div className={styles.orderText}>한글 이름을 입력해주세요.</div>
         </>
     );

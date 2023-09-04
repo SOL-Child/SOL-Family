@@ -47,8 +47,16 @@ const PasswordPage = ({
                     onChange={handleInputPassword}
                     type="password"
                     placeholder="비밀번호를 입력하세요."
+                    autoFocus
                 />
             </div>
+            <div
+                className={
+                    password && password?.length > 0
+                        ? [styles.bottomBlueBorder, styles.bottomLine].join(' ')
+                        : [styles.nonBorder, styles.bottomLine].join(' ')
+                }
+            ></div>
             <div className={styles.orderText}>
                 숫자, 영문자, 특수문자를 포함한 8자리 이상의 비밀번호를 입력해주세요.
             </div>

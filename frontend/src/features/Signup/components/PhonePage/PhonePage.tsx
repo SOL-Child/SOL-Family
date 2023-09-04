@@ -13,11 +13,13 @@ const PhonePage = ({
     const [isCheckReceive, setIsCheckReceive] = useState<boolean>(false); // 인증번호 받기 체크 여부
     const [isPossiblePhone, setIsPossiblePhone] = useState<boolean>(false); // 가능한 전화번호인지 확인
     const [phone, setPhone] = useState<string | undefined>(undefined); // 전화 번호
+    const [isPossibleCertifNum, setIsPossibleCertifNum] = useState<boolean>(false); // 가능한 인증번호인지 확인
     const [certifNum, setCertifNum] = useState<string | undefined>(undefined); // 인증 번호
     const [isExpired, setIsExpired] = useState<boolean>(false); // 인증 번호 만료 or 실패 여부
     const [isCorrectCertifNum, setIsCorrectCertifNum] = useState<boolean>(true); // 인증번호 성공 여부
 
     const certifBtn = useRef<HTMLButtonElement | null>(null);
+    const certifChkBtn = useRef<HTMLButtonElement | null>(null);
 
     useEffect(() => {
         if (certifBtn.current === null) return;
@@ -28,6 +30,16 @@ const PhonePage = ({
             certifBtn.current.style.backgroundColor = '#D9D9D9';
         }
     }, [isPossiblePhone]);
+
+    useEffect(() => {
+        if (certifChkBtn.current === null) return;
+
+        if (isPossibleCertifNum) {
+            certifChkBtn.current.style.backgroundColor = '#0046FF';
+        } else {
+            certifChkBtn.current.style.backgroundColor = '#D9D9D9';
+        }
+    }, [isPossibleCertifNum]);
 
     useEffect(() => {
         if (phone === undefined) return;
@@ -45,6 +57,21 @@ const PhonePage = ({
         setCurrentInput(phone);
         setIsPossiblePhone(true);
     }, [phone]);
+
+    useEffect(() => {
+        if (certifNum === undefined) return;
+
+        if (certifNum.length < 6) {
+            setIsPossibleCertifNum(false);
+            return;
+        }
+
+        /**
+         * @todo: 인증번호 유효성 검사 추가
+         */
+
+        setIsPossibleCertifNum(true);
+    }, [certifNum]);
 
     const handleInputPhone = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (isCheckReceive) return; // 인증 버튼 클릭 한 후임
@@ -102,6 +129,13 @@ const PhonePage = ({
                         {isCheckReceive ? '재발송 하기' : '인증번호 받기'}
                     </button>
                 </div>
+                <div
+                    className={
+                        phone && phone?.length > 0
+                            ? [styles.bottomBlueBorder, styles.bottomLine].join(' ')
+                            : [styles.nonBorder, styles.bottomLine].join(' ')
+                    }
+                ></div>
                 <div className={styles.orderText}>하이픈(-)을 제외한 11자리 숫자로 입력해주세요.</div>
             </div>
             <br />
@@ -117,8 +151,17 @@ const PhonePage = ({
                         placeholder="인증번호를 입력하세요."
                     />
                     <div>{isCheckReceive && !isExpired ? <Timer setIsExpired={setIsExpired} /> : '00:00'}</div>
-                    <button onClick={handleCheckCertifNum}>확인하기</button>
+                    <button ref={certifChkBtn} onClick={handleCheckCertifNum}>
+                        확인하기
+                    </button>
                 </div>
+                <div
+                    className={
+                        certifNum && certifNum?.length > 0
+                            ? [styles.bottomBlueBorder, styles.bottomLine].join(' ')
+                            : [styles.nonBorder, styles.bottomLine].join(' ')
+                    }
+                ></div>
                 <div className={styles.orderText}>휴대폰으로 수신받은 인증번호를 입력해주세요.</div>
             </div>
         </>
