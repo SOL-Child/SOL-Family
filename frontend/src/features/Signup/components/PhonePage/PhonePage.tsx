@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import phoneSrc from '../../../../common/images/SF_phone_icon.png';
-import styles from './PhonePage.module.css';
 import Timer from '../Timer/Timer';
+import SignupAPI from '../../apis/SignupAPI';
+import styles from './PhonePage.module.css';
 
 const PhonePage = ({
     setIsPossibleInput,
@@ -84,7 +85,7 @@ const PhonePage = ({
         setCertifNum(e.target.value);
     };
 
-    const handleCertifBtn = (): void => {
+    const handleCertifBtn = async () => {
         /**
          * @todo: 재발송 backend 통신
          */
@@ -94,8 +95,17 @@ const PhonePage = ({
             return;
         }
 
-        alert('인증번호가 전송되었습니다.');
-        setIsCheckReceive(true);
+        /**
+         * @todo: 인증번호 발송 backend 통신
+         */
+
+        if (!phone) return;
+        const isComplete = await SignupAPI.certifyPhoneNumber(phone);
+
+        if (isComplete) {
+            alert('인증번호가 전송되었습니다.');
+            setIsCheckReceive(true);
+        }
     };
 
     /**

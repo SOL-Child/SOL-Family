@@ -13,6 +13,9 @@ import backArrowSrc from '../../common/images/SF_back_arrow.png';
 import logoSrc from '../../common/images/SF_full_logo.png';
 
 import styles from './SignupPage.module.css';
+import UserInfo from '../../common/interfaces/userInfo.types';
+
+import SignupAPI from '../../features/Signup/apis/SignupAPI';
 
 const SignupPage = () => {
     const [page, setPage] = useState<number>(0); // 0부터 4페이지까지
@@ -25,13 +28,6 @@ const SignupPage = () => {
     const [currentInput, setCurrentInput] = useState<string | number | null>(null); // 현재 페이지에서 입력되고 있는 값
 
     const [isPossibleSend, setIsPossibleSend] = useState<boolean>(false);
-
-    interface UserInfo {
-        name: string;
-        password: string;
-        phone: string;
-        user_type: string;
-    }
 
     const initialState: UserInfo = {
         name: '',
@@ -157,6 +153,7 @@ const SignupPage = () => {
              */
             // req : userInfo
             // res : accesstoken, user정보
+            SignupAPI.registerUser(userInfo);
         }
     }, [isPossibleSend]);
 
