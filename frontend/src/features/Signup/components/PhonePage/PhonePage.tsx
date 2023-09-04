@@ -49,7 +49,9 @@ const PhonePage = ({
             return;
         }
 
-        if (Number.isNaN(phone)) {
+        const num = /^[0-9]+$/;
+
+        if (!num.test(phone)) {
             setIsPossiblePhone(false);
             return;
         }
@@ -124,6 +126,7 @@ const PhonePage = ({
                         onChange={handleInputPhone}
                         type="text"
                         placeholder="전화번호를 입력하세요."
+                        autoFocus
                     />
                     <button ref={certifBtn} onClick={handleCertifBtn}>
                         {isCheckReceive ? '재발송 하기' : '인증번호 받기'}
