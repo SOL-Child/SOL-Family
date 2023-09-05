@@ -3,6 +3,10 @@ import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import ContentsFrame from '../../common/components/ContentsFrame/ContentsFrame';
+import LoginAPI from '../../features/Login/apis/LoginAPI';
+import LocalStorageUtil from '../../features/Login/utils/LocalStorageUtil';
+import LoginUserInfo from '../../common/interfaces/loginUserInfo.types';
+
 import Pages from '../../common/constants/Pages';
 import logoSrc from '../../common/images/SF_full_logo.png';
 import phoneSrc from '../../common/images/SF_phone_icon.png';
@@ -16,7 +20,6 @@ const LoginPage = () => {
 
     const [phone, setPhone] = useState<string | null>(null);
     const [password, setPassword] = useState<string | null>(null);
-
     const [isPossibleSend, setIsPossibleSend] = useState<boolean>(false);
 
     const handlePhone = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -32,6 +35,14 @@ const LoginPage = () => {
             setIsPossibleSend(false);
             return;
         }
+
+        const num = /^[0-9]+$/;
+
+        if (!num.test(phone)) {
+            setIsPossibleSend(false);
+            return;
+        }
+
         if (password === null || password === '' || password.length < 8) {
             setIsPossibleSend(false);
             return;
@@ -51,14 +62,20 @@ const LoginPage = () => {
         }
     }, [isPossibleSend]);
 
-    const handleLogin = (): void => {
+    const handleLogin = async () => {
         if (!isPossibleSend) return;
 
-        /**
-         * @todo: 로그인 backend 통신
-         */
+        const userInfo = {
+            phone: phone || '',
+            password: password || '',
+        };
 
-        return;
+        try {
+            const data: LoginUserInfo = await LoginAPI.loginUser(userInfo);
+            LocalStorageUtil.saveLocalStorage(data);
+        } catch (err) {
+            alert('로그인에 실패했습니다. 다시 시도해주세요.');
+        }
     };
 
     return (
@@ -91,6 +108,13 @@ const LoginPage = () => {
                             placeholder="전화번호를 입력하세요."
                         />
                     </div>
+                    <div
+                        className={
+                            phone && phone?.length > 0
+                                ? [styles.bottomBlueBorder, styles.bottomLine].join(' ')
+                                : [styles.nonBorder, styles.bottomLine].join(' ')
+                        }
+                    ></div>
                     <div className={styles.orderText}>하이픈(-)을 제외한 11자리 숫자로 입력해주세요.</div>
                 </>
                 <br />
@@ -106,6 +130,13 @@ const LoginPage = () => {
                             placeholder="비밀번호를 입력하세요."
                         />
                     </div>
+                    <div
+                        className={
+                            password && password?.length > 0
+                                ? [styles.bottomBlueBorder, styles.bottomLine].join(' ')
+                                : [styles.nonBorder, styles.bottomLine].join(' ')
+                        }
+                    ></div>
                     <div className={styles.orderText}></div>
                 </>
             </div>
