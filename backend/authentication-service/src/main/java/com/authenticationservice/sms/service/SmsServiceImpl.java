@@ -46,6 +46,28 @@ public class SmsServiceImpl implements SmsService {
         return content.builderCertificationContent(certificationNumber);
     }
 
+    // coolSms API를 이용하여 인증번호 발송하고, 발송 정보를 Redis에 저장
+    @Override
+    public void sendSms(String phone) {
+        System.out.println(phone);
+        Message message = new Message();
+        String randomNumber = makeRandomNumber();
+        String content = makeSmsContent(randomNumber);
+        System.out.println(content);
+
+        // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
+        message.setFrom(smsProperties.getCoolSmsFromPhoneNumber());
+        message.setTo(phone);
+        message.setText(content);
+        try {
+            SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+            System.out.println(response);
+        } catch (Exception e) {
+
+        }
+
+        smsCertificationDao.createSmsCertification(phone, randomNumber);
+    }
 
 
 }
