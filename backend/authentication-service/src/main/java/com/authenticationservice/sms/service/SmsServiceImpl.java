@@ -69,5 +69,20 @@ public class SmsServiceImpl implements SmsService {
         smsCertificationDao.createSmsCertification(phone, randomNumber);
     }
 
+    // 사용자가 입력한 인증번호가 Redis에 저장된 인증번호와 동일한지 확인
+    @Override
+    public void verifySms(SmsReqDto requestDto) {
+        if (isVerify(requestDto)) {
+            throw new IllegalArgumentException("인증번호가 일치하지 않습니다.");
+        }
+        smsCertificationDao.removeSmsCertification(requestDto.getPhone());
+    }
+
+    private boolean isVerify(SmsReqDto requestDto) {
+        return !(smsCertificationDao.hasKey(requestDto.getPhone()) &&
+                smsCertificationDao.getSmsCertification(requestDto.getPhone())
+                        .equals(requestDto.getCertificationNumber()));
+    }
+
 
 }
