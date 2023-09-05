@@ -2,6 +2,7 @@ package com.authenticationservice.token.service;
 
 import com.authenticationservice.token.config.TokenProvider;
 import com.authenticationservice.token.dto.response.CreateAccessTokenResDto;
+import com.authenticationservice.token.dto.response.CreateTokenResDto;
 import com.authenticationservice.token.entity.Token;
 import com.authenticationservice.token.repository.JpaTokenRepository;
 import com.authenticationservice.user.entity.User;
@@ -27,6 +28,16 @@ public class TokenServiceImpl implements TokenService{
                 .build();
 
         jpaTokenRepository.save(newToken);
+    }
+
+    @Override
+    public CreateTokenResDto createUserToken(User user){
+        // accessToken
+        String accessToken = tokenProvider.generateToken(user,  Duration.ofHours(1));
+        //  refreshToken
+        String refreshToken = tokenProvider.generateToken(user,  Duration.ofDays(14));
+
+        return new CreateTokenResDto().of(accessToken, refreshToken);
     }
 
     public Token findByRefreshToken(String refreshToken) {
