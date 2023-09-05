@@ -7,6 +7,7 @@ import com.authenticationservice.user.entity.User;
 public interface TokenService {
     void saveToken(User user, String token);
     CreateTokenResDto createUserToken(User user);
+    CreateAccessTokenResDto createNewAccessToken(User user, String refreshToken);
 
 }
 

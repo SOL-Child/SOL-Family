@@ -40,6 +40,15 @@ public class TokenServiceImpl implements TokenService{
         return new CreateTokenResDto().of(accessToken, refreshToken);
     }
 
+    @Override
+    public CreateAccessTokenResDto createNewAccessToken(User user, String refreshToken) {
+        if(!tokenProvider.validToken(refreshToken)) {
+            throw new IllegalArgumentException("Unexpected token");
+        }
+        String token =  tokenProvider.generateToken(user, Duration.ofHours(2));
+        return new CreateAccessTokenResDto(token);
+    }
+
     public Token findByRefreshToken(String refreshToken) {
         return jpaTokenRepository.findByToken(refreshToken)
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected token"));
