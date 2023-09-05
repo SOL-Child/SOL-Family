@@ -72,6 +72,7 @@
     color: #0046FF;
     text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
     font-family: 'LINESeedKR-Bd';
+    animation: up 2s;
 }
 
 .loginText {
@@ -79,6 +80,7 @@
     color: #8A8A8A;
     text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
     font-family: 'LINESeedKR-Bd';
+    animation: up 2s;
 }
 
 .loginText > span{
@@ -97,15 +99,16 @@
     margin: 10px;
     font-size: 18px;
     color: #363636;
+    animation: up 2s;
 }
 
 .inputBox {
     height: 50px;
-    margin: 10px;
     border-bottom: 1px solid #D9D9D9;
     display: flex;
     justify-content: center;
     align-items: center;
+    animation: up 2s;
 }
 
 .inputBox img {
@@ -125,6 +128,32 @@
 
 .orderText {
     font-size: 13px;
-    margin: 0px 10px;
+    margin: 10px;
     color:#0046FF;
+    animation: up 2s;
+}
+
+.bottomLine {
+    width: calc(100% - 20px);
+    transition: all 0.3s linear;
+}
+
+.nonBorder {
+    width: 0px;
+    height: 1.2px;
+}
+
+.bottomBlueBorder {
+    width: 100%;
+    height: 1.2px;
+    background-color: #0046FF;
+}
+
+@keyframes up {
+    from {
+        transform: translateY(30px);
+    }
+    to {
+        transform: translateY(0px);
+    }
 }
