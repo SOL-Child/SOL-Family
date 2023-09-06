@@ -1,8 +1,6 @@
 package com.authenticationservice.user.dto.request;
 
-import com.authenticationservice.user.entity.Auth;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import com.authenticationservice.user.entity.UserType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +11,5 @@ public class UserReqDto {
     private String password;
     private String passwordCheck;
     private String phone;
-    private Auth auth;
+    private UserType userType;
 }

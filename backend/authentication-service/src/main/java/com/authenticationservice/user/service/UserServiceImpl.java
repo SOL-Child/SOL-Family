@@ -2,12 +2,14 @@ package com.authenticationservice.user.service;
 
 import com.authenticationservice.token.dto.response.CreateTokenResDto;
 import com.authenticationservice.token.service.TokenService;
+import com.authenticationservice.user.dto.request.LoginReqDto;
 import com.authenticationservice.user.dto.request.UserReqDto;
 import com.authenticationservice.user.dto.response.UserResDto;
 import com.authenticationservice.user.entity.User;
 import com.authenticationservice.user.repository.JpaUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,10 +45,21 @@ public class UserServiceImpl implements UserService{
                 .name(userReqDto.getName())
                 .password(passwordEncoder.encode(userReqDto.getPassword()))
                 .phone(userReqDto.getPhone())
-                .auth(userReqDto.getAuth())
+                .userType(userReqDto.getUserType())
                 .active(true)
                 .build();
 
         jpaUserRepository.save(user);
+    }
+
+    @Override
+    public UserResDto signIn(LoginReqDto loginReqDto) {
+        User user = findByPhone(loginReqDto.getPhone());
+        if(!passwordEncoder.matches(loginReqDto.getPassword(),user.getPassword()))
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+
+        CreateTokenResDto token = tokenService.createUserToken(user);
+
+        return new UserResDto().of(user, token);
     }
 }

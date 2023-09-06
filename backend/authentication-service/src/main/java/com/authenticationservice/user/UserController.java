@@ -1,6 +1,7 @@
 package com.authenticationservice.user;
 
 import com.authenticationservice.global.dto.BaseResponseBody;
+import com.authenticationservice.user.dto.request.LoginReqDto;
 import com.authenticationservice.user.dto.request.UserReqDto;
 import com.authenticationservice.user.dto.response.UserResDto;
 import com.authenticationservice.user.service.UserService;
@@ -28,5 +29,12 @@ public class UserController {
     public ResponseEntity<? extends BaseResponseBody> createUser(@RequestBody UserReqDto userReqDto){
         userService.signUp(userReqDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(BaseResponseBody.of(0,"Success"));
+    }
+
+    @Operation(summary = "로그인", description = "\n\n" )
+    @PostMapping("/users/signin")
+    public ResponseEntity<? extends BaseResponseBody> signIn(@RequestBody LoginReqDto loginReqDto){
+        UserResDto userResDto = userService.signIn(loginReqDto);
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(0,userResDto));
     }
 }

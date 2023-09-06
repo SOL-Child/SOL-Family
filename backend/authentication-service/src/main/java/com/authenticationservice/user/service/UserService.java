@@ -1,5 +1,6 @@
 package com.authenticationservice.user.service;
 
+import com.authenticationservice.user.dto.request.LoginReqDto;
 import com.authenticationservice.user.dto.request.UserReqDto;
 import com.authenticationservice.user.dto.response.UserResDto;
 import com.authenticationservice.user.entity.User;
@@ -12,4 +13,6 @@ public interface UserService {
     User findByPhone(String phone);
 
     void signUp(UserReqDto userReqDto);
+
+    UserResDto signIn(LoginReqDto loginReqDto);
 }
