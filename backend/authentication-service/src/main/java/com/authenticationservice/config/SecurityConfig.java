@@ -1,51 +1,61 @@
 package com.authenticationservice.config;
 
+import com.authenticationservice.token.config.TokenAuthenticationFilter;
+import com.authenticationservice.token.config.TokenProvider;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    @Autowired
+    DataSource dataSource;
+    private final TokenProvider tokenProvider;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // CSRF 토큰을 활성화, CSRF 토큰의 생성, 저장, 검증 등은 Spring Security가 자동으로 처리
-                .csrf(csrf -> csrf
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                )
                 .cors(cors -> cors
                         .configurationSource(corsConfigurationSource()))
+                // CSRF 토큰을 활성화, CSRF 토큰의 생성, 저장, 검증 등은 Spring Security가 자동으로 처리
+                .csrf(csrf -> csrf
+                                .disable()
+//                        .ignoringRequestMatchers("/api/v1/users/signin", "/api/v1/users/signup")
+//                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                )
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        // mysql 데이터베이스 콘솔, 정적 리소스 경로 설정
-                        .requestMatchers("/login", "/mysql-console/**", "/static/**", "/swagger-ui/**", "/api-docs/**").permitAll()
+                        // mysql 데이터베이스 콘솔, 정적 리소스, swagger 경로 인증 권한 설정
+                        .requestMatchers("/v1/users/signin", "/v1/users/signup", "/v1/sms/**", "/mysql-console/**", "/static/**", "/swagger-ui/**", "/api-docs/**").permitAll()
+                        .requestMatchers("/requestMatchersadmin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
+                .addFilterBefore(new TokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .formLogin(formLogin -> formLogin
-                        .defaultSuccessUrl("/")
-                        .failureUrl("/login")
-                        .usernameParameter("email")
-                        .passwordParameter("password")
-                        .loginProcessingUrl("/login_proc")
-                        .permitAll())
+                        .disable())
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/login")
-                        .permitAll())
-                .rememberMe(Customizer.withDefaults());
+                        .logoutSuccessUrl("/signin")
+                        .permitAll()
+                );
         return http.build();
     }
 
@@ -59,14 +69,13 @@ public class SecurityConfig {
         encoders.put(idForEncode, defaultEncoder);
 
         return new DelegatingPasswordEncoder(idForEncode, encoders);
-
     }
 
     //CORS 설정
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type", "x-auth-token", "X-CSRF-TOKEN"));
         configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
@@ -75,5 +84,4 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
 }
