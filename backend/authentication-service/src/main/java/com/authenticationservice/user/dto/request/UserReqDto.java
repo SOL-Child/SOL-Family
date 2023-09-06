@@ -13,5 +13,5 @@ public class UserReqDto {
     private String password;
     private String passwordCheck;
     private String phone;
-    private Auth auth;
+    private Auth userType;
 }
