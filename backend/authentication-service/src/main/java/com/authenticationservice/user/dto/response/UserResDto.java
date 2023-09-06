@@ -1,7 +1,7 @@
 package com.authenticationservice.user.dto.response;
 
 import com.authenticationservice.token.dto.response.CreateTokenResDto;
-import com.authenticationservice.user.entity.Auth;
+import com.authenticationservice.user.entity.UserType;
 import com.authenticationservice.user.entity.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +12,7 @@ public class UserResDto {
     private Long id;
     private String name;
     private String phone;
-    private Auth userType;
+    private UserType userType;
     private String accessToken;
     private String refreshToken;
 

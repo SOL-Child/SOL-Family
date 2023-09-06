@@ -7,9 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Getter
 @Setter
@@ -29,12 +27,12 @@ public class User extends Time implements UserDetails{
     private String phone;
 
     @Enumerated(value = EnumType.STRING)
-    private Auth userType;
+    private UserType userType;
 
     private Boolean active;
 
     @Builder
-    public User(String name, String password, String phone, Auth userType, Boolean active) {
+    public User(String name, String password, String phone, UserType userType, Boolean active) {
         this.name = name;
         this.password = password;
         this.phone = phone;
