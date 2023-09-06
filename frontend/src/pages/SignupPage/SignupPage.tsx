@@ -13,7 +13,7 @@ import backArrowSrc from '../../common/images/SF_back_arrow.png';
 import logoSrc from '../../common/images/SF_full_logo.png';
 
 import styles from './SignupPage.module.css';
-import UserInfo from '../../common/interfaces/userInfo.types';
+import { UserInfo } from '../../common/types/user.types';
 
 import SignupAPI from '../../features/Signup/apis/SignupAPI';
 
@@ -32,8 +32,9 @@ const SignupPage = () => {
     const initialState: UserInfo = {
         name: '',
         password: '',
+        passwordCheck: 'password',
         phone: '',
-        user_type: '',
+        userType: '',
     };
 
     const [userInfo, setUserInfo] = useState<UserInfo>(initialState);
