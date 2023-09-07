@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import ContentsFrame from '../../common/components/ContentsFrame/ContentsFrame';
 import LoginAPI from '../../features/Login/apis/LoginAPI';
 import LocalStorageUtil from '../../features/Login/utils/LocalStorageUtil';
-import LoginUserInfo from '../../common/interfaces/loginUserInfo.types';
+import { ReceiveUserInfo, SendUserInfo } from '../../common/types/user.types';
 
 import Pages from '../../common/constants/Pages';
 import logoSrc from '../../common/images/SF_full_logo.png';
@@ -65,16 +65,16 @@ const LoginPage = () => {
     const handleLogin = async () => {
         if (!isPossibleSend) return;
 
-        const userInfo = {
+        const userInfo: SendUserInfo = {
             phone: phone || '',
             password: password || '',
         };
 
         try {
-            const data: LoginUserInfo = await LoginAPI.loginUser(userInfo);
+            const data: ReceiveUserInfo = await LoginAPI.loginUser(userInfo);
             LocalStorageUtil.saveLocalStorage(data);
         } catch (err) {
-            alert('로그인에 실패했습니다. 다시 시도해주세요.');
+            alert(err);
         }
     };
 
