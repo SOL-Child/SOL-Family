@@ -4,7 +4,7 @@ import AccountBox from '../AccountBox/AccountBox';
 import MainMenuBox from '../MainMenuBox/MainMenuBox';
 
 import styles from './MainContents.module.css';
-import MainUtil from '../../utils/MainUtil';
+import MainUtil from '../../../src/common/utils/MainUtil';
 
 // data: userType (null, CHILD, PARENT)
 const MainContents = (userType: any) => {

@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import Pages from '../../common/constants/Pages';
 import ContentsFrame from '../../common/components/ContentsFrame/ContentsFrame';
 import Header from '../../common/components/Header/Header';
-import MainContents from '../../common/components/MainContents/MainContents';
+import MainContents from '../../features/Main/components/MainContents/MainContents';
 import BottomBar from '../../common/components/BottomBar/BottomBar';
 
-import MainUtil from '../../common/utils/MainUtil';
+import MainUtil from '../../features/Main/utils/MainUtil';
 import styles from './MainPage.module.css';
 
 const MainPage = () => {
