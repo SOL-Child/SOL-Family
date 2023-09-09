@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import ContentsFrame from '../../common/components/ContentsFrame/ContentsFrame';
+import Header from '../../common/components/Header/Header';
 import LoginAPI from '../../features/Login/apis/LoginAPI';
 import LocalStorageUtil from '../../features/Login/utils/LocalStorageUtil';
 import { ReceiveUserInfo, SendUserInfo } from '../../common/types/user.types';
@@ -81,11 +82,7 @@ const LoginPage = () => {
     return (
         <ContentsFrame page={Pages.LOGIN}>
             {/* 헤더 */}
-            <div className={styles.headBox}>
-                <div className={styles.prevImgBox}>
-                    <img src={logoSrc} className={styles.logoImg} alt="로고 아이콘" onClick={() => navigate('/')} />
-                </div>
-            </div>
+            <Header />
             {/* 컨텐츠 */}
             <div className={styles.contentBox}>
                 <div className={styles.loginTitle}>

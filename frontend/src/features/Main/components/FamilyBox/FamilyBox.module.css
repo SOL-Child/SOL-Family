@@ -1,0 +1,45 @@
+.FamilyBox {
+    background-color: #FFF8B5;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.FamilyBox > div:nth-child(1) {
+    color:#363636;
+    font-size: 20px;
+    font-family: 'LINESeedKR-Bd';
+}
+
+.qrBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.qrBox div {
+    color: #8A8A8A;
+    font-size: 13px;
+}
+
+.qrBox button {
+    width: 70px;
+    height: 35px;
+    border: none;
+    border-radius: 15px;
+    line-height: 37px;
+    background-color: #FFF172;
+    color: #FDC500;
+    font-family: 'LINESeedKR-Bd';
+}
+
+.qrBox button:hover {
+    background-color: #ffea2a;
+    color: #dfae00;
+    cursor: pointer;
+}
+
+.groupName {
+    font-family: 'LINESeedKR-Bd';
+}
