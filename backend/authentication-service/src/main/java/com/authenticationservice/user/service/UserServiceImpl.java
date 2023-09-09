@@ -1,5 +1,7 @@
 package com.authenticationservice.user.service;
 
+import com.authenticationservice.global.error.ErrorCode;
+import com.authenticationservice.global.error.exception.BusinessException;
 import com.authenticationservice.token.dto.response.CreateTokenResDto;
 import com.authenticationservice.token.service.TokenService;
 import com.authenticationservice.user.dto.request.LoginReqDto;
@@ -9,7 +11,6 @@ import com.authenticationservice.user.entity.User;
 import com.authenticationservice.user.repository.JpaUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,22 +25,22 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User findById(Long userId) {
-//        return jpaUserRepository.findById(userId)
-//                .orElseThrow(() -> new CustomException(ExceptionEnum.USER_NOT_EXIST));
-        return null;
+        return jpaUserRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_EXIST));
     }
 
     @Override
     public User findByPhone(String phone) {
         return jpaUserRepository.findByPhone(phone)
-                .orElseThrow(() -> new IllegalArgumentException("e"));
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_EXIST));
     }
 
     @Override
     @Transactional
     public void signUp(UserReqDto userReqDto) {
         // valid password
-        if (!userReqDto.getPassword().equals(userReqDto.getPasswordCheck())) return;
+        if (!userReqDto.getPassword().equals(userReqDto.getPasswordCheck()))
+            throw new BusinessException(ErrorCode.INVALID_PASSWORD_CHECK);
 
         User user = User.builder()
                 .name(userReqDto.getName())
@@ -56,7 +57,7 @@ public class UserServiceImpl implements UserService{
     public UserResDto signIn(LoginReqDto loginReqDto) {
         User user = findByPhone(loginReqDto.getPhone());
         if(!passwordEncoder.matches(loginReqDto.getPassword(),user.getPassword()))
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new BusinessException(ErrorCode.INVALID_PASSWORD_CHECK);
 
         CreateTokenResDto token = tokenService.createUserToken(user);
 

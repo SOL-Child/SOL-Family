@@ -1,5 +1,7 @@
 package com.authenticationservice.token.service;
 
+import com.authenticationservice.global.error.ErrorCode;
+import com.authenticationservice.global.error.exception.AuthenticationException;
 import com.authenticationservice.token.config.TokenProvider;
 import com.authenticationservice.token.dto.response.CreateAccessTokenResDto;
 import com.authenticationservice.token.dto.response.CreateTokenResDto;
@@ -43,7 +45,7 @@ public class TokenServiceImpl implements TokenService{
     @Override
     public CreateAccessTokenResDto createNewAccessToken(User user, String refreshToken) {
         if(!tokenProvider.validToken(refreshToken)) {
-            throw new IllegalArgumentException("Unexpected token");
+            throw new AuthenticationException(ErrorCode.UNEXPECTED_TOKEN);
         }
         String token =  tokenProvider.generateToken(user, Duration.ofHours(2));
         return new CreateAccessTokenResDto(token);
@@ -51,6 +53,6 @@ public class TokenServiceImpl implements TokenService{
 
     public Token findByRefreshToken(String refreshToken) {
         return jpaTokenRepository.findByToken(refreshToken)
-                .orElseThrow(() -> new IllegalArgumentException("Unexpected token"));
+                .orElseThrow(() -> new AuthenticationException(ErrorCode.UNEXPECTED_TOKEN));
     }
 }
