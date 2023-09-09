@@ -29,3 +29,9 @@ export interface ReceiveUserInfo {
     accessToken: string;
     refreshToken: string;
 }
+
+// 사용자 가족 정보 (main)
+export interface UserFamilyInfo {
+    groupName: string;
+    groupCnt: string;
+}
