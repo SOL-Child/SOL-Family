@@ -3,13 +3,13 @@ package com.authenticationservice.user.entity;
 import lombok.Getter;
 
 @Getter
-public enum Auth {
+public enum UserType {
     PARENT("PARENT"),
     CHILD("CHILD"),
     ADMIN("ADMIN");
 
     private String role;
-    Auth(String role) {
+    UserType(String role) {
         this.role = role;
     }
 }
