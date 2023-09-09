@@ -10,9 +10,9 @@ import homeSrc from '../../images/SF_home_icon.png';
 
 const BottomBar = () => {
     const navigate = useNavigate();
-    const [clickedValue, setClickedValue] = useState('home');
+    const [clickedValue, setClickedValue] = useState<string>('home');
 
-    const handleClick = (value: string) => {
+    const handleClick = (value: string): void => {
         setClickedValue(value);
 
         if (value === 'home') return;
