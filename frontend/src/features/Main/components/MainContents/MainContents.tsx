@@ -7,9 +7,12 @@ import styles from './MainContents.module.css';
 import MainUtil from '../../utils/MainUtil';
 import { useNavigate } from 'react-router-dom';
 
+import useFetch from '../../../../common/hooks/useFetch';
+
 // data: userType (null, CHILD, PARENT)
 const MainContents = (userType: any) => {
     const navigate = useNavigate();
+    // const userData = useFetch('');  url을 통해 메인화면 정보 받아오기
 
     const setTitle = () => {
         const isLogin: boolean = MainUtil.checkIsLogin();
