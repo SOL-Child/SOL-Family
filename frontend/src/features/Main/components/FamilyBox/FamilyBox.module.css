@@ -6,6 +6,7 @@
 }
 
 .FamilyBox > div:nth-child(1) {
+    color:#363636;
     font-size: 20px;
     font-family: 'LINESeedKR-Bd';
 }
@@ -31,12 +32,11 @@
     background-color: #FFF172;
     color: #FDC500;
     font-family: 'LINESeedKR-Bd';
-    transition: all 0.1s linear;
 }
 
 .qrBox button:hover {
-    background-color: #FDB600;
-    color: #FFF172;
+    background-color: #ffea2a;
+    color: #dfae00;
     cursor: pointer;
 }
 

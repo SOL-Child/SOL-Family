@@ -1,5 +1,4 @@
 import FamilyBox from '../FamilyBox/FamilyBox';
-import Carousel from '../Carousel/Carousel';
 import AccountBox from '../AccountBox/AccountBox';
 import MainMenuBox from '../MainMenuBox/MainMenuBox';
 
@@ -46,8 +45,8 @@ const MainContents = (userType: any) => {
         <div className={styles.mainContents}>
             <>{setTitle()}</>
             <FamilyBox userType={userType} />
-            {/* todo: data : 통장 박스 추가 */}
-            <Carousel />
+            {/* 계좌는 데이터만 전달  */}
+            <AccountBox />
             <MainMenuBox userType={userType} />
         </div>
     );
