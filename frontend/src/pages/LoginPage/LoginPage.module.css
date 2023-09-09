@@ -1,8 +1,3 @@
-.headBox {
-    width: 100%;
-    height: 60px;
-}
-
 .contentBox {
     width: calc(100% - 40px);
     height: calc(100% - 160px);
