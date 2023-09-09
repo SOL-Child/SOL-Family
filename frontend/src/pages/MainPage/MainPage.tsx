@@ -33,7 +33,7 @@ const MainPage = () => {
 
     return (
         <ContentsFrame page={Pages.MAIN}>
-            <Header userType={userType} />
+            <Header />
             <MainContents userType={userType} />
             <BottomBar />
         </ContentsFrame>

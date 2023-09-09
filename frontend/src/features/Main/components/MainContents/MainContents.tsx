@@ -4,32 +4,39 @@ import AccountBox from '../AccountBox/AccountBox';
 import MainMenuBox from '../MainMenuBox/MainMenuBox';
 
 import styles from './MainContents.module.css';
-import MainUtil from '../../../src/common/utils/MainUtil';
+import MainUtil from '../../utils/MainUtil';
+import { useNavigate } from 'react-router-dom';
 
 // data: userType (null, CHILD, PARENT)
 const MainContents = (userType: any) => {
+    const navigate = useNavigate();
+
     const setTitle = () => {
-        const userName = MainUtil.getUserName();
-        if (userName === null) {
+        const isLogin: boolean = MainUtil.checkIsLogin();
+
+        if (!isLogin) {
             return (
                 <div className={styles.titleBox}>
-                    <div>
-                        <span>로그인 / 회원가입을 통해</span> <br />
+                    <div className={styles.textBox}>
+                        <span>로그인 / 회원가입</span>을 통해 <br />
                         서비스를 이용해주세요
                     </div>
-                    <button>로그인</button>
-                    <button>회원가입</button>
-                </div>
-            );
-        } else {
-            return (
-                <div className={styles.titleBox}>
-                    <span>{userName}</span> {userType === 'CHILD' ? '친구' : '님'}
-                    <br />
-                    어서오세요 !
+                    <div className={styles.buttonBox}>
+                        <button onClick={() => navigate('/login')}>로그인</button>
+                        <button onClick={() => navigate('/signup')}>회원가입</button>
+                    </div>
                 </div>
             );
         }
+
+        const userName = MainUtil.getUserName();
+
+        return (
+            <div className={styles.userTitleBox}>
+                <span>{userName}</span> {userType === 'CHILD' ? '친구' : '님'} <br />
+                어서오세요 !
+            </div>
+        );
     };
 
     return (
