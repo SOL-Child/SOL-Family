@@ -30,10 +30,10 @@ dependencies {
 
 	// querydsl
 	// https://mvnrepository.com/artifact/com.querydsl/querydsl-jpa
-	implementation 'com.querydsl:querydsl-jpa:5.0.0'
+	// implementation 'com.querydsl:querydsl-jpa:5.0.0'
 	// https://mvnrepository.com/artifact/com.querydsl/querydsl-apt
-	implementation 'com.querydsl:querydsl-apt:5.0.0'
-	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jpa"
+	// implementation 'com.querydsl:querydsl-apt:5.0.0'
+	// annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jpa"
 
 	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
 	implementation 'mysql:mysql-connector-java:8.0.28'
