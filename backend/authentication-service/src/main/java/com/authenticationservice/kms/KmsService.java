@@ -25,7 +25,7 @@ public class KmsService {
        try {
            DecryptRequest request = new DecryptRequest();
            request.withCiphertextBlob(ByteBuffer.wrap(Base64.decodeBase64(encryptedData)));
-           request.withKeyId(keyId);
+           request.withKeyId("df62094c-5a57-4fb1-815b-ae7d7750895f");
            ByteBuffer plainText = kmsClient.decrypt(request).getPlaintext();
            return new String(plainText.array());
        } catch (Exception e) {
