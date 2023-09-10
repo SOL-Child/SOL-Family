@@ -1,5 +1,5 @@
 pipeline {
-    agent any 
+    agent none 
 
     stages {
         stage('Cleanup Workspace') {
@@ -36,12 +36,12 @@ pipeline {
             agent {
                 docker {
                     image 'authentication-service'
-                    args "-v gradle-${env.BUILD_TAG}:/root/.gradle"
+                    args "-v gradle-${env.BUILD_TAG}:/root/.gradle -v ${env.WORKSPACE}:/workspace"
                 }
             }
             steps {
-                sh 'chmod +x backend/authentication-service/gradlew'
-                sh 'cd backend/authentication-service && ./gradlew clean build -x test'
+                sh 'chmod +x /workspace/backend/authentication-service/gradlew'
+                sh 'cd /workspace/backend/authentication-service && ./gradlew clean build -x test'
             }
         }
 
