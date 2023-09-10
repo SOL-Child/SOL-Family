@@ -77,9 +77,10 @@ const MainMenuBox = (userType: any) => {
     return (
         <div className={styles.MainMenuBox}>
             {testUserType === User.CHILD
-                ? childMenu.map((ele) => {
+                ? childMenu.map((ele, idx) => {
                       return (
                           <div
+                              key={idx}
                               className={styles.menuBox}
                               style={{ color: ele.color, backgroundColor: ele.bgColor }}
                               onClick={ele.onClick}
@@ -91,9 +92,10 @@ const MainMenuBox = (userType: any) => {
                           </div>
                       );
                   })
-                : parentMenu.map((ele) => {
+                : parentMenu.map((ele, idx) => {
                       return (
                           <div
+                              key={idx}
                               className={styles.menuBox}
                               style={{ color: ele.color, backgroundColor: ele.bgColor }}
                               onClick={ele.onClick}
