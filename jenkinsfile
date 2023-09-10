@@ -16,6 +16,12 @@ pipeline {
             }
         }
 
+        stage('Set Execute Permission for Gradlew') {
+            steps {
+                sh 'chmod +x backend/authentication-service/gradlew'
+            }
+        }
+
         stage('Build') {
             steps {
                 // Gradle build for account-service
