@@ -2,6 +2,18 @@ pipeline {
     agent any 
 
     stages {
+        stage('Cleanup Workspace') {
+            steps {
+                sh 'rm -rf *'
+            }
+        }
+
+        stage('Clone Repository') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Prepare credentials') {
             steps {
                 withCredentials([
@@ -24,6 +36,7 @@ pipeline {
             agent {
                 docker {
                     image 'authentication-service'
+                    workspace '/var/jenkins_home/workspace/solfamily'
                     args "-v gradle-${env.BUILD_TAG}:/root/.gradle"
                 }
             }
@@ -34,18 +47,16 @@ pipeline {
         }
 
         stage('Docker build and push') {
-            parallel {
-                stage('Docker build and push authentication-service') {
-                    steps {
-                        withCredentials([
-                            usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASS')
-                        ]) {
-                            dir('backend/authentication-service') {
-                                sh 'docker build -t authentication-service:latest .'
-                                sh 'docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASS'
-                                sh 'docker tag authentication-service:latest kathyleesh/authentication-service:latest'
-                                sh 'docker push kathyleesh/authentication-service:latest'
-                            }
+            stage('Docker build and push authentication-service') {
+                steps {
+                    withCredentials([
+                        usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASS')
+                    ]) {
+                        dir('backend/authentication-service') {
+                            sh 'docker build -t authentication-service:latest .'
+                            sh 'docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASS'
+                            sh 'docker tag authentication-service:latest kathyleesh/authentication-service:latest'
+                            sh 'docker push kathyleesh/authentication-service:latest'
                         }
                     }
                 }
