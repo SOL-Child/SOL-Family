@@ -36,8 +36,8 @@ pipeline {
             agent {
                 docker {
                     image 'authentication-service'
-                    workspace '/var/jenkins_home/workspace/solfamily'
                     args "-v gradle-${env.BUILD_TAG}:/root/.gradle"
+                    customWorkspace '/var/jenkins_home/workspace/solfamily'
                 }
             }
             steps {
