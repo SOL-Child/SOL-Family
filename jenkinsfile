@@ -39,6 +39,10 @@ pipeline {
         }
 
         stage('Build') {
+            environment {
+                JAVA_HOME = "/usr/lib/jvm/java-1.17.0-openjdk-amd64"
+            }
+
             steps {
                 // Gradle build for account-service
                 // dir('backend/account-service') {
