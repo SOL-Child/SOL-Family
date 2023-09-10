@@ -10,23 +10,23 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class KmsConfig {
 
-   @Value("${aws.kms.key-id}")
-   private String KEY_ID;
-
-   @Value("${aws.kms.region}")
-   private String REGION;
+//   @Value("${aws.kms.key-id}")
+//   private String KEY_ID;
+//
+//   @Value("${aws.kms.region}")
+//   private String REGION;
 
 
    @Bean
    public AWSKMS kmsClient() {
        return AWSKMSClientBuilder.standard()
-               .withRegion(Regions.fromName(REGION))
+               .withRegion(Regions.AP_NORTHEAST_2)
                .build();
    }
 
    @Bean
    public String keyId() {
-       return KEY_ID;
+       return "df62094c-5a57-4fb1-815b-ae7d7750895f";
    }
 
 }
