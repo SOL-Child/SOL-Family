@@ -1,0 +1,67 @@
+pipeline {
+    agent any 
+
+    stages {
+        stage('Prepare credentials') {
+            steps {
+                withCredentials([
+                    file(credentialsId: 'authentication-service-application-dev.properties', variable: 'AUTHFILE'),
+                    //file(credentialsId: 'account-service-application-dev.properties', variable: 'ACCFILE')
+                ]) {
+                    script{
+                        sh 'cp $AUTHFILE backend/authentication-service/src/main/resources/application-dev.properties'
+                        //sh 'cp $ACCFILE backend/account-service/src/main/resources/application-dev.properties'
+                    }
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Gradle build for account-service
+                // dir('backend/account-service') {
+                //     sh './gradlew clean build -x test'
+                //     script {
+                //         def dockerImage = docker.build("kathyleesh/account-service:0.1")
+                //         dockerImage.push()
+                //     }
+                // }
+
+                // Gradle build for authentication-service
+                dir('backend/authentication-service') {
+                    sh './gradlew clean build -x test'
+                    script {
+                        def dockerImage = docker.build("kathyleesh/authentication-service:0.1")
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sshagent(['EC2_SSH_CREDENTIAL_ID']) {
+                    // Pull the docker images on the EC2 server
+                    sh """
+                    ssh -o StrictHostKeyChecking=no solfamily@ec2-server-ip '
+                        docker pull kathyleesh/authentication-service:0.1;
+                    '
+                    """
+
+                    // Using AWS credentials for docker-compose
+                    withCredentials(
+                        [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-id']
+                    ) {
+                        sh """
+                            export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+                            export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+                            ssh -o StrictHostKeyChecking=no solfamily@ec2-server-ip '
+                                docker-compose -f /path/on/server/docker-compose.yml up -d
+                            '
+                        """
+                    }
+                }
+            }
+        }
+    }
+}
