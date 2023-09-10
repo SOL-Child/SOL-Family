@@ -34,27 +34,34 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            environment {
-                JAVA_HOME = "/usr/lib/jvm/java-1.17.0-openjdk-amd64"
+        stage('Build and Test for authentication-integration-service') {
+            agent {
+                docker {
+                    image 'authentication-service'
+                    args "-v gradle-${env.BUILD_TAG}:/root/.gradle"
+                }
             }
-
             steps {
-                // Gradle build for account-service
-                // dir('backend/account-service') {
-                //     sh './gradlew clean build -x test'
-                //     script {
-                //         def dockerImage = docker.build("kathyleesh/account-service:0.1")
-                //         dockerImage.push()
-                //     }
-                // }
+                sh 'chmod +x backend/authentication-service/gradlew'
+                sh 'cd backend/authentication-service && ./gradlew clean build -x test'
+            }
+        }
 
-                // Gradle build for authentication-service
-                dir('backend/authentication-service') {
-                    sh './gradlew clean build -x test'
-                    script {
-                        def dockerImage = docker.build("kathyleesh/authentication-service:0.1")
-                        dockerImage.push()
+
+        stage('Docker build and push') {
+            parallel {
+                stage('Docker build and push authentication-service') {
+                    steps {
+                        withCredentials([
+                            usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASS')
+                        ]) {
+                            dir('backend/authentication-service') {
+                                sh 'docker build -t authentication-service:latest .'
+                                sh 'docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASS'
+                                sh 'docker tag authentication-service:latest kathyleesh/authentication-service:latest'
+                                sh 'docker push kathyleesh/authentication-service:latest'
+                            }
+                        }
                     }
                 }
             }

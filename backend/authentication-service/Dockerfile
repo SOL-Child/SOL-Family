@@ -1,24 +1,37 @@
-# OpenJDK 17
-FROM openjdk:17-jdk-slim AS build
+# Use Ubuntu as base image
+FROM ubuntu:20.04
 
-# Gradle 8.2.1
+# Update Ubuntu repositories and Install OpenJDK 17
+RUN apt-get update -y && apt-get upgrade -y && \
+    apt-get install -y openjdk-17-jdk && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Gradle 8.2
+RUN apt-get update && apt-get install -y wget unzip \
+ && wget https://services.gradle.org/distributions/gradle-8.2-bin.zip -P /tmp \
+ && unzip -d /opt/gradle /tmp/gradle-*.zip \
+ && rm -rf /tmp/*
+
+ENV GRADLE_HOME=/opt/gradle/gradle-8.2
+ENV PATH="$PATH:$GRADLE_HOME/bin"
+
+# Set the working directory
 WORKDIR /app
 
-COPY gradlew .
-COPY gradle gradle
-COPY build.gradle.kts .
-COPY settings.gradle.kts .
+# Copy the Gradle project
+COPY . .
 
-COPY src src
-
+# Make gradlew executable
 RUN chmod +x ./gradlew
-RUN ./gradlew clean build
 
-FROM openjdk:17-jdk-slim
+# Build the project
+RUN ./gradlew clean build --no-daemon -x test
 
-WORKDIR /app
+# Change the working directory to the build directory
+WORKDIR /app/build/libs
 
-COPY --from=build /app/build/libs/*.jar app.jar
+# Expose the port the app runs in and the debug port
+EXPOSE 8080
 
-
-CMD ["java", "-jar", "app.jar"]
+# Run the application with debug options
+CMD ["java", "-jar", "authentication-service-0.0.1-SNAPSHOT.jar"]
