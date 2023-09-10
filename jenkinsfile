@@ -9,6 +9,7 @@ pipeline {
                     //file(credentialsId: 'account-service-application-dev.properties', variable: 'ACCFILE')
                 ]) {
                     script{
+                        sh 'chmod +w backend/authentication-service/src/main/resources/'
                         sh 'cp $AUTHFILE backend/authentication-service/src/main/resources/application-dev.properties'
                         //sh 'cp $ACCFILE backend/account-service/src/main/resources/application-dev.properties'
                     }
