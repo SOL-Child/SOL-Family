@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent any 
 
     stages {
         stage('Cleanup Workspace') {
@@ -14,24 +14,25 @@ pipeline {
             }
         }
 
-        stage('Build and Test for authentication-integration-service') {
-            agent {
-                docker {
-                    image 'authentication-service'
-                    args "-v gradle-${env.BUILD_TAG}:/root/.gradle -v ${env.WORKSPACE}:/workspace"
-                }
-            }
+        stage('Prepare, Build, and Test') {
             steps {
                 withCredentials([
                     file(credentialsId: 'authentication-service-application-dev.properties', variable: 'AUTHFILE'),
                 ]) {
-                    sh 'cp $AUTHFILE /workspace/backend/authentication-service/src/main/resources/application-dev.properties'
+                    script {
+                        sh 'cp $AUTHFILE backend/authentication-service/src/main/resources/application-dev.properties'
+                    }
                 }
+                sh 'chmod +x backend/authentication-service/gradlew'
 
-                sh 'chmod +x /workspace/backend/authentication-service/gradlew'
-                sh 'cd /workspace/backend/authentication-service && ./gradlew clean build -x test'
+                script {
+                    docker.image('authentication-service').inside("-v gradle-${env.BUILD_TAG}:/root/.gradle") {
+                        sh 'cd backend/authentication-service && ./gradlew clean build -x test'
+                    }
+                }
             }
         }
+
 
         
         stage('Docker build and push authentication-service') {
