@@ -9,7 +9,6 @@ pipeline {
                     //file(credentialsId: 'account-service-application-dev.properties', variable: 'ACCFILE')
                 ]) {
                     script{
-                        sh 'chmod +w backend/authentication-service/src/main/resources/'
                         sh 'cp $AUTHFILE backend/authentication-service/src/main/resources/application-dev.properties'
                         //sh 'cp $ACCFILE backend/account-service/src/main/resources/application-dev.properties'
                     }
@@ -45,30 +44,32 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Install Docker Compose') {
             steps {
-                sshagent(['EC2_SSH_CREDENTIAL_ID']) {
-                    // Pull the docker images on the EC2 server
-                    sh """
-                    ssh -o StrictHostKeyChecking=no solfamily@ec2-server-ip '
-                        docker pull kathyleesh/authentication-service:0.1;
-                    '
-                    """
+                sh '''#!/bin/bash
+                    curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+                    chmod +x /usr/local/bin/docker-compose
+                '''
+            }
+        }
 
-                    // Using AWS credentials for docker-compose
-                    withCredentials(
-                        [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-id']
-                    ) {
-                        sh """
-                            export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-                            export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-                            ssh -o StrictHostKeyChecking=no solfamily@ec2-server-ip '
-                                docker-compose -f /path/on/server/docker-compose.yml up -d
-                            '
-                        """
-                    }
+
+        stage('Docker Compose Up') {
+            steps {
+                // AWS 자격 증명 및 Jenkins 환경 변수를 사용하여 docker-compose 실행
+                withCredentials([
+                    usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASS'),
+                    [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-id']
+                ]) {
+                    // docker-compose up 실행 전에 필요한 환경 변수 설정
+                    sh """
+                        export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+                        export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+                        docker-compose -f docker-compose.yml up -d
+                    """
                 }
             }
         }
+
     }
 }
