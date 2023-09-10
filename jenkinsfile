@@ -14,24 +14,6 @@ pipeline {
             }
         }
 
-        stage('Prepare credentials') {
-            steps {
-                withCredentials([
-                    file(credentialsId: 'authentication-service-application-dev.properties', variable: 'AUTHFILE'),
-                ]) {
-                    script{
-                        sh 'cp $AUTHFILE backend/authentication-service/src/main/resources/application-dev.properties'
-                    }
-                }
-            }
-        }
-
-        stage('Set Execute Permission for Gradlew') {
-            steps {
-                sh 'chmod +x backend/authentication-service/gradlew'
-            }
-        }
-
         stage('Build and Test for authentication-integration-service') {
             agent {
                 docker {
@@ -40,6 +22,12 @@ pipeline {
                 }
             }
             steps {
+                withCredentials([
+                    file(credentialsId: 'authentication-service-application-dev.properties', variable: 'AUTHFILE'),
+                ]) {
+                    sh 'cp $AUTHFILE /workspace/backend/authentication-service/src/main/resources/application-dev.properties'
+                }
+
                 sh 'chmod +x /workspace/backend/authentication-service/gradlew'
                 sh 'cd /workspace/backend/authentication-service && ./gradlew clean build -x test'
             }
