@@ -17,10 +17,10 @@ pipeline {
         stage('Prepare, Build, and Test') {
             steps {
                 withCredentials([
-                    file(credentialsId: 'authentication-service-application-dev.properties', variable: 'AUTHFILE'),
+                    file(credentialsId: 'authentication-service-application-dev.yml', variable: 'AUTHFILE'),
                 ]) {
                     script {
-                        sh 'cp $AUTHFILE backend/authentication-service/src/main/resources/application-dev.properties'
+                        sh 'cp $AUTHFILE backend/authentication-service/src/main/resources/application-dev.yml'
                     }
                 }
                 sh 'chmod +x backend/authentication-service/gradlew'
