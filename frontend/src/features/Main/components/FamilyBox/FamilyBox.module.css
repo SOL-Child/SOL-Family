@@ -32,6 +32,7 @@
     background-color: #FFF172;
     color: #FDC500;
     font-family: 'LINESeedKR-Bd';
+    outline: none;
 }
 
 .qrBox button:hover {

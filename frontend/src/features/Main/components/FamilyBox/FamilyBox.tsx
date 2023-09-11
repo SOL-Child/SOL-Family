@@ -1,15 +1,23 @@
+import { useState } from 'react';
 import User from '../../../../common/constants/User';
 import { UserFamilyInfo } from '../../../../common/types/user.types';
+import QRModal from '../QRModal/QRModal';
 import styles from './FamilyBox.module.css';
 
 const FamilyBox = (userType: any) => {
     const unConnected = true; // 연결되어있는지 아닌지 판단하는 flag
     const testUserType: string = User.PARENT;
 
+    const [isOpenQrScanModal, setIsOpenQrScanModal] = useState(false); // qr 스캔 모달
+
     // back에서 받아온 사용자 가족 정보
     const familyInfo: UserFamilyInfo = {
         groupName: '🚀 우리는 쏠패밀리',
         groupCnt: '4',
+    };
+
+    const handleQRScan = () => {
+        setIsOpenQrScanModal(!isOpenQrScanModal);
     };
 
     if (unConnected) {
@@ -33,13 +41,23 @@ const FamilyBox = (userType: any) => {
                                 <br />
                                 가족 모임을 생성해 보아요
                             </div>
-                            <button>QR 생성</button>
+                            <button onClick={handleQRScan}>QR 생성</button>
                         </div>
                         <div className={styles.qrBox}>
                             <div>기존에 배우자가 생성한 모임이 있으신가요?</div>
                             <button>QR 스캔</button>
                         </div>
                     </div>
+                )}
+                {isOpenQrScanModal && (
+                    <QRModal
+                        width="280px"
+                        height="350px"
+                        isOpen={isOpenQrScanModal}
+                        onClose={() => {
+                            setIsOpenQrScanModal(false);
+                        }}
+                    />
                 )}
             </div>
         );
@@ -49,6 +67,16 @@ const FamilyBox = (userType: any) => {
         <div className={styles.FamilyBox}>
             <span className={styles.groupName}>{familyInfo.groupName}</span>&nbsp;&nbsp;
             <span style={{ color: '#FDC500' }}>{familyInfo.groupCnt}</span>
+            {isOpenQrScanModal && (
+                <QRModal
+                    width="280px"
+                    height="350px"
+                    isOpen={isOpenQrScanModal}
+                    onClose={() => {
+                        setIsOpenQrScanModal(false);
+                    }}
+                />
+            )}
         </div>
     );
 };
