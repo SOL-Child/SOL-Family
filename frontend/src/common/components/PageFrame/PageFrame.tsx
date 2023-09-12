@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './PageFrame.module.css';
 import Pages from '../../constants/Pages';
 
-const PageFrame = ({ page, children }: { page: string; children: React.ReactNode }) => {
+const PageFrame = ({ page, children }: { page?: string; children: React.ReactNode }) => {
     /**
      * @todo: page에 따라 frame 다르게 처리
      */
