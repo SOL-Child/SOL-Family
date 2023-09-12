@@ -30,7 +30,7 @@ const TransferPage = () => {
             <>
                 {btnList.map(([text, money], idx) => {
                     return (
-                        <button key={idx} value={money} onClick={setTransferMoney}>
+                        <button className={styles.btn} key={idx} value={money} onClick={setTransferMoney}>
                             {text}
                         </button>
                     );
@@ -43,6 +43,9 @@ const TransferPage = () => {
      * 계좌 이체 back 통신
      */
     const handleSend = async () => {
+        setIsSend(true);
+        return;
+
         const sendData: SendTransferInfo = {
             accountNum: accountNum,
             transferMoney: transferMoney,
@@ -53,10 +56,11 @@ const TransferPage = () => {
 
             if (isComplete) {
                 setIsSend(true);
+
+                // @todo: 모달이 닫혔으면 메인화면으로 이동하기
             }
-        } catch (err) {
-            // @todo: 에러 메세지 추가
-            alert(err);
+        } catch (err: any) {
+            alert(err.response.data.dataHeader.resultMessage);
         }
     };
 
@@ -68,20 +72,45 @@ const TransferPage = () => {
                     <div className={styles.title}>출금계좌번호</div>
                     <div className={styles.subTitle}>돈을 보낼 계좌를 입력해주세요</div>
                     <div className={styles.input}>
-                        <input value={accountNum} onChange={setAccountNum} placeholder="ex) 123-45-678910" />
+                        <input
+                            className={styles.accoutInput}
+                            value={accountNum}
+                            onChange={setAccountNum}
+                            placeholder="ex) 123-45-678910"
+                        />
+                        <div
+                            className={
+                                accountNum && accountNum.length > 0
+                                    ? `${[styles.showline, styles.line].join(' ')}`
+                                    : `${[styles.unshowline, styles.line].join(' ')}`
+                            }
+                        ></div>
                     </div>
+                    <div className={styles.orderText}>하이픈(-)이 없는 숫자 형태로 입력해주세요</div>
                 </div>
                 <div className={styles.inputContainer}>
                     <div className={styles.title}>이체 금액</div>
                     <div className={styles.subTitle}>보낼 금액을 입력해주세요</div>
                     <div>{makeBtn()}</div>
                     <div className={styles.input}>
-                        <input value={transferMoney} onChange={setTransferMoney} placeholder="" />
-                        <span>원</span>
+                        <input
+                            className={styles.moneyInput}
+                            value={transferMoney}
+                            onChange={setTransferMoney}
+                            placeholder=""
+                        />
+                        <span className={styles.moneyText}>원</span>
+                        <div
+                            className={
+                                transferMoney && transferMoney.length > 0
+                                    ? `${[styles.showline, styles.line].join(' ')}`
+                                    : `${[styles.unshowline, styles.line].join(' ')}`
+                            }
+                        ></div>
                     </div>
+                    <div className={styles.orderText}></div>
                 </div>
             </ContentsFrame>
-            {/* 보내기 버튼 */}
             <button className={styles.sendBtn} onClick={handleSend}>
                 보내기
             </button>
