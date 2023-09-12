@@ -8,14 +8,16 @@ import ContentsFrame from '../../common/components/ContentsFrame/ContentsFrame';
 
 import useInput from '../../common/hooks/useInput';
 import { SendTransferInfo } from '../../common/types/account.types';
+import deleteBtnSrc from '../../common/images/SF_delete_button.png';
 import styles from './TransferPage.module.css';
 import AccountAPI from '../../features/Account/apis/AccountAPI';
 
 const TransferPage = () => {
-    const [accountNum, setAccountNum] = useInput('');
-    const [transferMoney, setTransferMoney] = useInput('');
+    const [accountNum, handleAccountNum, setAccountNum] = useInput('');
+    const [transferMoney, handleTransferMoney, setTransferMoney] = useInput('');
 
     const [isSend, setIsSend] = useState(false); // 모달 띄우기 위한 flag
+    const navigate = useNavigate();
 
     const makeBtn = () => {
         const btnList = [
@@ -30,7 +32,7 @@ const TransferPage = () => {
             <>
                 {btnList.map(([text, money], idx) => {
                     return (
-                        <button className={styles.btn} key={idx} value={money} onClick={setTransferMoney}>
+                        <button className={styles.btn} key={idx} value={money} onClick={handleTransferMoney}>
                             {text}
                         </button>
                     );
@@ -66,7 +68,7 @@ const TransferPage = () => {
 
     return (
         <PageFrame page={Pages.TRANSFER}>
-            <PageHeader text="이체 하기" />
+            <PageHeader text="이체 하기" handleIcon={() => navigate('/')} />
             <ContentsFrame>
                 <div className={styles.inputContainer}>
                     <div className={styles.title}>출금계좌번호</div>
@@ -75,17 +77,29 @@ const TransferPage = () => {
                         <input
                             className={styles.accoutInput}
                             value={accountNum}
-                            onChange={setAccountNum}
+                            onChange={handleAccountNum}
                             placeholder="ex) 123-45-678910"
                         />
                         <div
-                            className={
-                                accountNum && accountNum.length > 0
-                                    ? `${[styles.showline, styles.line].join(' ')}`
-                                    : `${[styles.unshowline, styles.line].join(' ')}`
-                            }
-                        ></div>
+                            className={styles.deleteBox}
+                            onClick={() => {
+                                setAccountNum('');
+                            }}
+                        >
+                            {accountNum && accountNum.length > 0 ? (
+                                <img className={styles.deleteImg} src={deleteBtnSrc} alt="취소 버튼" />
+                            ) : (
+                                <div></div>
+                            )}
+                        </div>
                     </div>
+                    <div
+                        className={
+                            accountNum && accountNum.length > 0
+                                ? `${[styles.showline, styles.line].join(' ')}`
+                                : `${[styles.unshowline, styles.line].join(' ')}`
+                        }
+                    ></div>
                     <div className={styles.orderText}>하이픈(-)이 없는 숫자 형태로 입력해주세요</div>
                 </div>
                 <div className={styles.inputContainer}>
@@ -96,18 +110,30 @@ const TransferPage = () => {
                         <input
                             className={styles.moneyInput}
                             value={transferMoney}
-                            onChange={setTransferMoney}
+                            onChange={handleTransferMoney}
                             placeholder=""
                         />
-                        <span className={styles.moneyText}>원</span>
                         <div
-                            className={
-                                transferMoney && transferMoney.length > 0
-                                    ? `${[styles.showline, styles.line].join(' ')}`
-                                    : `${[styles.unshowline, styles.line].join(' ')}`
-                            }
-                        ></div>
+                            className={styles.deleteBox}
+                            onClick={() => {
+                                setTransferMoney('');
+                            }}
+                        >
+                            {transferMoney && transferMoney.length > 0 ? (
+                                <img className={styles.deleteImg} src={deleteBtnSrc} alt="취소 버튼" />
+                            ) : (
+                                <div></div>
+                            )}
+                        </div>
+                        <span className={styles.moneyText}>원</span>
                     </div>
+                    <div
+                        className={
+                            transferMoney && transferMoney.length > 0
+                                ? `${[styles.showline, styles.line].join(' ')}`
+                                : `${[styles.unshowline, styles.line].join(' ')}`
+                        }
+                    ></div>
                     <div className={styles.orderText}></div>
                 </div>
             </ContentsFrame>

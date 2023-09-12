@@ -7,7 +7,11 @@ const useInput = (initialValue: any, isValid?: () => boolean) => {
         setValue(e.target.value);
     };
 
-    return [value, handleChange];
+    const setState = (value: any) => {
+        setValue(value);
+    };
+
+    return [value, handleChange, setState];
 };
 
 export default useInput;
