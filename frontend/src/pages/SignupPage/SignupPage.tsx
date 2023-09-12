@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import ContentsFrame from '../../common/components/ContentsFrame/ContentsFrame';
+import PageFrame from '../../common/components/PageFrame/PageFrame';
 import Pages from '../../common/constants/Pages';
 import IntroPage from '../../features/Signup/components/IntroPage/IntroPage';
 import NamePage from '../../features/Signup/components/NamePage/NamePage';
@@ -159,7 +159,7 @@ const SignupPage = () => {
     }, [isPossibleSend]);
 
     return (
-        <ContentsFrame page={Pages.SIGN_UP}>
+        <PageFrame page={Pages.SIGN_UP}>
             {/* 헤더 */}
             <div className={styles.headBox}>
                 <div className={styles.prevImgBox}>
@@ -197,7 +197,7 @@ const SignupPage = () => {
                     {setBtnText()}
                 </button>
             </div>
-        </ContentsFrame>
+        </PageFrame>
     );
 };
 

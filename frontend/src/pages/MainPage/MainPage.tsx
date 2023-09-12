@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 import Pages from '../../common/constants/Pages';
-import ContentsFrame from '../../common/components/ContentsFrame/ContentsFrame';
+import PageFrame from '../../common/components/PageFrame/PageFrame';
 import Header from '../../common/components/Header/Header';
 import MainContents from '../../features/Main/components/MainContents/MainContents';
 import BottomBar from '../../common/components/BottomBar/BottomBar';
@@ -32,11 +31,11 @@ const MainPage = () => {
     // 현재 userType에는 아이, 부모 여부 들어감
 
     return (
-        <ContentsFrame page={Pages.MAIN}>
+        <PageFrame page={Pages.MAIN}>
             <Header />
             <MainContents userType={userType} />
             <BottomBar />
-        </ContentsFrame>
+        </PageFrame>
     );
 };
 
