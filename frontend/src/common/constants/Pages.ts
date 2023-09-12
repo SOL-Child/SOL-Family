@@ -2,6 +2,7 @@ const Pages = {
     LOGIN: 'login',
     SIGN_UP: 'signup',
     MAIN: 'main',
-} as const;
+    TRANSFER: 'transfer',
+};
 
 export default Pages;

@@ -2,14 +2,13 @@ import React from 'react';
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import ContentsFrame from '../../common/components/ContentsFrame/ContentsFrame';
+import PageFrame from '../../common/components/PageFrame/PageFrame';
 import Header from '../../common/components/Header/Header';
 import LoginAPI from '../../features/Login/apis/LoginAPI';
 import LocalStorageUtil from '../../features/Login/utils/LocalStorageUtil';
 import { ReceiveUserInfo, SendUserInfo } from '../../common/types/user.types';
 
 import Pages from '../../common/constants/Pages';
-import logoSrc from '../../common/images/SF_full_logo.png';
 import phoneSrc from '../../common/images/SF_phone_icon.png';
 import pwSrc from '../../common/images/SF_password_icon.png';
 
@@ -80,7 +79,7 @@ const LoginPage = () => {
     };
 
     return (
-        <ContentsFrame page={Pages.LOGIN}>
+        <PageFrame page={Pages.LOGIN}>
             {/* 헤더 */}
             <Header />
             {/* 컨텐츠 */}
@@ -147,7 +146,7 @@ const LoginPage = () => {
                     로그인 하러가기
                 </button>
             </div>
-        </ContentsFrame>
+        </PageFrame>
     );
 };
 

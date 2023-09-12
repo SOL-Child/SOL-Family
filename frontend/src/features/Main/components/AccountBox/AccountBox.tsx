@@ -19,11 +19,11 @@ const AccountBox = (userType: any) => {
     };
 
     const handleSeeAccount = () => {
-        navigate('/account/detail');
+        navigate('/account/transaction');
     };
 
     const handleSendMoney = () => {
-        // 이체하기
+        navigate('/account/transfer');
     };
 
     if (!isAccountExist) {
