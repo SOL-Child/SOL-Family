@@ -45,7 +45,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         // mysql 데이터베이스 콘솔, 정적 리소스, swagger 경로 인증 권한 설정
-                        .requestMatchers("/v1/users/signin", "/v1/users/signup", "/v1/sms/**", "/mysql-console/**", "/static/**", "/swagger-ui/**", "/api-docs/**", "/swagger-resources/**").permitAll()
+                        .requestMatchers("/v1/users/signin", "/v1/users/signup", "/v1/sms/**", "/mysql-console/**", "/static/**", "/v1/swagger-ui/**", "/api-docs/**", "/v1/swagger-resources/**").permitAll()
                         .requestMatchers("/requestMatchersadmin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
