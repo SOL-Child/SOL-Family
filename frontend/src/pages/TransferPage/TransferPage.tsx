@@ -7,17 +7,19 @@ import PageFrame from '../../common/components/PageFrame/PageFrame';
 import ContentsFrame from '../../common/components/ContentsFrame/ContentsFrame';
 
 import useInput from '../../common/hooks/useInput';
-import { SendTransferInfo } from '../../common/types/account.types';
+import { SendTransferInfo, TransferInfo } from '../../common/types/account.types';
 import deleteBtnSrc from '../../common/images/SF_delete_button.png';
 import styles from './TransferPage.module.css';
 import AccountAPI from '../../features/Account/apis/AccountAPI';
+import TransferCheckModal from '../../features/Account/components/TransferCheckModal/TransferCheckModal';
 
 const TransferPage = () => {
     const [accountNum, handleAccountNum, setAccountNum] = useInput('');
     const [transferMoney, handleTransferMoney, setTransferMoney] = useInput('');
 
-    const [isSend, setIsSend] = useState(false); // 모달 띄우기 위한 flag
+    const [isOpenCheckModal, setIsOpenCheckModal] = useState<boolean>(false); // 확인 모달 flag
     const navigate = useNavigate();
+    const [transferInfo, setTransferInfo] = useState<TransferInfo | null>(null);
 
     const makeBtn = () => {
         const btnList = [
@@ -45,7 +47,7 @@ const TransferPage = () => {
      * 계좌 이체 back 통신
      */
     const handleSend = async () => {
-        setIsSend(true);
+        setIsOpenCheckModal(true);
         return;
 
         const sendData: SendTransferInfo = {
@@ -54,13 +56,10 @@ const TransferPage = () => {
         };
 
         try {
-            const isComplete: boolean = await AccountAPI.transferMoney(sendData);
-
-            if (isComplete) {
-                setIsSend(true);
-
-                // @todo: 모달이 닫혔으면 메인화면으로 이동하기
-            }
+            const data: TransferInfo = await AccountAPI.transferMoney(sendData);
+            // @todo: 모달이 닫혔으면 메인화면으로 이동하기
+            setTransferInfo(data); // 받은 데이터
+            setIsOpenCheckModal(true);
         } catch (err: any) {
             alert(err.response.data.dataHeader.resultMessage);
         }
@@ -140,6 +139,17 @@ const TransferPage = () => {
             <button className={styles.sendBtn} onClick={handleSend}>
                 보내기
             </button>
+            {isOpenCheckModal && (
+                <TransferCheckModal
+                    width="300px"
+                    height="380px"
+                    isOpen={isOpenCheckModal}
+                    onClose={() => {
+                        setIsOpenCheckModal(false);
+                    }}
+                    info={transferInfo}
+                />
+            )}
         </PageFrame>
     );
 };
