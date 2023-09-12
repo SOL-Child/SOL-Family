@@ -11,3 +11,11 @@ export interface TransferInfo {
     sendAccountNum: string;
     receiveAccountNum: string;
 }
+
+// account.autotransfer/req
+export interface AutoTransferInfo {
+    accountNum: string;
+    transferMoney: string;
+    cycle: string;
+    selectedDate: string;
+}

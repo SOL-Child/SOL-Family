@@ -1,20 +1,24 @@
 import { useNavigate } from 'react-router-dom';
+import { useRef, useState, useEffect } from 'react';
+
 import PageFrame from '../../common/components/PageFrame/PageFrame';
 import PageHeader from '../../common/components/PageHeader/PageHeader';
 import ContentsFrame from '../../common/components/ContentsFrame/ContentsFrame';
+import AutoTransferCheckModal from '../../features/Account/components/AutoTransferCheckModal/AutoTransferCheckModal';
 
+import useInput from '../../common/hooks/useInput';
+import { AutoTransferInfo } from '../../common/types/account.types';
 import deleteBtnSrc from '../../common/images/SF_delete_button.png';
 import styles from './AutoTransferPage.module.css';
-import useInput from '../../common/hooks/useInput';
-import { useRef, useState, useEffect } from 'react';
 
 const AutoTransferPage = () => {
     const navigate = useNavigate();
     const [accountNum, handleAccountNum, setAccountNum] = useInput('');
     const [transferMoney, handleTransferMoney, setTransferMoney] = useInput('');
-    const [cycle, setCycle] = useState<'oneWeek' | 'twoWeek' | 'oneMonth' | string | null>(null);
-    const [selectedDate, handleSelectedDate, setSelectedDate] = useInput('');
+    const [cycle, setCycle] = useState<'oneWeek' | 'twoWeek' | 'oneMonth' | string>('');
+    const [selectedDate, handleSelectedDate] = useInput('');
     const [isOpenCheckModal, setIsOpenCheckModal] = useState<boolean>(false);
+    const [autoTransferInfo, setAutoTransferInfo] = useState<AutoTransferInfo | null>(null);
 
     // @todo: 버튼 클릭 시 배경색 고정 구현
     // const cycleBtnRef = useRef<HTMLButtonElement | []>([]);
@@ -70,6 +74,15 @@ const AutoTransferPage = () => {
     // 자동이체 신청 함수
     const handleSend = () => {
         // @todo: 저장된 데이터 parsing후 API 연결
+        const testData: AutoTransferInfo = {
+            accountNum: accountNum,
+            transferMoney: transferMoney,
+            cycle: cycle,
+            selectedDate: selectedDate,
+        };
+
+        setAutoTransferInfo(testData);
+        setIsOpenCheckModal(true);
     };
 
     return (
@@ -176,17 +189,17 @@ const AutoTransferPage = () => {
             <button className={styles.sendBtn} onClick={handleSend}>
                 보내기
             </button>
-            {/* {isOpenCheckModal && (
-                <TransferCheckModal
+            {isOpenCheckModal && (
+                <AutoTransferCheckModal
                     width="300px"
-                    height="380px"
+                    height="430px"
                     isOpen={isOpenCheckModal}
                     onClose={() => {
                         setIsOpenCheckModal(false);
                     }}
-                    info={transferInfo}
+                    info={autoTransferInfo}
                 />
-            )} */}
+            )}
         </PageFrame>
     );
 };
