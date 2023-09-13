@@ -4,7 +4,7 @@ import styles from './AccountBox.module.css';
 
 const AccountBox = (userType: any) => {
     const navigate = useNavigate();
-    const isAccountExist = true; // 통장이 존재하는지 확인하는 flag
+    const isAccountExist = false; // 통장이 존재하는지 확인하는 flag
 
     const handleCreateAccount = () => {
         if (window.confirm('계좌 개설을 위해 신한 쏠(SOL)로 이동하시겠습니까?')) {
@@ -14,7 +14,7 @@ const AccountBox = (userType: any) => {
 
     const handleConnectAccount = () => {
         if (window.confirm('계좌를 연결하시겠습니까?\n신한은행 계좌가 없다면 생성 후 연결을 진행해주세요.')) {
-            // 계좌 정보 입력 창 띄우기
+            navigate('/account/connect');
         }
     };
 
@@ -29,7 +29,7 @@ const AccountBox = (userType: any) => {
     if (!isAccountExist) {
         return (
             <div className={styles.AccountBox}>
-                <div className={styles.title}>연결된 계좌가 없어요</div>
+                <div className={[styles.title, styles.lg].join(' ')}>연결된 계좌가 없어요</div>
                 <div>
                     쏠차일드를 이용하려면 <br />
                     <span style={{ color: '#0046FF' }}>신한은행</span>에서 계좌를 개설하거나 <br />

@@ -159,7 +159,7 @@ const SignupPage = () => {
     }, [isPossibleSend]);
 
     return (
-        <PageFrame page={Pages.SIGN_UP}>
+        <PageFrame>
             {/* 헤더 */}
             <div className={styles.headBox}>
                 <div className={styles.prevImgBox}>

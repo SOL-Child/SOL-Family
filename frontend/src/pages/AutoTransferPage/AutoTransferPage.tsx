@@ -10,6 +10,7 @@ import useInput from '../../common/hooks/useInput';
 import { AutoTransferInfo } from '../../common/types/account.types';
 import deleteBtnSrc from '../../common/images/SF_delete_button.png';
 import styles from './AutoTransferPage.module.css';
+import Pages from '../../common/constants/Pages';
 
 const AutoTransferPage = () => {
     const navigate = useNavigate();
@@ -93,7 +94,7 @@ const AutoTransferPage = () => {
                     navigate('/');
                 }}
             />
-            <ContentsFrame>
+            <ContentsFrame page={Pages.TRANSFER}>
                 {/* 아이 계좌번호 */}
                 <div className={styles.inputContainer}>
                     <div className={styles.title}>아이 계좌번호</div>
@@ -185,7 +186,6 @@ const AutoTransferPage = () => {
                     <div className={styles.orderText}></div>
                 </div>
             </ContentsFrame>
-            <br />
             <button className={styles.sendBtn} onClick={handleSend}>
                 보내기
             </button>

@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import MainPage from './pages/MainPage/MainPage';
 import TransferPage from './pages/TransferPage/TransferPage';
 import AutoTransferPage from './pages/AutoTransferPage/AutoTransferPage';
+import AccountConnectPage from './pages/AccountConnectPage/AccountConnectPage';
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
             <Route path="" element={<MainPage />} />
             <Route path="account/transfer" element={<TransferPage />} />
             <Route path="account/autotransfer" element={<AutoTransferPage />} />
+            <Route path="account/connect" element={<AccountConnectPage />} />
         </Routes>
     );
 }

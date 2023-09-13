@@ -79,7 +79,7 @@ const LoginPage = () => {
     };
 
     return (
-        <PageFrame page={Pages.LOGIN}>
+        <PageFrame>
             {/* 헤더 */}
             <Header />
             {/* 컨텐츠 */}

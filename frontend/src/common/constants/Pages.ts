@@ -3,6 +3,8 @@ const Pages = {
     SIGN_UP: 'signup',
     MAIN: 'main',
     TRANSFER: 'transfer',
+    AUTO_TRANSFER: 'auto_transfer',
+    ACCOUNT_CONNECT: 'account_connect',
 };
 
 export default Pages;
