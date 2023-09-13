@@ -59,11 +59,11 @@ const MainMenuBox = (userType: any) => {
             onClick: () => navigate(''),
         },
         {
-            title: '적금<br/>&펀드 조회',
+            title: '자동이체<br/>신청하기',
             src: linkSrc,
             color: '#29BE11',
             bgColor: '#D5FFCE',
-            onClick: () => navigate('/'),
+            onClick: () => navigate('/account/autotransfer'),
         },
         {
             title: '신한은행<br/>바로가기',
