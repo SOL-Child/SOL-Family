@@ -19,6 +19,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scrollbar-width: none;
 }
 
 code {
@@ -39,4 +40,9 @@ select:-webkit-autofill:focus {
     border: none;
     -webkit-text-fill-color: black;
     -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+/* 스크롤바 속성 편집 */
+::-webkit-scrollbar {
+  width: 0px;
 }
