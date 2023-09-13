@@ -2,14 +2,16 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageFrame from '../../common/components/PageFrame/PageFrame';
 import PageHeader from '../../common/components/PageHeader/PageHeader';
-import ContentsFrame from '../../common/components/ContentsFrame/ContentsFrame';
 import styles from './AccountConnectPage.module.css';
-import Pages from '../../common/constants/Pages';
+import deleteBtnSrc from '../../common/images/SF_delete_button.png';
+import useInput from '../../common/hooks/useInput';
 
 // 계좌 입력 페이지
 const AccNumInputPage = () => {
+    const [accountNum, handleAccountNum, setAccountNum] = useInput('');
+
     return (
-        <>
+        <div className={styles.contents}>
             <div className={styles.topTitle}>
                 계좌를 연결하기 위해
                 <br /> 계좌 인증을 진행해주세요
@@ -19,20 +21,45 @@ const AccNumInputPage = () => {
                 <div className={styles.title}>계좌번호</div>
                 <div className={styles.subtitle}>기존에 등록된 신한은행 계좌번호를 입력해주세요</div>
                 <div className={styles.inputBox}>
-                    <input type="text" placeholder="계좌번호 입력" />
+                    <div className={styles.input}>
+                        <input
+                            className={styles.moneyInput}
+                            value={accountNum}
+                            onChange={handleAccountNum}
+                            placeholder="계좌번호 입력"
+                        />
+                        <div
+                            className={styles.deleteBox}
+                            onClick={() => {
+                                setAccountNum('');
+                            }}
+                        >
+                            {accountNum && accountNum.length > 0 ? (
+                                <img className={styles.deleteImg} src={deleteBtnSrc} alt="취소 버튼" />
+                            ) : (
+                                <div></div>
+                            )}
+                        </div>
+                    </div>
+                    <div
+                        className={
+                            accountNum && accountNum.length > 0
+                                ? `${[styles.showline, styles.line].join(' ')}`
+                                : `${[styles.unshowline, styles.line].join(' ')}`
+                        }
+                    ></div>
                 </div>
             </div>
-            <div className={styles.bottomText}>
-                아직 등록된 계좌가 없으신가요? <span>신한은행 가기</span>
-            </div>
-        </>
+        </div>
     );
 };
 
 // 계좌 1원 인증 페이지
 const OneCertifInputPage = () => {
+    const [certifText, handleCertifText, setCertifText] = useInput('');
+
     return (
-        <>
+        <div className={styles.contents}>
             <div className={styles.topTitle}>
                 계좌 입금내역에 있는
                 <br /> 4자리 글자를 입력해주세요
@@ -42,31 +69,53 @@ const OneCertifInputPage = () => {
                 <div className={styles.title}>입금자명</div>
                 <div className={styles.subtitle}>거래 내역에 있는 입금자명을 확인해주세요</div>
                 <div className={styles.inputBox}>
-                    <input type="text" placeholder="계좌번호 입력" />
+                    <div className={styles.input}>
+                        <input
+                            className={styles.moneyInput}
+                            value={certifText}
+                            onChange={handleCertifText}
+                            placeholder="입금자명 입력"
+                        />
+                        <div
+                            className={styles.deleteBox}
+                            onClick={() => {
+                                setCertifText('');
+                            }}
+                        >
+                            {certifText && certifText.length > 0 ? (
+                                <img className={styles.deleteImg} src={deleteBtnSrc} alt="취소 버튼" />
+                            ) : (
+                                <div></div>
+                            )}
+                        </div>
+                    </div>
+                    <div
+                        className={
+                            certifText && certifText.length > 0
+                                ? `${[styles.showline, styles.line].join(' ')}`
+                                : `${[styles.unshowline, styles.line].join(' ')}`
+                        }
+                    ></div>
                 </div>
             </div>
-            <div className={styles.bottomText}>
-                다른 계좌로 변경하시겠어요? <span>계좌 변경하기</span>
-            </div>
-        </>
+        </div>
     );
 };
 
 const AccountConnectPage = () => {
     const navigate = useNavigate();
     const [page, setPage] = useState(0);
+    let content: null | JSX.Element = null; // 페이지 안의 컨텐츠
 
-    const makeContents = () => {
-        if (page === 0) return <AccNumInputPage />;
-        else if (page === 1) return <OneCertifInputPage />;
-    };
+    if (page === 0) content = <AccNumInputPage />;
+    else if (page === 1) content = <OneCertifInputPage />;
 
     const handleBtn = () => {
         if (page === 0) {
             // @todo : 1원 인증정보 전송
 
             // 성공 시 다음페이지로
-            setPage(1);
+            setPage(page + 1);
         } else if (page === 1) {
             // @todo : 인증하기
             // 인증 성공 시 계좌 생성 후 메인페이지로
@@ -74,16 +123,44 @@ const AccountConnectPage = () => {
         }
     };
 
+    const handleIcon = () => {
+        if (page === 0) {
+            navigate('/');
+        } else if (page === 1) {
+            setPage(page - 1);
+        }
+    };
+
     return (
         <PageFrame>
-            <PageHeader
-                text="계좌 연결하기"
-                handleIcon={() => {
-                    navigate('/');
-                }}
-            />
+            <PageHeader text="계좌 연결하기" handleIcon={handleIcon} />
             <div className={styles.page}>
-                <div className={styles.contents}>{makeContents()}</div>
+                <>{content}</>
+                <div className={styles.bottomText}>
+                    {page === 0 ? (
+                        <>
+                            아직 등록된 계좌가 없으신가요? &nbsp;&nbsp;&nbsp;
+                            <span
+                                onClick={() => {
+                                    navigate('');
+                                }}
+                            >
+                                신한은행 가기
+                            </span>
+                        </>
+                    ) : (
+                        <>
+                            다른 계좌로 변경하시겠어요? &nbsp;&nbsp;&nbsp;
+                            <span
+                                onClick={() => {
+                                    setPage(0);
+                                }}
+                            >
+                                계좌 변경하기
+                            </span>
+                        </>
+                    )}
+                </div>
                 <div className={styles.btnBox}>
                     <button onClick={handleBtn}>내 계좌로 1원 보내기</button>
                 </div>
