@@ -122,3 +122,11 @@
         transform: translateY(0px);
     }
 }
+.timer {
+    display: inline-block;
+}
+
+.timer div {
+    font-size: 18px;
+    color: white;
+}

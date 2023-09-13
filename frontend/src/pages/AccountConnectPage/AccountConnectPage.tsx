@@ -5,6 +5,7 @@ import PageHeader from '../../common/components/PageHeader/PageHeader';
 import styles from './AccountConnectPage.module.css';
 import deleteBtnSrc from '../../common/images/SF_delete_button.png';
 import useInput from '../../common/hooks/useInput';
+import Timer from '../../features/Signup/components/Timer/Timer';
 
 // 계좌 입력 페이지
 const AccNumInputPage = () => {
@@ -104,8 +105,10 @@ const OneCertifInputPage = () => {
 
 const AccountConnectPage = () => {
     const navigate = useNavigate();
-    const [page, setPage] = useState(0);
-    let content: null | JSX.Element = null; // 페이지 안의 컨텐츠
+    const [page, setPage] = useState<number>(0);
+    let content: null | JSX.Element = null;
+
+    const [isExpired, setIsExpired] = useState<boolean>(false);
 
     if (page === 0) content = <AccNumInputPage />;
     else if (page === 1) content = <OneCertifInputPage />;
@@ -117,9 +120,20 @@ const AccountConnectPage = () => {
             // 성공 시 다음페이지로
             setPage(page + 1);
         } else if (page === 1) {
-            // @todo : 인증하기
-            // 인증 성공 시 계좌 생성 후 메인페이지로
-            // 인증 실패 시 재인증 버튼으로 바꾸기
+            // 만료 시 재발급
+            if (isExpired) {
+                if (window.confirm('재발송되었습니다. 계좌의 입금 내역을 확인해주세요')) {
+                    // @todo: 재발급 통신
+                    setIsExpired(false);
+                }
+            }
+
+            // 만료 안됨
+            else {
+                // @todo: 인증 확인 통신
+                // 인증 성공 시 계좌 생성 후 메인페이지로
+                // 인증 실패 시 재인증 버튼으로 바꾸기
+            }
         }
     };
 
@@ -128,6 +142,15 @@ const AccountConnectPage = () => {
             navigate('/');
         } else if (page === 1) {
             setPage(page - 1);
+        }
+    };
+
+    const setText = () => {
+        if (page === 0) {
+            return '내 계좌로 1원 보내기';
+        } else {
+            if (isExpired) return '재발송 하기';
+            return '인증하기';
         }
     };
 
@@ -162,7 +185,22 @@ const AccountConnectPage = () => {
                     )}
                 </div>
                 <div className={styles.btnBox}>
-                    <button onClick={handleBtn}>내 계좌로 1원 보내기</button>
+                    <button onClick={handleBtn}>
+                        {setText()}{' '}
+                        {page === 1 && (
+                            <span>
+                                (
+                                {!isExpired ? (
+                                    <div className={styles.timer}>
+                                        <Timer setIsExpired={setIsExpired} />
+                                    </div>
+                                ) : (
+                                    '00:00'
+                                )}
+                                )
+                            </span>
+                        )}
+                    </button>
                 </div>
             </div>
         </PageFrame>
