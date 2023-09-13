@@ -49,14 +49,14 @@ const MainMenuBox = (userType: any) => {
             src: pinMoneySrc,
             color: '#EF6565',
             bgColor: '#FFDCDC',
-            onClick: () => navigate(''),
+            onClick: () => navigate('/account/transaction'),
         },
         {
             title: '아이 용돈<br/>이체하기',
             src: loanSrc,
             color: '#FFB800',
             bgColor: '#FFF3D2',
-            onClick: () => navigate(''),
+            onClick: () => navigate('/account/transfer'),
         },
         {
             title: '자동이체<br/>신청하기',

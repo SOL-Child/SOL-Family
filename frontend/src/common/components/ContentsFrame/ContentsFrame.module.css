@@ -1,7 +1,7 @@
 .ContentsFrame {
-    width: calc(100% - 30px);
+    width: calc(100% - 50px);
     height: calc(100vh - 90px);
-    margin: 15px;
+    margin: 15px 25px;
     overflow-y: scroll;
 }
 

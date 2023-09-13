@@ -4,6 +4,7 @@ const Pages = {
     MAIN: 'main',
     TRANSFER: 'transfer',
     AUTO_TRANSFER: 'auto_transfer',
+    ACCOUNT_CONNECT: 'account_connect',
 };
 
 export default Pages;
