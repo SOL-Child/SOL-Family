@@ -66,9 +66,9 @@ const TransferPage = () => {
     };
 
     return (
-        <PageFrame page={Pages.TRANSFER}>
+        <PageFrame>
             <PageHeader text="이체 하기" handleIcon={() => navigate('/')} />
-            <ContentsFrame>
+            <ContentsFrame page={Pages.TRANSFER}>
                 <div className={styles.inputContainer}>
                     <div className={styles.title}>출금계좌번호</div>
                     <div className={styles.subTitle}>돈을 보낼 계좌를 입력해주세요</div>

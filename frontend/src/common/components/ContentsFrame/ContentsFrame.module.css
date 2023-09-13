@@ -1,6 +1,12 @@
 .ContentsFrame {
     width: calc(100% - 30px);
-    min-height: calc(100vh - 90px);
-    flex: 1;
-    margin: 15px; 
+    height: calc(100vh - 90px);
+    margin: 15px;
+    overflow-y: scroll;
+}
+
+.hasBtn {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    height: calc(100vh - 120px);
 }

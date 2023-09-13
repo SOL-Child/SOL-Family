@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 const MainMenuBox = (userType: any) => {
     const navigate = useNavigate();
 
-    const testUserType = User.CHILD;
+    const testUserType = User.PARENT;
 
     const childMenu = [
         {
