@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 const MainMenuBox = (userType: any) => {
     const navigate = useNavigate();
 
-    const testUserType = User.PARENT;
+    const testUserType = User.CHILD;
 
     const childMenu = [
         {
@@ -18,7 +18,7 @@ const MainMenuBox = (userType: any) => {
             src: pinMoneySrc,
             color: '#EF6565',
             bgColor: '#FFDCDC',
-            onClick: () => navigate('/account/detail'),
+            onClick: () => navigate('/account/transaction'),
         },
         {
             title: '대출<br/>받으러 가기',

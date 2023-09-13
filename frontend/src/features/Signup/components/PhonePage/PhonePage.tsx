@@ -1,9 +1,11 @@
+// PhonePage.tsx
+
 import { useEffect, useState, useRef } from 'react';
 import phoneSrc from '../../../../common/images/SF_phone_icon.png';
 import Timer from '../Timer/Timer';
+import { CertifInfo } from '../../../../common/types/user.types';
 import SignupAPI from '../../apis/SignupAPI';
 import styles from './PhonePage.module.css';
-import { CertifInfo } from '../../../../common/types/user.types';
 
 const PhonePage = ({
     setIsPossibleInput,
@@ -12,18 +14,16 @@ const PhonePage = ({
     setIsPossibleInput: (flag: boolean) => void;
     setCurrentInput: (value: string | number) => void;
 }) => {
-    const [isCheckReceive, setIsCheckReceive] = useState<boolean>(false); // 인증번호 받기 체크 여부
     const [isPossiblePhone, setIsPossiblePhone] = useState<boolean>(false); // 가능한 전화번호인지 확인
     const [phone, setPhone] = useState<string | undefined>(undefined); // 전화 번호
     const [isPossibleCertifNum, setIsPossibleCertifNum] = useState<boolean>(false); // 가능한 인증번호인지 확인
     const [certifNum, setCertifNum] = useState<string | undefined>(undefined); // 인증 번호
     const [isExpired, setIsExpired] = useState<boolean>(false); // 인증 번호 만료 or 실패 여부
-    const [isCorrectCertifNum, setIsCorrectCertifNum] = useState<boolean>(false); // 인증번호 성공 여부
+    const [isCheckReceive, setIsCheckReceive] = useState<boolean>(false); // 인증번호 받기 체크 여부
+    const [isCorrectCertifNum, setIsCorrectCertifNum] = useState<boolean>(true); // 인증번호 성공 여부
 
     const certifBtn = useRef<HTMLButtonElement | null>(null);
     const certifChkBtn = useRef<HTMLButtonElement | null>(null);
-
-    const num = /^[0-9]+$/;
 
     useEffect(() => {
         if (certifBtn.current === null) return;
@@ -53,6 +53,13 @@ const PhonePage = ({
             return;
         }
 
+        const num = /^[0-9]+$/;
+
+        if (!num.test(phone)) {
+            setIsPossiblePhone(false);
+            return;
+        }
+
         setCurrentInput(phone);
         setIsPossiblePhone(true);
     }, [phone]);
@@ -74,63 +81,58 @@ const PhonePage = ({
     };
 
     const handleInputCertifNum = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (isCorrectCertifNum) {
+            alert('이미 인증되었습니다.');
+            return;
+        }
         setCertifNum(e.target.value);
     };
 
     const handleCertifBtn = async () => {
-        if (!phone) {
-            alert('전화번호가 입력되지 않았습니다.');
-            return;
-        }
+        if (!phone) return;
 
-        if (!num.test(phone)) {
-            alert('전화번호는 숫자만 입력가능합니다.');
-            return;
-        }
-
+        // 이미 인증번호가 발급되었으면
         if (isCheckReceive) {
-            alert('인증번호가 재발급되었습니다.');
-            setIsExpired(false); // 만료 x
+            try {
+                const isComplete: boolean = await SignupAPI.certifyPhoneNumber(phone);
+                if (isComplete) {
+                    alert('인증번호가 재발급되었습니다.');
+                    setIsCheckReceive(true);
+                    setIsExpired(false); // 만료 x
+                }
+            } catch (err: any) {
+                alert(err.response.data.dataHeader.resultMessage);
+            }
             return;
         }
 
         try {
             const isComplete: boolean = await SignupAPI.certifyPhoneNumber(phone);
-
             if (isComplete) {
                 alert('인증번호가 전송되었습니다.');
                 setIsCheckReceive(true);
             }
-        } catch (err) {
-            alert(err);
+        } catch (err: any) {
+            alert(err.response.data.dataHeader.resultMessage);
         }
     };
 
     const handleCheckCertifNum = async () => {
-        if (!phone || !certifNum) {
-            alert('입력되지 않은 값이 있습니다.');
-            return;
-        }
+        if (!phone || !certifNum) return;
 
-        if (!num.test(certifNum)) {
-            alert('인증번호는 숫자만 입력가능합니다.');
-            return;
-        }
-
-        const sendInfo: CertifInfo = {
+        const certifData: CertifInfo = {
             phone: phone,
             certificationNumber: certifNum,
         };
 
         try {
-            const isComplete: boolean = await SignupAPI.checkCertifNumber(sendInfo);
-
+            const isComplete: boolean = await SignupAPI.checkCertifNumber(certifData);
             if (isComplete) {
                 alert('인증되었습니다.');
                 setIsCorrectCertifNum(true);
             }
-        } catch (err) {
-            alert(err);
+        } catch (err: any) {
+            alert(err.response.data.dataHeader.resultMessage);
         }
     };
 
