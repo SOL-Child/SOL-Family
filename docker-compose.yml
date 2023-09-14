@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  authentication-service:
+    image: kathyleesh/authentication-service:latest
+    ports:
+      - "8080:8080"
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    depends_on:
+      - redis
+
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD= solfamily
+
+networks:
+  default:
+    external:
+      name: solfamily
