@@ -36,7 +36,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors
-                        .configurationSource(corsConfigurationSource()))
+                        .disable())
+//                        .configurationSource(corsConfigurationSource()))
                 // CSRF 토큰을 활성화, CSRF 토큰의 생성, 저장, 검증 등은 Spring Security가 자동으로 처리
                 .csrf(csrf -> csrf
                                 .disable()
@@ -44,11 +45,11 @@ public class SecurityConfig {
 //                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 )
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-
+                        .anyRequest().permitAll()
                         // mysql 데이터베이스 콘솔, 정적 리소스, swagger 경로 인증 권한 설정
-                        .requestMatchers("/v1/users/signin", "/v1/users/signup", "/v1/sms/**", "/mysql-console/**", "/static/**", "/swagger-ui/**", "/api-docs/**", "/swagger-resources/**").permitAll()
-                        .requestMatchers("/requestMatchersadmin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+//                        .requestMatchers("/v1/users/signin", "/v1/users/signup", "/v1/sms/**", "/mysql-console/**", "/static/**", "/swagger-ui/**", "/api-docs/**", "/swagger-resources/**").permitAll()
+//                        .requestMatchers("/requestMatchersadmin/**").hasRole("ADMIN")
+//                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(new TokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .formLogin(formLogin -> formLogin
