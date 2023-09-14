@@ -1,0 +1,9 @@
+.title {
+    width: 100%;
+    height: 40px;
+    margin-top: 10px;
+    font-size: 20px;
+    font-family: 'LINESeedKr-Bd';
+    line-height: 40px;
+    color: rgb(51, 51, 51);
+}
