@@ -35,15 +35,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors
-                        .disable())
+//                .cors(cors -> cors
                         //.configurationSource(corsConfigurationSource()))
                 // CSRF 토큰을 활성화, CSRF 토큰의 생성, 저장, 검증 등은 Spring Security가 자동으로 처리
-                .csrf(csrf -> csrf
-                                .disable()
+//                .csrf(csrf -> csrf
+//                                .disable()
 //                        .ignoringRequestMatchers("/api/v1/users/signin", "/api/v1/users/signup")
 //                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                )
+//                )
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                                 .anyRequest().permitAll()
                         // mysql 데이터베이스 콘솔, 정적 리소스, swagger 경로 인증 권한 설정
