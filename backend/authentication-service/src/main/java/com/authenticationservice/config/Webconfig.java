@@ -10,7 +10,7 @@ public class Webconfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/v1/**") // 어떤 api 경로에 매핑할지
+        registry.addMapping("/v1/**") // 어떤 api 경로에 매핑할지
                 .allowedOrigins(
                         "http://localhost:3000",
                         "http://localhost:8080",
