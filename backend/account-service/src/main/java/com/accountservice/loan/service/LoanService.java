@@ -8,4 +8,7 @@ public interface LoanService {
 
     // 대출 신청
     void createLoan(LoanReqDto loanReqDto, String auth, String identification);
+
+    // 대출 신청 조회
+    LoanResDto findLoan(Long loanId);
 }

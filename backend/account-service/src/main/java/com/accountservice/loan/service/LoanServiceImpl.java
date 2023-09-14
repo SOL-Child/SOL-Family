@@ -32,4 +32,14 @@ public class LoanServiceImpl implements LoanService {
                 .build();
         jpaLoanRepository.save(loan);
     }
+
+    // 대출 조회
+    @Override
+    public LoanResDto findLoan(Long loanId) {
+        Optional<Loan> loan = jpaLoanRepository.findById(loanId);
+
+        if(loan.isPresent()) return new LoanResDto().of(loan.get());
+
+        throw new IllegalArgumentException("대출 내역이 존재하지 않습니다.");
+    }
 }
