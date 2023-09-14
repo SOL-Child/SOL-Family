@@ -8,15 +8,16 @@ spring:
 
 # swagger
 #
-#springdoc:
+springdoc:
   packages-to-scan: com.authenticationservice
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
   swagger-ui:
-    path: /auth
+    path: /auth/swagger-ui.html  # 변경된 경로
     disable-swagger-default-url: true
     display-request-duration: true
     operations-sorter: alpha
   api-docs:
     groups:
       enabled: true
+
