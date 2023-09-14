@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 const MainMenuBox = (userType: any) => {
     const navigate = useNavigate();
 
-    const testUserType = User.PARENT;
+    const testUserType = User.CHILD;
 
     const childMenu = [
         {
@@ -25,10 +25,10 @@ const MainMenuBox = (userType: any) => {
             src: loanSrc,
             color: '#FFB800',
             bgColor: '#FFF3D2',
-            onClick: () => navigate('/loan'),
+            onClick: () => navigate('/loan/request'),
         },
         {
-            title: '적금<br/>&펀드 가입',
+            title: '적금<br/>&펀드 조회',
             src: linkSrc,
             color: '#29BE11',
             bgColor: '#D5FFCE',
