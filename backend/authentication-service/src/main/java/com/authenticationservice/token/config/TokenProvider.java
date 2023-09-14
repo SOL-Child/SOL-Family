@@ -39,6 +39,7 @@ public class TokenProvider {
                 .setIssuedAt(now)   /* 토큰이 발행된 시간을 설정 */
                 .setExpiration(expiy)   /*  토큰의 만료 시간을 설정 */
                 .setSubject(user.getPhone())   /* 토큰의 subject(토큰이 대상으로 하는 주체)를 설정 */
+                .claim("identification", user.getId())
                 .claim("auth", user.getUserType())   /*  JWT에 커스텀 클레임을 추가 */
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())   /* HS256 알고리즘과 제공된 시크릿 키를 사용하여 JWT에 서명(서명은 JWT의 무결성을 보장하는데 사용) */
                 .compact(); /* JWT를 생성하고, 생성된 JWT를 문자열로 직렬화 */
