@@ -6,6 +6,7 @@ const Pages = {
     AUTO_TRANSFER: 'auto_transfer',
     ACCOUNT_CONNECT: 'account_connect',
     LOAN_REQUEST: 'loan_request',
+    FUND: 'fund',
 };
 
 export default Pages;
