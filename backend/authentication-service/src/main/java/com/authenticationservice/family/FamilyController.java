@@ -43,7 +43,7 @@ public class FamilyController {
 
         String qrCodeInfo = "{" + "\n" +
                 "\"id\" : " + user.getId() + "," + "\n" +
-                "\"charger\" : \"" + code + "\"\n" +
+                "\"familyCode\" : \"" + code + "\"\n" +
                 "}";
 
         BitMatrix matrix = new MultiFormatWriter().encode(qrCodeInfo, BarcodeFormat.QR_CODE, width, height);
