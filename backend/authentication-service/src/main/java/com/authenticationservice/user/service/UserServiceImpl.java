@@ -40,8 +40,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public Optional<User>findNewByPhone(String phone) {
+        return jpaUserRepository.findByPhone(phone);
+    }
+
+    @Override
     @Transactional
     public void signUp(UserReqDto userReqDto) {
+        // valid phone
+        if (findNewByPhone(userReqDto.getPhone()).isPresent())
+            throw new DuplicatePhoneException(ErrorCode.DUPLICATE_PHONE_EXCEPTION);
+
         // valid password
         if (!userReqDto.getPassword().equals(userReqDto.getPasswordCheck()))
             throw new BusinessException(ErrorCode.INVALID_PASSWORD_CHECK);
