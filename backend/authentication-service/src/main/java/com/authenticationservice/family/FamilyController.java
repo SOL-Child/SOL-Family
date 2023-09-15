@@ -42,8 +42,7 @@ public class FamilyController {
         int height = 200;
 
         String qrCodeInfo = "{" + "\n" +
-                "\"id\" : " + user.getId() + "," + "\n" +
-                "\"familyCode\" : \"" + code + "\"\n" +
+                "\"code\" : \"" + code + "\"\n" +
                 "}";
 
         BitMatrix matrix = new MultiFormatWriter().encode(qrCodeInfo, BarcodeFormat.QR_CODE, width, height);
