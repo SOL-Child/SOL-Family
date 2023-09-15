@@ -32,5 +32,14 @@ public class FamilyServiceImpl implements FamilyService{
         return connectedFamily.getCode();
     }
 
+    @Override
+    public void connectFamily(FamilyReqDto familyReqDto, User user) {
+        Family family = findByCode(familyReqDto.getCode());
+        family.addFamily(user);
+    }
 
+    private Family findByCode(String code) {
+        return jpaFamilyRepository.findByCode(code)
+                .orElseThrow(() -> new InvalidFamilyCodeException(ErrorCode.INVALID_FAMILY_CODE));
+    }
 }
