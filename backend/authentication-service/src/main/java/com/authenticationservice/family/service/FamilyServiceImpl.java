@@ -5,7 +5,6 @@ import com.authenticationservice.family.entity.Family;
 import com.authenticationservice.family.exception.InvalidFamilyCodeException;
 import com.authenticationservice.family.repository.JpaFamilyRepository;
 import com.authenticationservice.global.error.ErrorCode;
-import com.authenticationservice.global.error.exception.ValidationException;
 import com.authenticationservice.user.entity.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +22,16 @@ public class FamilyServiceImpl implements FamilyService{
     @Override
     @Transactional
     public String createFamily(User user) {
-        String code = String.valueOf(UUID.randomUUID());
+
+        if (user.getFamily() != null) return user.getFamily().getCode();
+        String newCode = String.valueOf(UUID.randomUUID());
         Family family = Family.builder()
-                .code(code)
+                .code(newCode)
+                .user(user)
                 .build();
 
         Family connectedFamily = jpaFamilyRepository.save(family);
+        user.setFamily(family);
         return connectedFamily.getCode();
     }
 

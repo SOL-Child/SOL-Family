@@ -1,6 +1,8 @@
 package com.authenticationservice.user.entity;
 
+import com.authenticationservice.family.entity.Family;
 import com.authenticationservice.global.entity.Time;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -32,6 +34,10 @@ public class User extends Time implements UserDetails{
     private UserType userType;
 
     private Boolean active;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "family_id")
+    private Family family;
 
     @Builder
     public User(String identification, String name, String password, String phone, UserType userType, Boolean active) {

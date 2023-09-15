@@ -2,6 +2,7 @@ package com.authenticationservice.user;
 
 import com.authenticationservice.global.dto.BaseResponseBody;
 import com.authenticationservice.global.util.SecurityUtil;
+import com.authenticationservice.token.dto.response.CreateTokenResDto;
 import com.authenticationservice.user.dto.request.LoginReqDto;
 import com.authenticationservice.user.dto.request.UserReqDto;
 import com.authenticationservice.user.dto.response.UserResDto;
@@ -12,10 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -36,8 +34,8 @@ public class UserController {
     @Operation(summary = "로그인", description = "\n\n" )
     @PostMapping("/users/signin")
     public ResponseEntity<? extends BaseResponseBody> signIn(@RequestBody LoginReqDto loginReqDto){
-        UserResDto userResDto = userService.signIn(loginReqDto);
-        return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(0,userResDto));
+        CreateTokenResDto userInfo = userService.signIn(loginReqDto);
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(0,userInfo));
     }
 
     @Operation(summary = "로그아웃", description = "\n\n" )
@@ -48,4 +46,12 @@ public class UserController {
         //TODO : 토큰 만료화
         return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(0,"Success"));
     }
+
+    @Operation(summary = "유저 정보 조회", description = "\n\n" )
+    @GetMapping("/users/{identification}")
+    public ResponseEntity<? extends BaseResponseBody> userInfo(@PathVariable(name = "identification") String identification){
+        UserResDto userResDto = userService.findByIdentification(identification);
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(0, userResDto));
+    }
+
 }
