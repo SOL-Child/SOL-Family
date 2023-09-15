@@ -1,5 +1,6 @@
 package com.authenticationservice.user.service;
 
+import com.authenticationservice.token.dto.response.CreateTokenResDto;
 import com.authenticationservice.user.dto.request.LoginReqDto;
 import com.authenticationservice.user.dto.request.UserReqDto;
 import com.authenticationservice.user.dto.response.UserResDto;
@@ -18,5 +19,6 @@ public interface UserService {
 
     void signUp(UserReqDto userReqDto);
 
-    UserResDto signIn(LoginReqDto loginReqDto);
+    CreateTokenResDto signIn(LoginReqDto loginReqDto);
+
 }

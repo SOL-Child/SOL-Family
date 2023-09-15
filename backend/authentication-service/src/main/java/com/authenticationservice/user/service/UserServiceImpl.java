@@ -12,6 +12,7 @@ import com.authenticationservice.user.entity.User;
 import com.authenticationservice.user.repository.JpaUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -68,13 +69,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserResDto signIn(LoginReqDto loginReqDto) {
+    public CreateTokenResDto signIn(LoginReqDto loginReqDto) {
         User user = findByPhone(loginReqDto.getPhone());
         if(!passwordEncoder.matches(loginReqDto.getPassword(),user.getPassword()))
             throw new BusinessException(ErrorCode.INVALID_PASSWORD_CHECK);
 
-        CreateTokenResDto token = tokenService.createUserToken(user);
-
-        return new UserResDto().of(user, token);
+        return tokenService.createUserToken(user);
     }
+
+
 }
