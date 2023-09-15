@@ -1,9 +1,11 @@
 package com.authenticationservice.user;
 
 import com.authenticationservice.global.dto.BaseResponseBody;
+import com.authenticationservice.global.util.SecurityUtil;
 import com.authenticationservice.user.dto.request.LoginReqDto;
 import com.authenticationservice.user.dto.request.UserReqDto;
 import com.authenticationservice.user.dto.response.UserResDto;
+import com.authenticationservice.user.entity.User;
 import com.authenticationservice.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,5 +38,14 @@ public class UserController {
     public ResponseEntity<? extends BaseResponseBody> signIn(@RequestBody LoginReqDto loginReqDto){
         UserResDto userResDto = userService.signIn(loginReqDto);
         return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(0,userResDto));
+    }
+
+    @Operation(summary = "로그아웃", description = "\n\n" )
+    @PostMapping("/users/logout")
+    public ResponseEntity<? extends BaseResponseBody> logout(){
+        String authorizedMember = SecurityUtil.getAuthorizedMember();
+        User user = userService.findByPhone(authorizedMember);
+        //TODO : 토큰 만료화
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(0,"Success"));
     }
 }
