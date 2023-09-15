@@ -25,7 +25,7 @@ public class TokenController {
     private final TokenService tokenService;
     private final UserService userService;
 
-    @Operation(summary = "Access 토큰 재발급", description = "Refresh Token을 통해 Access Token 재발급\n\n" )
+    @Operation(summary = "Access 토큰 재발급", description = "/auth/v1/token \n\n Refresh Token을 통해 Access Token 재발급\n\n" )
     @PostMapping("/token")
     public ResponseEntity<? extends BaseResponseBody> createNewAccessToken(@RequestBody CreateAccessTokenReqDto refreshToken) {
         String authorizedMember = SecurityUtil.getAuthorizedMember();

@@ -8,6 +8,7 @@ import com.authenticationservice.sms.dto.request.SmsSendReqDto;
 import com.authenticationservice.user.exception.DuplicatePhoneException;
 import com.authenticationservice.sms.service.SmsService;
 import com.authenticationservice.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public class SmsController {
     private final UserService userService;
 
     // 인증번호 발송
+    @Operation(summary = "인증번호 발송", description = "start/v1/sms/sends\n\n" )
     @PostMapping("/sms/sends")
     public ResponseEntity<? extends BaseResponseBody> sendSms(@RequestBody SmsSendReqDto smsSendReqDto) {
         if(userService.findNewByPhone(smsSendReqDto.getPhone()).isPresent())
@@ -35,6 +37,7 @@ public class SmsController {
     }
 
     // 인증번호 확인
+    @Operation(summary = "인증번호 확인", description = "start/v1/sms/confirms\n\n" )
     @PostMapping("/sms/confirms")
     public ResponseEntity<? extends BaseResponseBody> SmsVerification(@RequestBody SmsReqDto smsReqDto) {
         smsService.verifySms(smsReqDto);
