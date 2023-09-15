@@ -16,7 +16,8 @@ public enum ErrorCode {
 
 
     // 가족 연결
-    INVALID_FAMILY_CODE(HttpStatus.BAD_REQUEST, "F-001", "유효하지 않은 가족코드입니다.")
+    INVALID_FAMILY_CODE(HttpStatus.BAD_REQUEST, "F-001", "유효하지 않은 가족코드입니다."),
+    FAMILY_CODE_EXIST(HttpStatus.BAD_REQUEST, "F-002", "가족코드가 존재합니다.")
 
     ;
 
