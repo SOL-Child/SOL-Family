@@ -30,8 +30,9 @@ public class Family {
 
 
     @Builder
-    public Family(String code) {
+    public Family(String code, User user) {
         this.code = code;
+        this.connectedFamily.add(user);
     }
 
     public void addFamily(User user) {
