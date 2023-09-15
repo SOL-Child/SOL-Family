@@ -77,5 +77,10 @@ public class UserServiceImpl implements UserService{
         return tokenService.createUserToken(user);
     }
 
-
+    @Override
+    public UserResDto findByIdentification(String identification) {
+        Optional<User> user = jpaUserRepository.findByIdentification(identification);
+        return user.map(value -> new UserResDto().of(value))
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_EXIST));
+    }
 }
