@@ -14,6 +14,10 @@ public enum ErrorCode {
     // 토큰
     UNEXPECTED_TOKEN(HttpStatus.BAD_REQUEST, "T-001", "만료되었거나 존재하지 않는 토큰입니다."),
 
+
+    // 가족 연결
+    INVALID_FAMILY_CODE(HttpStatus.BAD_REQUEST, "F-001", "유효하지 않은 가족코드입니다.")
+
     ;
 
 
