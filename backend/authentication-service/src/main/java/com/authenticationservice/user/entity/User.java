@@ -20,6 +20,8 @@ public class User extends Time implements UserDetails{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String identification;
+
     private String name;
 
     private String password;
@@ -32,7 +34,8 @@ public class User extends Time implements UserDetails{
     private Boolean active;
 
     @Builder
-    public User(String name, String password, String phone, UserType userType, Boolean active) {
+    public User(String identification, String name, String password, String phone, UserType userType, Boolean active) {
+        this.identification = identification;
         this.name = name;
         this.password = password;
         this.phone = phone;
