@@ -43,7 +43,7 @@ public class UserController {
     public ResponseEntity<? extends BaseResponseBody> logout(){
         String authorizedMember = SecurityUtil.getAuthorizedMember();
         User user = userService.findByPhone(authorizedMember);
-        //TODO : 토큰 만료화
+        userService.logout(user);
         return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(0,"Success"));
     }
 
