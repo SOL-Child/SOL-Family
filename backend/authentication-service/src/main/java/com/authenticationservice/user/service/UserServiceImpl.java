@@ -2,6 +2,7 @@ package com.authenticationservice.user.service;
 
 import com.authenticationservice.global.error.ErrorCode;
 import com.authenticationservice.global.error.exception.BusinessException;
+import com.authenticationservice.user.exception.DuplicatePhoneException;
 import com.authenticationservice.token.dto.response.CreateTokenResDto;
 import com.authenticationservice.token.service.TokenService;
 import com.authenticationservice.user.dto.request.LoginReqDto;
@@ -13,6 +14,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @Service("userService")
 @Transactional
@@ -43,6 +47,7 @@ public class UserServiceImpl implements UserService{
             throw new BusinessException(ErrorCode.INVALID_PASSWORD_CHECK);
 
         User user = User.builder()
+                .identification(String.valueOf(UUID.randomUUID()))
                 .name(userReqDto.getName())
                 .password(passwordEncoder.encode(userReqDto.getPassword()))
                 .phone(userReqDto.getPhone())
