@@ -55,5 +55,11 @@ public class FamilyController {
         }
     }
 
-
+    @PostMapping("/family")
+    public ResponseEntity<? extends BaseResponseBody> connectFamily(FamilyReqDto familyReqDto) {
+        String authorizedMember = SecurityUtil.getAuthorizedMember();
+        User user = userService.findByPhone(authorizedMember);
+        familyService.connectFamily(familyReqDto, user);
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(0, "Success"));
+    }
 }
