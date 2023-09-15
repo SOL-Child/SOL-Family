@@ -46,4 +46,12 @@ public class UserController {
         //TODO : 토큰 만료화
         return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(0,"Success"));
     }
+
+    @Operation(summary = "유저 정보 조회", description = "\n\n" )
+    @GetMapping("/users/{identification}")
+    public ResponseEntity<? extends BaseResponseBody> userInfo(@PathVariable(name = "identification") String identification){
+        UserResDto userResDto = userService.findByIdentification(identification);
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(0, userResDto));
+    }
+
 }
