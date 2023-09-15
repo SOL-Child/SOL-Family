@@ -11,6 +11,10 @@ const ContentsFrame = ({ page, children }: { page: string; children: ReactNode }
         style += ` ${styles.hasBtn}`;
     }
 
+    if (page === Pages.TRANSACTION) {
+        style = `${styles.transaction}`;
+    }
+
     return <div className={style}>{children}</div>;
 };
 

@@ -8,6 +8,7 @@ import AutoTransferPage from './pages/AutoTransferPage/AutoTransferPage';
 import AccountConnectPage from './pages/AccountConnectPage/AccountConnectPage';
 import LoanRequestPage from './pages/LoanRequestPage/LoanRequestPage';
 import FundPage from './pages/FundPage/FundPage';
+import TransactionPage from './pages/TransactionPage/TransactionPage';
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="account/connect" element={<AccountConnectPage />} />
             <Route path="loan/request" element={<LoanRequestPage />} />
             <Route path="fund" element={<FundPage />} />
+            <Route path="account/transaction" element={<TransactionPage />} />
         </Routes>
     );
 }

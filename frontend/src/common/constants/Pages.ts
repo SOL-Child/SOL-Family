@@ -7,6 +7,7 @@ const Pages = {
     ACCOUNT_CONNECT: 'account_connect',
     LOAN_REQUEST: 'loan_request',
     FUND: 'fund',
+    TRANSACTION: 'transaction',
 };
 
 export default Pages;

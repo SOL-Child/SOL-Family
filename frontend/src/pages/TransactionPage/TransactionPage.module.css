@@ -1,0 +1,90 @@
+.header {
+    width: 100%;
+    height: 60px;
+    display: grid;
+    grid-template-columns: 1fr 5fr 1fr;
+    place-items: center;
+    background-color: #A7BFFF;
+}
+
+.icon img {
+    width: 20px;
+    cursor: pointer;
+}
+
+.headText {
+    color: #ffffffe5;
+    font-size: 20px;
+    font-family: 'LINESeedKR-Bd';
+}
+
+.summary {
+    width: 100%;
+    height: 120px;
+    background-color: #A7BFFF;
+    display: flex;
+    align-items: center;
+    padding-top: 30px;
+    color: white;
+}
+
+.money {
+    width: 60%;
+    padding-left: 30px;
+}
+
+.btn {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    top: 20px;
+}
+
+.btn div {
+    border: none;
+    font-size: 15px;
+    font-family: 'LINESeedKr-Bd';
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 15px;
+}
+
+.btn div:hover {
+    color: #6791FF;
+}
+
+.text {
+    font-size: 20px;
+}
+
+.text span {
+    font-family: 'LINESeedKr-Bd';
+}
+
+.expmoney {
+    font-size: 27px;
+    font-family: 'LINESeedKr-Bd';
+    padding: 3px 0px;
+}
+
+.pinMoney {
+    width: 160px;
+    height: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    font-size: 13px;
+    background-color: #97b4ff;
+    color: rgba(255, 255, 255, 0.849);
+}
+
+.selected {
+    color: #6791FF;
+    background-color: #97b4ff;
+}
+
+.unselected {
+    color: rgba(255, 255, 255, 0.829);
+}
