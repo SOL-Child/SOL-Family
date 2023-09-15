@@ -2,6 +2,7 @@ package com.authenticationservice.family.service;
 
 import com.authenticationservice.family.dto.request.FamilyReqDto;
 import com.authenticationservice.family.entity.Family;
+import com.authenticationservice.family.exception.DuplicateFamilyCodeException;
 import com.authenticationservice.family.exception.InvalidFamilyCodeException;
 import com.authenticationservice.family.repository.JpaFamilyRepository;
 import com.authenticationservice.global.error.ErrorCode;
@@ -37,8 +38,10 @@ public class FamilyServiceImpl implements FamilyService{
 
     @Override
     public void connectFamily(FamilyReqDto familyReqDto, User user) {
+        if (user.getFamily() != null) throw new DuplicateFamilyCodeException(ErrorCode.FAMILY_CODE_EXIST);
         Family family = findByCode(familyReqDto.getCode());
         family.addFamily(user);
+        user.setFamily(family);
     }
 
     private Family findByCode(String code) {

@@ -2,6 +2,7 @@ package com.authenticationservice.user.service;
 
 import com.authenticationservice.global.error.ErrorCode;
 import com.authenticationservice.global.error.exception.BusinessException;
+import com.authenticationservice.token.entity.Token;
 import com.authenticationservice.user.exception.DuplicatePhoneException;
 import com.authenticationservice.token.dto.response.CreateTokenResDto;
 import com.authenticationservice.token.service.TokenService;
@@ -69,6 +70,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Transactional
     public CreateTokenResDto signIn(LoginReqDto loginReqDto) {
         User user = findByPhone(loginReqDto.getPhone());
         if(!passwordEncoder.matches(loginReqDto.getPassword(),user.getPassword()))
@@ -82,5 +84,12 @@ public class UserServiceImpl implements UserService{
         Optional<User> user = jpaUserRepository.findByIdentification(identification);
         return user.map(value -> new UserResDto().of(value))
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_EXIST));
+    }
+
+    @Override
+    @Transactional
+    public void logout(User user) {
+        Token token = tokenService.findByUser(user);
+        tokenService.deleteToken(token);
     }
 }

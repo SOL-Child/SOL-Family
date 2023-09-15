@@ -11,18 +11,15 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,6 +30,7 @@ public class FamilyController {
     private final UserService userService;
     private final FamilyService familyService;
 
+    @Operation(summary = "가족연결 QR 생성", description = "/auth/v1/family/qr\n\n" )
     @GetMapping("/family/qr")
     public ResponseEntity<? extends BaseResponseBody> createQR() throws WriterException, IOException {
         String authorizedMember = SecurityUtil.getAuthorizedMember();
@@ -55,8 +53,9 @@ public class FamilyController {
         }
     }
 
+    @Operation(summary = "가족연결", description = "/auth/v1/family\n\n" )
     @PostMapping("/family")
-    public ResponseEntity<? extends BaseResponseBody> connectFamily(FamilyReqDto familyReqDto) {
+    public ResponseEntity<? extends BaseResponseBody> connectFamily(@RequestBody FamilyReqDto familyReqDto) {
         String authorizedMember = SecurityUtil.getAuthorizedMember();
         User user = userService.findByPhone(authorizedMember);
         familyService.connectFamily(familyReqDto, user);

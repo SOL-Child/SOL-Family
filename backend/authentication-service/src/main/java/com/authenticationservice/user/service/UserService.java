@@ -22,4 +22,6 @@ public interface UserService {
     CreateTokenResDto signIn(LoginReqDto loginReqDto);
 
     UserResDto findByIdentification(String identification);
+
+    void logout(User user);
 }

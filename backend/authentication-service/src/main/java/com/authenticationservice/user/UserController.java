@@ -24,30 +24,30 @@ public class UserController {
 
     private final UserService userService;
 
-    @Operation(summary = "회원가입", description = "\n\n" )
+    @Operation(summary = "회원가입", description = "start/v1/users/signup\n\n" )
     @PostMapping("/users/signup")
     public ResponseEntity<? extends BaseResponseBody> createUser(@RequestBody UserReqDto userReqDto){
         userService.signUp(userReqDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(BaseResponseBody.of(0,"Success"));
     }
 
-    @Operation(summary = "로그인", description = "\n\n" )
+    @Operation(summary = "로그인", description = "/start/v1/users/signin\n\n" )
     @PostMapping("/users/signin")
     public ResponseEntity<? extends BaseResponseBody> signIn(@RequestBody LoginReqDto loginReqDto){
         CreateTokenResDto userInfo = userService.signIn(loginReqDto);
         return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(0,userInfo));
     }
 
-    @Operation(summary = "로그아웃", description = "\n\n" )
+    @Operation(summary = "로그아웃", description = "/auth/v1/users/logout\n\n" )
     @PostMapping("/users/logout")
     public ResponseEntity<? extends BaseResponseBody> logout(){
         String authorizedMember = SecurityUtil.getAuthorizedMember();
         User user = userService.findByPhone(authorizedMember);
-        //TODO : 토큰 만료화
+        userService.logout(user);
         return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(0,"Success"));
     }
 
-    @Operation(summary = "유저 정보 조회", description = "\n\n" )
+    @Operation(summary = "유저 정보 조회", description = "/auth/v1/users/{identification}\n\n" )
     @GetMapping("/users/{identification}")
     public ResponseEntity<? extends BaseResponseBody> userInfo(@PathVariable(name = "identification") String identification){
         UserResDto userResDto = userService.findByIdentification(identification);
