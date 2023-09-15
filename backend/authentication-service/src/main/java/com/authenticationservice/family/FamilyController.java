@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +33,7 @@ public class FamilyController {
 
     @Operation(summary = "가족연결 QR 생성", description = "/auth/v1/family/qr\n\n" )
     @GetMapping("/family/qr")
-    public ResponseEntity<? extends BaseResponseBody> createQR() throws WriterException, IOException {
+    public Object createQR() throws WriterException, IOException {
         String authorizedMember = SecurityUtil.getAuthorizedMember();
         User user = userService.findByPhone(authorizedMember);
 
@@ -49,7 +50,9 @@ public class FamilyController {
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream();) {
             MatrixToImageWriter.writeToStream(matrix, "PNG", out);
-            return ResponseEntity.status(HttpStatus.CREATED).body(BaseResponseBody.of(0,out.toByteArray()));
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG)
+                    .body(out.toByteArray());
         }
     }
 
