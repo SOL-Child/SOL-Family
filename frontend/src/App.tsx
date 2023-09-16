@@ -8,7 +8,9 @@ import AutoTransferPage from './pages/AutoTransferPage/AutoTransferPage';
 import AccountConnectPage from './pages/AccountConnectPage/AccountConnectPage';
 import LoanRequestPage from './pages/LoanRequestPage/LoanRequestPage';
 import FundPage from './pages/FundPage/FundPage';
+import TransactionPage from './pages/TransactionPage/TransactionPage';
 import AlarmPage from './pages/AlarmPage/AlarmPage';
+import './firebase-messaging-sw.js';
 
 function App() {
     return (
@@ -21,6 +23,7 @@ function App() {
             <Route path="account/connect" element={<AccountConnectPage />} />
             <Route path="loan/request" element={<LoanRequestPage />} />
             <Route path="fund" element={<FundPage />} />
+            <Route path="account/transaction" element={<TransactionPage />} />
             <Route path="alarm" element={<AlarmPage />} />
         </Routes>
     );

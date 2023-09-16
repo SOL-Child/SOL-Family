@@ -18,22 +18,19 @@ pipeline {
             steps {
                 withCredentials([
                     file(credentialsId: 'authentication-service-application-dev.yml', variable: 'AUTHFILE'),
-                    file(credentialsId: 'blockchain-service-application-dev.yml', variable: 'BLOCKFILE'),
+                    file(credentialsId: 'solfamily-firebase.json', variable: 'FIREBASE')
                 ]) {
                     script {
                         sh 'cp $AUTHFILE backend/authentication-service/src/main/resources/application-dev.yml'
-                        sh 'cp $BLOCKFILE backend/blockchain-service/src/main/resources/application-dev.yml'
+                        sh 'mkdir backend/authentication-service/src/main/resources/firebase'
+                        sh 'cp $FIREBASE backend/authentication-service/src/main/resources/firebase/solfamily-firebase.json'
                     }
                 }
                 sh 'chmod +x backend/authentication-service/gradlew'
-                sh 'chmod +x backend/blockchain-service/gradlew'
 
                 script {
                     docker.image('authentication-service').inside("-v gradle-${env.BUILD_TAG}:/root/.gradle") {
                         sh 'cd backend/authentication-service && ./gradlew clean build -x test'
-                    }
-                    docker.image('blockchain-service').inside("-v gradle-${env.BUILD_TAG}:/root/.gradle") {
-                        sh 'cd backend/blockchain-service && ./gradlew clean build -x test'
                     }
                 }
             }
@@ -56,21 +53,6 @@ pipeline {
             }
         }
 
-        stage('Docker build and push blockchain-service') {
-            steps {
-                withCredentials([
-                    usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASS')
-                ]) {
-                    dir('backend/blockchain-service') {
-                        sh 'docker build -t blockchain-service:latest .'
-                        sh 'docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASS'
-                        sh 'docker tag blockchain-service:latest kathyleesh/blockchain-service:latest'
-                        sh 'docker push kathyleesh/blockchain-service:latest'
-                    }
-                }
-            }
-        }
-        
 
         stage('Install Docker Compose') {
             steps {

@@ -6,7 +6,6 @@ import Pages from '../../common/constants/Pages';
 import styles from './FundPage.module.css';
 import SavingAccountBox from '../../features/Account/components/SavingAccountBox/SavingAccountBox';
 import { useState } from 'react';
-import ToggleBox from '../../common/components/ToggleBox/ToggleBox';
 
 interface Fund {
     src: string;
@@ -62,17 +61,26 @@ const FundPage = () => {
                 <br />
                 <div className={styles.up}>
                     <div className={styles.flex}>
-                        {/* 토글에 따라 변경 */}
                         <div className={styles.title}>
                             {selectedView === '전체' ? '전체 펀드 상품 알아보기' : '내 펀드 확인하기'}
                         </div>
                         <div className={styles.toggle}>
-                            <ToggleBox
-                                selected={selectedView}
-                                setSelected={setSelectedView}
-                                firstVal={'전체'}
-                                secondVal={'내 펀드'}
-                            />
+                            <div
+                                className={selectedView === '전체' ? styles.selected : styles.unselected}
+                                onClick={() => {
+                                    setSelectedView('전체');
+                                }}
+                            >
+                                전체
+                            </div>
+                            <div
+                                className={selectedView === '내 펀드' ? styles.selected : styles.unselected}
+                                onClick={() => {
+                                    setSelectedView('내 펀드');
+                                }}
+                            >
+                                내 펀드
+                            </div>
                         </div>
                     </div>
                     <div className={styles.fundList}>

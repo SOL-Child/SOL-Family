@@ -16,6 +16,7 @@ import styles from './SignupPage.module.css';
 import { UserInfo } from '../../common/types/user.types';
 
 import SignupAPI from '../../features/Signup/apis/SignupAPI';
+import { getTokenVal } from '../../firebase-messaging-sw';
 
 const SignupPage = () => {
     const [page, setPage] = useState<number>(0); // 0부터 4페이지까지
@@ -35,6 +36,7 @@ const SignupPage = () => {
         passwordCheck: '',
         phone: '',
         userType: '',
+        fcmToken: '',
     };
 
     const [userInfo, setUserInfo] = useState<UserInfo>(initialState);
@@ -155,6 +157,13 @@ const SignupPage = () => {
                 // req : userInfo
                 // res : accesstoken, user정보
                 try {
+                    const token = await getTokenVal();
+
+                    setUserInfo((prev) => ({
+                        ...prev,
+                        fcmToken: token,
+                    }));
+
                     const isComplete: boolean = await SignupAPI.registerUser(userInfo);
                     if (isComplete) {
                         alert('회원 가입되었습니다.');

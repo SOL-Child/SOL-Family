@@ -10,3 +10,10 @@
     margin-bottom: 0px;
     height: calc(100vh - 120px);
 }
+
+.transaction {
+    width: 100%;
+    height: calc(100vh - 60px);
+    overflow-y: scroll;
+    background-color: rgba(220, 220, 220, 0.3);
+}
