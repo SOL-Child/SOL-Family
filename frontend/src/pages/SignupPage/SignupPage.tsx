@@ -32,7 +32,7 @@ const SignupPage = () => {
     const initialState: UserInfo = {
         name: '',
         password: '',
-        passwordCheck: 'password',
+        passwordCheck: '',
         phone: '',
         userType: '',
     };
@@ -100,6 +100,7 @@ const SignupPage = () => {
             setUserInfo((prev) => ({
                 ...prev,
                 password: '',
+                passwordCheck: '',
             }));
         } else if (page === 3) {
             setUserInfo((prev) => ({
@@ -109,7 +110,7 @@ const SignupPage = () => {
         } else if (page === 4) {
             setUserInfo((prev) => ({
                 ...prev,
-                user_type: '',
+                userType: '',
             }));
         }
 
@@ -128,6 +129,7 @@ const SignupPage = () => {
             setUserInfo((prev) => ({
                 ...prev,
                 password: currentInput ? String(currentInput) : '',
+                passwordCheck: currentInput ? String(currentInput) : '',
             }));
         } else if (page === 3) {
             setUserInfo((prev) => ({
@@ -137,7 +139,7 @@ const SignupPage = () => {
         } else if (page === 4) {
             setUserInfo((prev) => ({
                 ...prev,
-                user_type: currentInput ? String(currentInput) : '',
+                userType: currentInput ? String(currentInput) : '',
             }));
 
             setIsPossibleSend(true); // 회원가입 가능
@@ -148,14 +150,23 @@ const SignupPage = () => {
     };
 
     useEffect(() => {
-        if (isPossibleSend) {
-            /**
-             * @todo: 회원가입 백엔드 통신
-             */
-            // req : userInfo
-            // res : accesstoken, user정보
-            SignupAPI.registerUser(userInfo);
-        }
+        const signup = async () => {
+            if (isPossibleSend) {
+                // req : userInfo
+                // res : accesstoken, user정보
+                try {
+                    const isComplete: boolean = await SignupAPI.registerUser(userInfo);
+                    if (isComplete) {
+                        alert('회원 가입되었습니다.');
+                        navigate('/login');
+                    }
+                } catch (err: any) {
+                    alert(err.response.data.dataHeader.resultMessage);
+                }
+            }
+        };
+
+        signup();
     }, [isPossibleSend]);
 
     return (

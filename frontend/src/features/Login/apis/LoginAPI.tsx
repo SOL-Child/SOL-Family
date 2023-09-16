@@ -3,17 +3,15 @@ import { ReceiveUserInfo, SendUserInfo } from '../../../common/types/user.types'
 
 const LoginAPI = {
     loginUser: async (data: SendUserInfo): Promise<ReceiveUserInfo> => {
-        const res: any = await instance.post('/v1/users/signin', data);
+        const res: any = await instance.post('/start/v1/users/signin', data);
 
-        if (res.dataHeader.successCode) {
+        if (res.data.dataHeader.successCode) {
             throw new Error('로그인에 실패했습니다. 다시 시도해주세요.');
         }
 
         const userData: ReceiveUserInfo = {
-            name: res.dataBody.name,
-            userType: res.dataBody.userType,
-            accessToken: res.dataBody.accessToken,
-            refreshToken: res.dataBody.refreshToken,
+            accessToken: res.data.dataBody.accessToken,
+            refreshToken: res.data.dataBody.refreshToken,
         };
 
         return userData;
