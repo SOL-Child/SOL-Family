@@ -31,7 +31,7 @@ RUN ./gradlew clean build --no-daemon -x test
 WORKDIR /app/build/libs
 
 # Expose the port the app runs in and the debug port
-EXPOSE 8080
+EXPOSE 8081
 
 # Run the application with debug options
 CMD ["java", "-jar", "blockchain-service-0.0.1-SNAPSHOT.jar"]
