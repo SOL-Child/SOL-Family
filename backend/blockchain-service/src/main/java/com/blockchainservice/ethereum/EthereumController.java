@@ -18,7 +18,7 @@ public class EthereumController {
 
     // 계좌 생성
     @PostMapping("/create-account")
-    public ResponseEntity<String> createAccount(@RequestHeader(value = "X-JWT-Claim-identification", required = false) String identification,
+    public ResponseEntity<String> createAccount(@RequestParam String identification,
                                                 @RequestParam String realAccount,
                                                 @RequestParam String bookType) {
         try {
@@ -31,7 +31,7 @@ public class EthereumController {
 
     // 이체
     @PostMapping("/transfer")
-    public ResponseEntity<String> transfer(@RequestHeader(value = "X-JWT-Claim-identification", required = false) String identification,
+    public ResponseEntity<String> transfer(@RequestParam String identification,
                                            @RequestParam String toAddress, @RequestParam BigInteger amount) {
         try {
             String transactionHash = ethereumService.transfer(identification, toAddress, amount);
