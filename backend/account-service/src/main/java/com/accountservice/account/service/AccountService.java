@@ -2,6 +2,9 @@ package com.accountservice.account.service;
 
 import com.accountservice.account.dto.request.ConnectReqDto;
 import com.accountservice.account.dto.request.TransactionReqDto;
+import com.accountservice.account.dto.response.MainResDto;
+import com.accountservice.account.dto.response.TransactionResDto;
+import com.accountservice.account.dto.response.TransferResDto;
 
 import java.io.IOException;
 
@@ -10,5 +13,9 @@ public interface AccountService {
 
     void connectAccount(String identification, ConnectReqDto connectReqDto, String bookType);
 
-    void transaction(String identification, TransactionReqDto transactionReqDto);
+    TransactionResDto transaction(String identification, TransactionReqDto transactionReqDto);
+
+    TransferResDto getTransaction(String identification);
+
+    MainResDto main(String identification) throws IOException, InterruptedException;
 }
