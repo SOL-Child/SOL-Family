@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
+
 @RestController
 @RequiredArgsConstructor
 public class EthereumController {
@@ -19,6 +21,17 @@ public class EthereumController {
         try {
             String address = ethereumService.createAccount(identification, realAccount);
             return ResponseEntity.ok(address.toString());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // 이체
+    @PostMapping("/transfer")
+    public ResponseEntity<String> transfer(@RequestParam String fromPrivateKey, @RequestParam String toAddress, @RequestParam BigInteger amount) {
+        try {
+            String transactionHash = ethereumService.transfer(fromPrivateKey, toAddress, amount);
+            return ResponseEntity.ok(transactionHash);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
