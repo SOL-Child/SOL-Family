@@ -9,6 +9,7 @@ import AccountConnectPage from './pages/AccountConnectPage/AccountConnectPage';
 import LoanRequestPage from './pages/LoanRequestPage/LoanRequestPage';
 import FundPage from './pages/FundPage/FundPage';
 import TransactionPage from './pages/TransactionPage/TransactionPage';
+import AlarmPage from './pages/AlarmPage/AlarmPage';
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="loan/request" element={<LoanRequestPage />} />
             <Route path="fund" element={<FundPage />} />
             <Route path="account/transaction" element={<TransactionPage />} />
+            <Route path="alarm" element={<AlarmPage />} />
         </Routes>
     );
 }

@@ -1,21 +1,19 @@
-import axios from 'axios';
+import authInstance from '../../../common/apis/authInstance';
 
 const QrcodeAPI = {
     // QrCode/get
     // req : 유저 정보
     // res : qr 이미지 (byte)
-    createQrImage: async (data: any): Promise<Blob> => {
-        const res: any = axios.get('', {
-            // byte로 받아오기 때문에 blob으로 response
+    createQrImage: async (): Promise<Blob> => {
+        const res: any = await authInstance.get('/auth/v1/family/qr', {
             responseType: 'blob',
-            headers: {},
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('SF_accessToken')}`,
+                'Content-Type': 'application/json',
+            },
         });
 
-        if (res.dataHeader.successCode) {
-            throw new Error(res.dataHeader.resultMessage);
-        }
-
-        return res.dataBody;
+        return res.data;
     },
 };
 

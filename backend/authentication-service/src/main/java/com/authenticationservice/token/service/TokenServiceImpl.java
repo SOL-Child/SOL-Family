@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.Optional;
 
 @Service("tokenService")
 @Transactional
@@ -39,6 +40,11 @@ public class TokenServiceImpl implements TokenService{
         //  refreshToken
         String refreshToken = tokenProvider.generateToken(user,  Duration.ofDays(14));
 
+        Optional<Token> token = jpaTokenRepository.findByUser(user);
+
+        if (token.isPresent()) token.get().setToken(refreshToken);
+        else saveToken(user, refreshToken);
+
         return new CreateTokenResDto().of(accessToken, refreshToken);
     }
 
@@ -54,5 +60,16 @@ public class TokenServiceImpl implements TokenService{
     public Token findByRefreshToken(String refreshToken) {
         return jpaTokenRepository.findByToken(refreshToken)
                 .orElseThrow(() -> new AuthenticationException(ErrorCode.UNEXPECTED_TOKEN));
+    }
+
+    @Override
+    public Token findByUser(User user) {
+        return jpaTokenRepository.findByUser(user)
+                .orElseThrow(() -> new AuthenticationException(ErrorCode.UNEXPECTED_TOKEN));
+    }
+
+    @Override
+    public void deleteToken(Token token) {
+        jpaTokenRepository.delete(token);
     }
 }

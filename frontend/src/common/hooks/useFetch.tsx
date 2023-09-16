@@ -1,23 +1,24 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import MainUtil from '../../features/Main/utils/MainUtil';
 
 const useFetch = (url: string) => {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<any>();
 
     useEffect(() => {
         const fetchData = async () => {
             const res: any = axios.get(url, {
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${MainUtil.getAccessToken()}`,
                 },
             });
 
-            if (res.dataHeader.successCode) {
+            if (res.data.dataHeader.successCode) {
                 throw new Error(res.dataHeader.resultMessage);
             }
 
-            // @todo: 응답받는 데이터 프로퍼티명으로 수정
-            // setData(res);
+            setData(res.data.dataBody);
         };
 
         fetchData();

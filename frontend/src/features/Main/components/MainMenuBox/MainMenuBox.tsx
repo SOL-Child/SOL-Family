@@ -1,16 +1,16 @@
+import { useNavigate } from 'react-router-dom';
 import User from '../../../../common/constants/User';
-import styles from './MainMenuBox.module.css';
+
 import pinMoneySrc from '../../../../common/images/SF_pinmoney_icon.png';
 import loanSrc from '../../../../common/images/SF_loan_icon.png';
 import linkSrc from '../../../../common/images/SF_link_icon.png';
 import missionSrc from '../../../../common/images/SF_mission_icon.png';
 import shinhanSrc from '../../../../common/images/SF_shinhan_icon.png';
-import { useNavigate } from 'react-router-dom';
 
-const MainMenuBox = (userType: any) => {
+import styles from './MainMenuBox.module.css';
+
+const MainMenuBox = ({ userType }: { userType: string }) => {
     const navigate = useNavigate();
-
-    const testUserType = User.CHILD;
 
     const childMenu = [
         {
@@ -76,7 +76,7 @@ const MainMenuBox = (userType: any) => {
 
     return (
         <div className={styles.MainMenuBox}>
-            {testUserType === User.CHILD
+            {userType === User.CHILD
                 ? childMenu.map((ele, idx) => {
                       return (
                           <div

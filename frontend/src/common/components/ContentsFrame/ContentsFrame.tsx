@@ -3,7 +3,7 @@ import Pages from '../../constants/Pages';
 import styles from './ContentsFrame.module.css';
 
 const ContentsFrame = ({ page, children }: { page: string; children: ReactNode }) => {
-    const hasBtnPage = [Pages.TRANSFER, Pages.AUTO_TRANSFER, Pages.LOAN_REQUEST];
+    const hasBtnPage = [Pages.TRANSFER, Pages.AUTO_TRANSFER, Pages.LOAN_REQUEST, Pages.ALARM, Pages.MY];
 
     let style = styles.ContentsFrame;
 

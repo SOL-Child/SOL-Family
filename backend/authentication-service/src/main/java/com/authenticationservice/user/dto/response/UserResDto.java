@@ -1,6 +1,5 @@
 package com.authenticationservice.user.dto.response;
 
-import com.authenticationservice.token.dto.response.CreateTokenResDto;
 import com.authenticationservice.user.entity.UserType;
 import com.authenticationservice.user.entity.User;
 import lombok.Getter;
@@ -9,23 +8,20 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserResDto {
-    private Long id;
+    private String identification;
     private String name;
     private String phone;
     private UserType userType;
-    private String accessToken;
-    private String refreshToken;
+    private String familyCode;
 
-    public UserResDto of(User user, CreateTokenResDto token) {
+
+    public UserResDto of(User user ) {
         UserResDto res = new UserResDto();
-
-        res.id = user.getId();
+        res.identification = user.getIdentification();
         res.name = user.getName();
         res.phone = user.getPhone();
         res.userType = user.getUserType();
-        res.accessToken = token.getAccessToken();
-        res.refreshToken = token.getRefreshToken();
-
+        res.familyCode = user.getFamily().getCode();
         return res;
     }
 }

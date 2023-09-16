@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import User from '../../../../common/constants/User';
 import styles from './RolePage.module.css';
 
 const RolePage = ({
@@ -23,16 +24,16 @@ const RolePage = ({
                 <div className={styles.roleText}>아이 또는 부모 자격을 선택해주세요.</div>
                 <div className={styles.roleButtonBox}>
                     <button
-                        className={role === 'child' ? styles.clicked : styles.nonClicked}
+                        className={role === User.CHILD ? styles.clicked : styles.nonClicked}
                         onClick={() => {
-                            setRole('child');
+                            setRole(User.CHILD);
                         }}
                     >
                         <div>아이</div>
                     </button>
                     <button
-                        className={role === 'parent' ? styles.clicked : styles.nonClicked}
-                        onClick={() => setRole('parent')}
+                        className={role === User.PARENT ? styles.clicked : styles.nonClicked}
+                        onClick={() => setRole(User.PARENT)}
                     >
                         <div>부모</div>
                     </button>

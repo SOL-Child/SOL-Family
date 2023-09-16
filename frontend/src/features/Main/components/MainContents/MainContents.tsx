@@ -1,17 +1,41 @@
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import FamilyBox from '../FamilyBox/FamilyBox';
 import AccountBox from '../AccountBox/AccountBox';
 import MainMenuBox from '../MainMenuBox/MainMenuBox';
 
-import styles from './MainContents.module.css';
-import MainUtil from '../../utils/MainUtil';
-import { useNavigate } from 'react-router-dom';
-
 import useFetch from '../../../../common/hooks/useFetch';
+import MainUtil from '../../utils/MainUtil';
+import { url } from '../../../../common/constants/url';
+import User from '../../../../common/constants/User';
+import { SignedUserInfo } from '../../../../common/types/user.types';
+import styles from './MainContents.module.css';
 
-// data: userType (null, CHILD, PARENT)
-const MainContents = (userType: any) => {
+const MainContents = () => {
     const navigate = useNavigate();
-    // const userData = useFetch('');  url을 통해 메인화면 정보 받아오기
+
+    // @todo: 사용자 정보 fetch
+    // useEffect(() => {
+    //     try {
+    //         const [userInfo]: SignedUserInfo = useFetch(`${url}/`);
+    //     } catch (err) {
+    //         alert(err);
+    //     }
+    // }, []);
+
+    const testUserInfo: SignedUserInfo = {
+        name: 'name',
+        userType: 'CHILD',
+        family: true,
+        familyCode: 'dfaei545d4faef4a6sd',
+        familyCnt: 5,
+        book: true,
+        bankbook: {
+            account: 12345678910,
+            balance: 30000,
+        },
+    };
 
     const setTitle = () => {
         const isLogin: boolean = MainUtil.checkIsLogin();
@@ -31,11 +55,9 @@ const MainContents = (userType: any) => {
             );
         }
 
-        const userName = MainUtil.getUserName();
-
         return (
             <div className={styles.userTitleBox}>
-                <span>{userName}</span> {userType === 'CHILD' ? '친구' : '님'} <br />
+                <span>{testUserInfo.name}</span> {testUserInfo.userType === User.CHILD ? '친구' : '님'} <br />
                 어서오세요 !
             </div>
         );
@@ -44,10 +66,9 @@ const MainContents = (userType: any) => {
     return (
         <div className={styles.mainContents}>
             <>{setTitle()}</>
-            <FamilyBox userType={userType} />
-            {/* 계좌는 데이터만 전달  */}
-            <AccountBox />
-            <MainMenuBox userType={userType} />
+            <FamilyBox userInfo={testUserInfo} />
+            <AccountBox userInfo={testUserInfo} />
+            <MainMenuBox userType={testUserInfo.userType} />
         </div>
     );
 };

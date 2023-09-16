@@ -2,11 +2,9 @@ import axios, { AxiosInstance } from 'axios';
 
 // accessToken이 필요하지 않은 instance
 const instance: AxiosInstance = axios.create({
-    // baseURL: 'https://www.solfamily-shinhan.com/v1',
-    baseURL: 'http://ec2-3-39-231-31.ap-northeast-2.compute.amazonaws.com:8080/v1',
+    baseURL: 'https://www.solfamily-shinhan.com',
     headers: {
         'Content-Type': 'application/json',
-        Authorization: '',
     },
 });
 

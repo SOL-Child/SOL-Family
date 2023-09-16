@@ -7,6 +7,8 @@ const Pages = {
     ACCOUNT_CONNECT: 'account_connect',
     LOAN_REQUEST: 'loan_request',
     FUND: 'fund',
+    ALARM: 'alarm',
+    MY: 'my',
     TRANSACTION: 'transaction',
 };
 
