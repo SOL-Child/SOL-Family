@@ -1,6 +1,7 @@
 package com.accountservice.account;
 
 import com.accountservice.account.dto.request.ConnectReqDto;
+import com.accountservice.account.dto.request.TransactionReqDto;
 import com.accountservice.account.dto.request.TransferReqDto;
 import com.accountservice.account.service.AccountService;
 import com.accountservice.global.dto.BaseResponseBody;
@@ -34,6 +35,14 @@ public class AccountController {
     public ResponseEntity<? extends BaseResponseBody> connect(@RequestHeader(value = "X-JWT-Claim-identification", required = false) String identification,
                                                                   @RequestBody ConnectReqDto connectReqDto) {
         accountService.connectAccount(identification, connectReqDto, "DEPOSIT");
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(0, "Success"));
+    }
+
+    @Operation(summary = "이체", description = "/account/v1/transaction\n\n")
+    @PostMapping("/transaction")
+    public ResponseEntity<? extends BaseResponseBody> connect(@RequestHeader(value = "X-JWT-Claim-identification", required = false) String identification,
+                                                              @RequestBody TransactionReqDto transactionReqDto) {
+        accountService.transaction(identification, transactionReqDto);
         return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(0, "Success"));
     }
 }

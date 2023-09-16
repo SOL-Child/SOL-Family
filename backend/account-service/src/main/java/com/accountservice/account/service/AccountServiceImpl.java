@@ -2,12 +2,12 @@ package com.accountservice.account.service;
 
 import com.accountservice.account.config.RandomWordCombiner;
 import com.accountservice.account.dto.request.ConnectReqDto;
-import com.accountservice.account.entity.Account;
-import com.accountservice.account.entity.BookType;
-import com.accountservice.account.entity.OneTransfer;
+import com.accountservice.account.dto.request.TransactionReqDto;
+import com.accountservice.account.entity.*;
 import com.accountservice.account.exception.TransferCodeException;
 import com.accountservice.account.repository.JpaAccountRepository;
 import com.accountservice.account.repository.JpaOneTransferRepository;
+import com.accountservice.account.repository.JpaTransferRepository;
 import com.accountservice.global.error.ErrorCode;
 import com.accountservice.global.error.exception.BusinessException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,6 +33,7 @@ public class AccountServiceImpl implements AccountService{
     private final RandomWordCombiner randomWordCombiner;
     private final JpaOneTransferRepository jpaOneTransferRepository;
     private final JpaAccountRepository jpaAccountRepository;
+    private final JpaTransferRepository jpaTransferRepository;
 
     @Override
     public void oneTransfer(String identification, String account) throws IOException, InterruptedException {
@@ -82,11 +83,53 @@ public class AccountServiceImpl implements AccountService{
             Account account = Account.builder()
                     .account(connectReqDto.getAccount())
                     .identification(identification)
+                    .balance("1000000")
                     .bookType(BookType.valueOf(bookType))
                     .build();
 
             jpaAccountRepository.save(account);
         }
         throw new TransferCodeException(ErrorCode.TRANSFER_CODE_NOT_EXIST);
+    }
+
+    @Override
+    public void transaction(String identification, TransactionReqDto transactionReqDto) {
+        // 입금 계좌
+        Optional<Account> deposit = jpaAccountRepository.findByAccount(transactionReqDto.getDepositAccount());
+        // 출금 계좌
+        Optional<Account> withdraw = jpaAccountRepository.findByAccount(transactionReqDto.getWithdrawalAccount());
+        if(deposit.isPresent() && withdraw.isPresent()) {
+            String withdrawBal = String.valueOf(Integer.parseInt(withdraw.get().getBalance()) - Integer.parseInt(transactionReqDto.getMoney()));
+            String depositBal = String.valueOf(Integer.parseInt(deposit.get().getBalance()) + Integer.parseInt(transactionReqDto.getMoney()));
+            Transfer transfer = Transfer.builder()
+                    .sender(withdraw.get())
+                    .receiver(deposit.get())
+                    .identification(identification)
+                    .depositMemo(transactionReqDto
+                            .getDepositMemo())
+                    .withdrawMemo(transactionReqDto.getWithdrawalMemo())
+                    .balance(withdrawBal)
+                    .type("지출")
+                    .build();
+
+            jpaTransferRepository.save(transfer);
+
+            Transfer transferBack = Transfer.builder()
+                    .sender(withdraw.get())
+                    .receiver(deposit.get())
+                    .depositMemo(transactionReqDto
+                            .getDepositMemo())
+                    .identification(deposit.get().getIdentification())
+                    .withdrawMemo(transactionReqDto.getWithdrawalMemo())
+                    .balance(depositBal)
+                    .type("수입")
+                    .build();
+
+            jpaTransferRepository.save(transferBack);
+
+            withdraw.get().setBalance(withdrawBal);
+            deposit.get().setBalance(depositBal);
+        }
+
     }
 }

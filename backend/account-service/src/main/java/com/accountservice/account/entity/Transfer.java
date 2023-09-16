@@ -2,13 +2,11 @@ package com.accountservice.account.entity;
 
 import com.accountservice.global.entity.Time;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
@@ -26,6 +24,8 @@ public class Transfer extends Time {
     @JoinColumn(name = "account_id")
     private Account receiver;
 
+    private String identification;
+
     private String amount;
 
     private String depositMemo;
@@ -38,10 +38,11 @@ public class Transfer extends Time {
 
 
     @Builder
-    public Transfer(Account sender, Account receiver, String amount, String depositMemo, String withdrawMemo, String balance, String type) {
+    public Transfer(Account sender, Account receiver, String amount, String identification, String depositMemo, String withdrawMemo, String balance, String type) {
         this.sender = sender;
         this.receiver = receiver;
         this.amount = amount;
+        this.identification = identification;
         this.depositMemo = depositMemo;
         this.withdrawMemo = withdrawMemo;
         this.balance = balance;
