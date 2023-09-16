@@ -12,4 +12,5 @@ public class UserReqDto {
     private String passwordCheck;
     private String phone;
     private UserType userType;
+    private String fcmToken;
 }
