@@ -25,7 +25,7 @@ import java.io.IOException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1")
-@Tag(name = "1. Family API", description = "가족연결 api")
+@Tag(name = "4. Family API", description = "가족연결 api")
 public class FamilyController {
 
     private final UserService userService;

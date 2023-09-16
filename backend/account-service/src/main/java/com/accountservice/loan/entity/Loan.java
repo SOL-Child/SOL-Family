@@ -1,9 +1,9 @@
 package com.accountservice.loan.entity;
 
-import com.accountservice.global.utill.Time;
+
+import com.accountservice.global.entity.Time;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.DialectOverride;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

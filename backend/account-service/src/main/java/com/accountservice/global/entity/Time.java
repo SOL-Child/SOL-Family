@@ -1,4 +1,4 @@
-package com.accountservice.global.utill;
+package com.accountservice.global.entity;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
