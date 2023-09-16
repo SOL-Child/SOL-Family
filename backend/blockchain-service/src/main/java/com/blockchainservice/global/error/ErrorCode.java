@@ -6,8 +6,10 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorCode {
 
-    // 임시
-    ERROR(HttpStatus.BAD_REQUEST, "E-001", "에러메시지"),
+    // 암호화
+    ENCRYPT_ERROR(HttpStatus.BAD_REQUEST, "A-001", "암호화 에러"),
+    DECRYPT_ERROR(HttpStatus.BAD_REQUEST, "A-002", "복호화 에러"),
+    ETHEREUM_NOT_EXIST(HttpStatus.BAD_REQUEST, "A-003" , "계좌가 존재하지 않습니다." ),
 
     ;
 
