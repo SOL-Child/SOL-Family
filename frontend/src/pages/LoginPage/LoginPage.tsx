@@ -73,8 +73,8 @@ const LoginPage = () => {
             const data: ReceiveUserInfo = await LoginAPI.loginUser(userInfo);
             LocalStorageUtil.saveLocalStorage(data);
             navigate('/');
-        } catch (err) {
-            alert(err);
+        } catch (err: any) {
+            alert(err.response.data.dataHeader.resultMessage);
         }
     };
 

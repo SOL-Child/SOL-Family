@@ -25,12 +25,12 @@ const MainContents = () => {
     // }, []);
 
     const testUserInfo: SignedUserInfo = {
-        name: 'name',
-        userType: 'CHILD',
-        family: true,
+        name: '쏠패밀리',
+        userType: 'PARENT',
+        family: false,
         familyCode: 'dfaei545d4faef4a6sd',
         familyCnt: 5,
-        book: true,
+        book: false,
         bankbook: {
             account: 12345678910,
             balance: 30000,

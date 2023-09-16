@@ -156,21 +156,27 @@ const SignupPage = () => {
             if (isPossibleSend) {
                 // req : userInfo
                 // res : accesstoken, user정보
+                const token = await getTokenVal();
+
+                const sendData: UserInfo = {
+                    name: userInfo.name,
+                    password: userInfo.password,
+                    passwordCheck: userInfo.passwordCheck,
+                    phone: userInfo.phone,
+                    userType: userInfo.userType,
+                    fcmToken: token,
+                };
+
+                console.log(sendData);
+
                 try {
-                    const token = await getTokenVal();
-
-                    setUserInfo((prev) => ({
-                        ...prev,
-                        fcmToken: token,
-                    }));
-
-                    const isComplete: boolean = await SignupAPI.registerUser(userInfo);
+                    const isComplete: boolean = await SignupAPI.registerUser(sendData);
                     if (isComplete) {
                         alert('회원 가입되었습니다.');
                         navigate('/login');
                     }
                 } catch (err: any) {
-                    alert(err.response.data.dataHeader.resultMessage);
+                    alert(err);
                 }
             }
         };

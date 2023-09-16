@@ -10,6 +10,8 @@ import LoanRequestPage from './pages/LoanRequestPage/LoanRequestPage';
 import FundPage from './pages/FundPage/FundPage';
 import TransactionPage from './pages/TransactionPage/TransactionPage';
 import AlarmPage from './pages/AlarmPage/AlarmPage';
+import MissionPage from './pages/MissionPage/MissionPage';
+import MyPage from './pages/MyPage/MyPage';
 import './firebase-messaging-sw.js';
 
 function App() {
@@ -25,6 +27,8 @@ function App() {
             <Route path="fund" element={<FundPage />} />
             <Route path="account/transaction" element={<TransactionPage />} />
             <Route path="alarm" element={<AlarmPage />} />
+            <Route path="my" element={<MyPage />} />
+            <Route path="mission" element={<MissionPage />} />
         </Routes>
     );
 }

@@ -18,10 +18,6 @@ const AlarmPage = () => {
             loan: '65',
             message: '당신의 자녀에게서 대출 요청이 발생했습니다.',
         },
-        {
-            loan: '65',
-            message: '당신의 자녀에게서 대출 요청이 발생했습니다.',
-        },
     ];
 
     const testAlarmInfo: AlarmInfo = {
