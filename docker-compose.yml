@@ -8,6 +8,7 @@ services:
     environment:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      JAVA_OPTS: "-Xms256m -Xmx512m -XX:+UseG1GC"
     depends_on:
       - redis
 
@@ -18,13 +19,14 @@ services:
     environment:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      JAVA_OPTS: "-Xms256m -Xmx512m -XX:+UseG1GC"
 
   redis:
     image: "redis:latest"
     ports:
       - "6379:6379"
     environment:
-      - REDIS_PASSWORD= solfamily
+      - REDIS_PASSWORD=solfamily
 
 networks:
   default:
