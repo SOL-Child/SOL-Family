@@ -3,8 +3,10 @@ package com.accountservice.account.service;
 import com.accountservice.account.config.RandomWordCombiner;
 import com.accountservice.account.dto.request.ConnectReqDto;
 import com.accountservice.account.entity.Account;
+import com.accountservice.account.entity.BookType;
 import com.accountservice.account.entity.OneTransfer;
 import com.accountservice.account.exception.TransferCodeException;
+import com.accountservice.account.repository.JpaAccountRepository;
 import com.accountservice.account.repository.JpaOneTransferRepository;
 import com.accountservice.global.error.ErrorCode;
 import com.accountservice.global.error.exception.BusinessException;
@@ -30,6 +32,7 @@ public class AccountServiceImpl implements AccountService{
 
     private final RandomWordCombiner randomWordCombiner;
     private final JpaOneTransferRepository jpaOneTransferRepository;
+    private final JpaAccountRepository jpaAccountRepository;
 
     @Override
     public void oneTransfer(String identification, String account) throws IOException, InterruptedException {
@@ -70,12 +73,19 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public void connectAccount(String identification, ConnectReqDto connectReqDto) {
+    public void connectAccount(String identification, ConnectReqDto connectReqDto, String bookType) {
         Optional<OneTransfer> oneTransfer = jpaOneTransferRepository.findByAccount(connectReqDto.getAccount());
         if (oneTransfer.isPresent()) {
             if(oneTransfer.get().getExp().isBefore(LocalDateTime.now())) throw new TransferCodeException(ErrorCode.TIMEOUT_TRANSFER_CODE);
             if (!oneTransfer.get().getCode().equals(connectReqDto.getMemo()))
                 throw new TransferCodeException(ErrorCode.INVALID_TRANSFER_CODE);
+            Account account = Account.builder()
+                    .account(connectReqDto.getAccount())
+                    .identification(identification)
+                    .bookType(BookType.valueOf(bookType))
+                    .build();
+
+            jpaAccountRepository.save(account);
         }
         throw new TransferCodeException(ErrorCode.TRANSFER_CODE_NOT_EXIST);
     }

@@ -22,12 +22,14 @@ public class Account {
 
     private String identification;
 
-    private String blockChain;
+    @Enumerated(value = EnumType.STRING)
+    private BookType bookType;
+
 
     @Builder
-    public Account(String account, String identification, String blockChain) {
+    public Account(String account, String identification, BookType bookType) {
         this.account = account;
         this.identification = identification;
-        this.blockChain = blockChain;
+        this.bookType = bookType;
     }
 }

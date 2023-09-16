@@ -36,10 +36,9 @@ public class Transfer extends Time {
 
     private String type;
 
-    private String transaction_hash;
 
     @Builder
-    public Transfer(Account sender, Account receiver, String amount, String depositMemo, String withdrawMemo, String balance, String type, String transaction_hash) {
+    public Transfer(Account sender, Account receiver, String amount, String depositMemo, String withdrawMemo, String balance, String type) {
         this.sender = sender;
         this.receiver = receiver;
         this.amount = amount;
@@ -47,6 +46,5 @@ public class Transfer extends Time {
         this.withdrawMemo = withdrawMemo;
         this.balance = balance;
         this.type = type;
-        this.transaction_hash = transaction_hash;
     }
 }

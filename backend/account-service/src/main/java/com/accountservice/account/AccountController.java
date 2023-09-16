@@ -33,7 +33,7 @@ public class AccountController {
     @PostMapping("/connect")
     public ResponseEntity<? extends BaseResponseBody> connect(@RequestHeader(value = "X-JWT-Claim-identification", required = false) String identification,
                                                                   @RequestBody ConnectReqDto connectReqDto) {
-        accountService.connectAccount(identification, connectReqDto);
+        accountService.connectAccount(identification, connectReqDto, "DEPOSIT");
         return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(0, "Success"));
     }
 }
