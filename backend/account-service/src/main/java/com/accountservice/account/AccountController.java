@@ -1,5 +1,6 @@
 package com.accountservice.account;
 
+import com.accountservice.account.dto.request.ConnectReqDto;
 import com.accountservice.account.dto.request.TransferReqDto;
 import com.accountservice.account.service.AccountService;
 import com.accountservice.global.dto.BaseResponseBody;
@@ -25,6 +26,14 @@ public class AccountController {
     public ResponseEntity<? extends BaseResponseBody> oneTransfer(@RequestHeader(value = "X-JWT-Claim-identification", required = false) String identification,
                                                                   @RequestBody TransferReqDto transferReqDto) throws IOException, InterruptedException {
         accountService.oneTransfer(identification, transferReqDto.getAccount());
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(0, "Success"));
+    }
+
+    @Operation(summary = "계좌 연결", description = "/account/v1/connect\n\n")
+    @PostMapping("/connect")
+    public ResponseEntity<? extends BaseResponseBody> connect(@RequestHeader(value = "X-JWT-Claim-identification", required = false) String identification,
+                                                                  @RequestBody ConnectReqDto connectReqDto) {
+        accountService.connectAccount(identification, connectReqDto);
         return ResponseEntity.status(HttpStatus.OK).body(BaseResponseBody.of(0, "Success"));
     }
 }

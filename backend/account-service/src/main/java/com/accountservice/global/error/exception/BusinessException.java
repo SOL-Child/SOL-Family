@@ -1,6 +1,6 @@
 package com.accountservice.global.error.exception;
 
-import com.authenticationservice.global.error.ErrorCode;
+import com.accountservice.global.error.ErrorCode;
 import lombok.Getter;
 
 @Getter

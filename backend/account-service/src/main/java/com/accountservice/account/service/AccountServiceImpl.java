@@ -1,8 +1,13 @@
 package com.accountservice.account.service;
 
 import com.accountservice.account.config.RandomWordCombiner;
+import com.accountservice.account.dto.request.ConnectReqDto;
 import com.accountservice.account.entity.Account;
 import com.accountservice.account.entity.OneTransfer;
+import com.accountservice.account.exception.TransferCodeException;
+import com.accountservice.account.repository.JpaOneTransferRepository;
+import com.accountservice.global.error.ErrorCode;
+import com.accountservice.global.error.exception.BusinessException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +18,10 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service("accountService")
 @Transactional
@@ -22,6 +29,7 @@ import java.util.Map;
 public class AccountServiceImpl implements AccountService{
 
     private final RandomWordCombiner randomWordCombiner;
+    private final JpaOneTransferRepository jpaOneTransferRepository;
 
     @Override
     public void oneTransfer(String identification, String account) throws IOException, InterruptedException {
@@ -59,5 +67,16 @@ public class AccountServiceImpl implements AccountService{
                     .identification(identification)
                     .build();
         }
+    }
+
+    @Override
+    public void connectAccount(String identification, ConnectReqDto connectReqDto) {
+        Optional<OneTransfer> oneTransfer = jpaOneTransferRepository.findByAccount(connectReqDto.getAccount());
+        if (oneTransfer.isPresent()) {
+            if(oneTransfer.get().getExp().isBefore(LocalDateTime.now())) throw new TransferCodeException(ErrorCode.TIMEOUT_TRANSFER_CODE);
+            if (!oneTransfer.get().getCode().equals(connectReqDto.getMemo()))
+                throw new TransferCodeException(ErrorCode.INVALID_TRANSFER_CODE);
+        }
+        throw new TransferCodeException(ErrorCode.TRANSFER_CODE_NOT_EXIST);
     }
 }
