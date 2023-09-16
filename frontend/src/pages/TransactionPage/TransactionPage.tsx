@@ -4,33 +4,260 @@ import ContentsFrame from '../../common/components/ContentsFrame/ContentsFrame';
 import Pages from '../../common/constants/Pages';
 import backSrc from '../../common/images/SF_back_icon_white.png';
 
+import { TransactionInfo, TransactionDetailInfo } from '../../common/types/transaction.types';
 import styles from './TransactionPage.module.css';
 import { useNavigate } from 'react-router-dom';
+import ToggleBox from '../../common/components/ToggleBox/ToggleBox';
+import Chart from '../../features/Account/components/Chart/Chart';
 
+// 전체 거래내역 UI
 const AllTransactionInfo = () => {
-    const transactionInfo = [];
+    const transactionList: TransactionInfo[] = [
+        {
+            account: '110184999999',
+            balance: '331551',
+            name: '김신한',
+            transactionCount: '1',
+            transactionDetail: [
+                {
+                    date: '20230318',
+                    summary: '이자',
+                    withdrawalMoney: '3500',
+                    depositMoney: '0',
+                    description: '김밥 천국',
+                    balance: '331551',
+                },
+                {
+                    date: '20230318',
+                    summary: '이자',
+                    withdrawalMoney: '3500',
+                    depositMoney: '0',
+                    description: '김밥 천국',
+                    balance: '331551',
+                },
+            ],
+        },
+    ];
+
+    const transactionDetailList: TransactionDetailInfo[] = [
+        {
+            date: '20230318',
+            summary: '이자',
+            withdrawalMoney: '3500',
+            depositMoney: '0',
+            description: '김밥 천국',
+            balance: '331551',
+        },
+        {
+            date: '20230318',
+            summary: '이자',
+            withdrawalMoney: '3500',
+            depositMoney: '0',
+            description: '김밥 천국',
+            balance: '331551',
+        },
+    ];
 
     return (
         <>
-            <div>
+            <div className={styles.totalInfo}>
                 <div>전체 거래 내역</div>
                 <div>총 2건</div>
             </div>
-            <div>{}</div>
+            <div className={styles.transactionBox}>
+                {
+                    // 전체 거래 리스트'
+                    transactionDetailList.map((ele, idx) => {
+                        return (
+                            <div className={styles.accountItem} key={idx}>
+                                <div className={styles.top}>
+                                    <div>{ele.description}</div>
+                                    <div>
+                                        {+ele.depositMoney > 0 ? (
+                                            <span style={{ color: '#0046FF' }}>수입</span>
+                                        ) : (
+                                            <span style={{ color: '#ff0000' }}>지출</span>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className={styles.box}>
+                                    <div>거래 후 잔액</div>
+                                    <div>{ele.balance}</div>
+                                </div>
+                                <div className={styles.box}>
+                                    <div>거래일</div>
+                                    <div>{ele.date}</div>
+                                </div>
+                                <div className={styles.box}>
+                                    <div>거래 금액</div>
+                                    <div>{+ele.depositMoney === 0 ? ele.withdrawalMoney : ele.depositMoney}</div>
+                                </div>
+                            </div>
+                        );
+                    })
+                }
+            </div>
         </>
     );
 };
 
+// 지출 내역
 const ExpenditureInfo = () => {
-    return <div>지출 내역</div>;
+    const [isSelected, setSelected] = useState<string>('카테고리');
+
+    // 토글 해야함
+    const transactionList: TransactionInfo[] = [
+        {
+            account: '110184999999',
+            balance: '331551',
+            name: '김신한',
+            transactionCount: '1',
+            transactionDetail: [
+                {
+                    date: '20230318',
+                    summary: '이자',
+                    withdrawalMoney: '3500',
+                    depositMoney: '0',
+                    description: '김밥 천국',
+                    balance: '331551',
+                },
+                {
+                    date: '20230318',
+                    summary: '이자',
+                    withdrawalMoney: '3500',
+                    depositMoney: '0',
+                    description: '김밥 천국',
+                    balance: '331551',
+                },
+            ],
+        },
+    ];
+
+    const transactionDetailList: TransactionDetailInfo[] = [
+        {
+            date: '20230318',
+            summary: '이자',
+            withdrawalMoney: '3500',
+            depositMoney: '0',
+            description: '김밥 천국',
+            balance: '331551',
+        },
+        {
+            date: '20230318',
+            summary: '이자',
+            withdrawalMoney: '3500',
+            depositMoney: '0',
+            description: '김밥 천국',
+            balance: '331551',
+        },
+    ];
+
+    const categoryList = {
+        eat: {
+            percent: 45,
+            money: 45000,
+        },
+        game: {
+            percent: 30,
+            money: 30000,
+        },
+        living: {
+            percent: 20,
+            money: 45000,
+        },
+        trans: {
+            percent: 10,
+            money: 45000,
+        },
+        etc: {
+            percent: 45,
+            money: 45000,
+        },
+    };
+
+    const color = ['#FFCBE7', '#8CCFFF', '#B7FF8C', '#DEDEDE', '#fff587'];
+
+    return (
+        <>
+            <div className={styles.totalInfo}>
+                <div>지출 내역</div>
+                <div>총 2건</div>
+            </div>
+            <div className={styles.transactionBox}>
+                {
+                    // 전체 거래 리스트'
+                    isSelected === '상세내역' ? (
+                        transactionDetailList.map((ele, idx) => {
+                            return (
+                                <div className={styles.accountItem} key={idx}>
+                                    <div className={styles.top}>
+                                        <div>{ele.description}</div>
+                                        <div>
+                                            {+ele.depositMoney > 0 ? (
+                                                <span style={{ color: '#0046FF' }}>수입</span>
+                                            ) : (
+                                                <span style={{ color: '#ff0000' }}>지출</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <div className={styles.box}>
+                                        <div>거래 후 잔액</div>
+                                        <div>{ele.balance}</div>
+                                    </div>
+                                    <div className={styles.box}>
+                                        <div>거래일</div>
+                                        <div>{ele.date}</div>
+                                    </div>
+                                    <div className={styles.box}>
+                                        <div>거래 금액</div>
+                                        <div>{+ele.depositMoney === 0 ? ele.withdrawalMoney : ele.depositMoney}</div>
+                                    </div>
+                                </div>
+                            );
+                        })
+                    ) : (
+                        <>
+                            <div className={styles.chart}>
+                                <Chart data={categoryList} />
+                            </div>
+                            <div className={styles.categorySummary}>
+                                {Object.entries(categoryList).map(([key, value], idx) => {
+                                    return (
+                                        <div className={styles.categoryItem} key={idx}>
+                                            <div style={{ backgroundColor: `${color[idx]}` }}></div>
+                                            <div>
+                                                {key == 'eat'
+                                                    ? '식비'
+                                                    : key === 'game'
+                                                    ? '게임'
+                                                    : key === 'living'
+                                                    ? '생활'
+                                                    : key === 'trans'
+                                                    ? '교통'
+                                                    : '기타'}
+                                            </div>
+                                            <div>{value.percent}%</div>
+                                            <div>{value.money} 원</div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </>
+                    )
+                }
+            </div>
+            {/* 토글 박스 추가 */}
+            <ToggleBox selected={isSelected} setSelected={setSelected} firstVal={'카테고리'} secondVal={'상세내역'} />
+        </>
+    );
 };
 
 const TransactionPage = () => {
     const navigate = useNavigate();
-    const [selectedValue, setSelectedValue] = useState<string | 'expenditure' | 'all'>('all');
+    const [selectedValue, setSelectedValue] = useState<string | null>('all');
     let contents: JSX.Element | null = null;
 
-    if (selectedValue === 'expenditure') {
+    if (selectedValue === 'all') {
         contents = <AllTransactionInfo />;
     } else {
         contents = <ExpenditureInfo />;

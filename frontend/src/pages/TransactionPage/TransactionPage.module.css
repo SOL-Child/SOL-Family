@@ -88,3 +88,98 @@
 .unselected {
     color: rgba(255, 255, 255, 0.829);
 }
+
+.totalInfo {
+    width: calc(100% - 20px);
+    height: 60px;
+    padding: 10px;
+    padding-left: 20px;
+}
+
+.totalInfo > div:nth-child(1) {
+    font-family: 'LINESeedKr-Bd';
+    font-size: 20px;
+    padding-top: 10px;
+}
+
+.transactionBox {
+    width: 100%;
+    padding: 10px 0px 0px;
+}
+
+.accountItem {
+    width: calc(100% - 40px);
+    margin: 10px;
+    padding:20px 10px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+}
+
+.top {
+    width: calc(100% -20px);
+    height: 30px;
+    margin: 0px 10px;
+    border-bottom: 1px solid rgba(139, 139, 139, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 0px;
+}
+
+.top > div:nth-child(1) {
+    font-family: 'LINESeedKr-Bd';
+    font-size: 18px;
+}
+
+.box {
+    width: calc(100% -20px);
+    height: 30px;
+    margin: 0px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 0px;
+    color: #797979;
+}
+
+.box > div:nth-child(1) {
+    font-family: 'LINESeedKr-Bd';
+}
+
+.chart {
+    width: 280px;
+    height: 280px;
+    margin: 0 auto;
+    border-radius: 300px;
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.08);   
+}
+
+.categorySummary {
+    padding-top: 20px;
+}
+
+.categoryItem {
+    width: calc(100% - 30px);
+    height: 45px;
+    margin: 0 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 2fr;
+    place-items: center;
+}
+
+.categoryItem div:nth-child(1) {
+    width: 30px;
+    height: 30px;
+    border-radius: 7px;
+}
+
+.categoryItem div:nth-child(2) {
+    font-family: 'LINESeedKr-Bd';
+    color: #424242;
+}
+
+.categoryItem div:nth-child(3) {
+    color: #424242;
+}
