@@ -1,7 +1,7 @@
 package com.accountservice.global.error;
 
-import com.authenticationservice.global.dto.BaseResponseBody;
-import com.authenticationservice.global.error.exception.BusinessException;
+import com.accountservice.global.dto.BaseResponseBody;
+import com.accountservice.global.error.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
