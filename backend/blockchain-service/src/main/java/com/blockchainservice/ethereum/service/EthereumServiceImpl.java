@@ -11,6 +11,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.*;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameter;
+import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.response.EthBlock;
+import org.web3j.protocol.core.methods.response.EthGetBalance;
+import org.web3j.protocol.core.methods.response.Transaction;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.RawTransactionManager;
@@ -19,6 +24,10 @@ import org.web3j.tx.Transfer;
 import org.web3j.utils.Convert;
 
 import java.math.BigInteger;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service("ethereumService")
 @Transactional
@@ -69,6 +78,12 @@ public class EthereumServiceImpl extends AESEncryption implements EthereumServic
         return transactionReceipt.getTransactionHash();
     }
 
+    // 계좌 잔액 조회
+    public BigInteger getBalance(String address) throws Exception {
+        EthGetBalance ethGetBalance = web3j.ethGetBalance(address, DefaultBlockParameterName.LATEST).send();
+        return ethGetBalance.getBalance();
+    }
+
     private Ethereum findByIdentification(String identification) {
         return jpaEthereumRepository.findByIdentification(identification)
                 .orElseThrow(() -> new InvalidEthereumException(ErrorCode.ETHEREUM_NOT_EXIST));
@@ -78,6 +93,84 @@ public class EthereumServiceImpl extends AESEncryption implements EthereumServic
 
     private BigInteger convertKRWToEth(BigInteger krwAmount) {
         return krwAmount.divide(FIXED_EXCHANGE_RATE);
+    }
+
+    public List<Transaction> getMonthlyTransactions(String address, int year, int month) throws Exception {
+        List<Transaction> transactions = new ArrayList<>();
+
+        LocalDateTime startOfMonth = LocalDateTime.of(year, month, 1, 0, 0, 0);
+        LocalDateTime endOfMonth = startOfMonth.plusMonths(1);
+
+        long startTimestamp = startOfMonth.atZone(ZoneId.systemDefault()).toEpochSecond();
+        long endTimestamp = endOfMonth.atZone(ZoneId.systemDefault()).toEpochSecond();
+
+        BigInteger startBlock = getBlockNumberByTimestamp(startTimestamp);
+        BigInteger endBlock = getBlockNumberByTimestamp(endTimestamp);
+
+        while (startBlock.compareTo(endBlock) <= 0) {
+            EthBlock ethBlock = web3j.ethGetBlockByNumber(DefaultBlockParameter.valueOf(startBlock), true).send();
+
+            for (EthBlock.TransactionResult transactionResult : ethBlock.getResult().getTransactions()) {
+                Transaction tx = (Transaction) transactionResult.get();
+
+                if (tx.getFrom().equalsIgnoreCase(address) || tx.getTo().equalsIgnoreCase(address)) {
+                    transactions.add(tx);
+                }
+            }
+
+            startBlock = startBlock.add(BigInteger.ONE);
+        }
+
+        return transactions;
+    }
+
+    public BigInteger getBlockNumberByTimestamp(long targetTimestamp) throws Exception {
+        BigInteger startBlock = BigInteger.ZERO;
+        BigInteger endBlock = web3j.ethBlockNumber().send().getBlockNumber();
+
+        while (startBlock.compareTo(endBlock) <= 0) {
+            BigInteger midBlock = startBlock.add(endBlock).divide(BigInteger.TWO);
+            EthBlock ethBlock = web3j.ethGetBlockByNumber(DefaultBlockParameter.valueOf(midBlock), false).send();
+
+            long blockTimestamp = ethBlock.getBlock().getTimestamp().longValueExact();
+
+            if (blockTimestamp < targetTimestamp) {
+                startBlock = midBlock.add(BigInteger.ONE);
+            } else if (blockTimestamp > targetTimestamp) {
+                endBlock = midBlock.subtract(BigInteger.ONE);
+            } else {
+                return midBlock;
+            }
+        }
+
+        return startBlock;
+    }
+
+
+    public List<Transaction> getIncomeTransactions(String address, int year, int month) throws Exception {
+        List<Transaction> allTransactions = getMonthlyTransactions(address, year, month);
+        List<Transaction> incomeTransactions = new ArrayList<>();
+
+        for (Transaction tx : allTransactions) {
+            if (tx.getTo().equalsIgnoreCase(address)) {
+                incomeTransactions.add(tx);
+            }
+        }
+
+        return incomeTransactions;
+    }
+
+    public List<Transaction> getExpenseTransactions(String address, int year, int month) throws Exception {
+        List<Transaction> allTransactions = getMonthlyTransactions(address, year, month);
+        List<Transaction> expenseTransactions = new ArrayList<>();
+
+        for (Transaction tx : allTransactions) {
+            if (tx.getFrom().equalsIgnoreCase(address)) {
+                expenseTransactions.add(tx);
+            }
+        }
+
+        return expenseTransactions;
     }
 
 
