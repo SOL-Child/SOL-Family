@@ -1,7 +1,10 @@
 package com.blockchainservice.ethereum.service;
 
+import com.blockchainservice.ethereum.entity.BookType;
 import com.blockchainservice.ethereum.entity.Ethereum;
+import com.blockchainservice.ethereum.exception.InvalidEthereumException;
 import com.blockchainservice.ethereum.repository.JpaEthereumRepository;
+import com.blockchainservice.global.error.ErrorCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +23,7 @@ import java.math.BigInteger;
 @Service("ethereumService")
 @Transactional
 @RequiredArgsConstructor
-public class EthereumServiceImpl extends Encrypt implements EthereumService {
+public class EthereumServiceImpl extends AESEncryption implements EthereumService {
 
     private final JpaEthereumRepository jpaEthereumRepository;
 
@@ -32,19 +35,17 @@ public class EthereumServiceImpl extends Encrypt implements EthereumService {
 
     @Override
     @Transactional
-    public String createAccount(String identification, String realAccount) throws Exception {
+    public String createAccount(String identification, String realAccount, String bookType) throws Exception {
         ECKeyPair keyPair = Keys.createEcKeyPair();
-        String salt = getSALT();
-        String privateKey = hashing(keyPair.getPrivateKey().toByteArray(), salt);
 
         WalletFile wallet = Wallet.createStandard(realAccount, keyPair);
 
         Ethereum ethereum = Ethereum.builder()
                 .address("0x" + wallet.getAddress())
                 .identification(identification)
-                .privateKey(privateKey)
-                .salt(salt)
+                .privateKey(encrypt(keyPair.getPrivateKey().toString()))
                 .realAccount(realAccount)
+                .bookType(BookType.valueOf(bookType))
                 .build();
 
         jpaEthereumRepository.save(ethereum);
@@ -55,14 +56,21 @@ public class EthereumServiceImpl extends Encrypt implements EthereumService {
     // 이체
     @Override
     @Transactional
-    public String transfer(String fromPrivateKey, String toAddress, BigInteger amount) throws Exception {
-        Credentials credentials = Credentials.create(fromPrivateKey);
+    public String transfer(String identification, String toAddress, BigInteger amount) throws Exception {
+
+        Ethereum ethereum = findByIdentification(identification);
+        Credentials credentials = Credentials.create(decrypt(ethereum.getPrivateKey()));
         TransactionManager transactionManager = new RawTransactionManager(web3j, credentials);
         Transfer transfer = new Transfer(web3j, transactionManager);
 
         // 이체 실행
         TransactionReceipt transactionReceipt = transfer.sendFunds(toAddress, Convert.toWei(String.valueOf(amount), Convert.Unit.ETHER), Convert.Unit.WEI).send();
         return transactionReceipt.getTransactionHash();
+    }
+
+    private Ethereum findByIdentification(String identification) {
+        return jpaEthereumRepository.findByIdentification(identification)
+                .orElseThrow(() -> new InvalidEthereumException(ErrorCode.ETHEREUM_NOT_EXIST));
     }
 
 }
