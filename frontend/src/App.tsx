@@ -9,6 +9,7 @@ import AccountConnectPage from './pages/AccountConnectPage/AccountConnectPage';
 import LoanRequestPage from './pages/LoanRequestPage/LoanRequestPage';
 import FundPage from './pages/FundPage/FundPage';
 import AlarmPage from './pages/AlarmPage/AlarmPage';
+import './firebase-messaging-sw.js';
 
 function App() {
     return (
