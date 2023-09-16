@@ -30,3 +30,17 @@ export interface UserFamilyInfo {
     groupName: string;
     groupCnt: string;
 }
+
+// 가입된 사용자 정보
+export interface SignedUserInfo {
+    name: string;
+    userType: string;
+    family: boolean;
+    familyCode?: string;
+    familyCnt?: number;
+    book: boolean;
+    bankbook?: {
+        account: number;
+        balance: number;
+    };
+}
