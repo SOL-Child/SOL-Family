@@ -64,7 +64,8 @@ public class EthereumServiceImpl extends AESEncryption implements EthereumServic
         Transfer transfer = new Transfer(web3j, transactionManager);
 
         // 이체 실행
-        TransactionReceipt transactionReceipt = transfer.sendFunds(toAddress, Convert.toWei(String.valueOf(amount), Convert.Unit.ETHER), Convert.Unit.WEI).send();
+        BigInteger ethAmount = convertKRWToEth(amount);
+        TransactionReceipt transactionReceipt = transfer.sendFunds(toAddress, Convert.toWei(String.valueOf(ethAmount), Convert.Unit.ETHER), Convert.Unit.WEI).send();
         return transactionReceipt.getTransactionHash();
     }
 
@@ -72,5 +73,12 @@ public class EthereumServiceImpl extends AESEncryption implements EthereumServic
         return jpaEthereumRepository.findByIdentification(identification)
                 .orElseThrow(() -> new InvalidEthereumException(ErrorCode.ETHEREUM_NOT_EXIST));
     }
+
+    private static final BigInteger FIXED_EXCHANGE_RATE = BigInteger.valueOf(2200000); // 1 ETH = 3,000,000 원
+
+    private BigInteger convertKRWToEth(BigInteger krwAmount) {
+        return krwAmount.divide(FIXED_EXCHANGE_RATE);
+    }
+
 
 }
