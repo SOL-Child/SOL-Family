@@ -18,19 +18,27 @@ pipeline {
             steps {
                 withCredentials([
                     file(credentialsId: 'authentication-service-application-dev.yml', variable: 'AUTHFILE'),
+                    file(credentialsId: 'account-service-application-dev.yml', variable: 'ACCOUNTFILE'),
                     file(credentialsId: 'solfamily-firebase.json', variable: 'FIREBASE')
                 ]) {
                     script {
                         sh 'cp $AUTHFILE backend/authentication-service/src/main/resources/application-dev.yml'
+                        sh 'cp $ACCOUNTFILE backend/account-service/src/main/resources/application-dev.yml'
                         sh 'mkdir backend/authentication-service/src/main/resources/firebase'
                         sh 'cp $FIREBASE backend/authentication-service/src/main/resources/firebase/solfamily-firebase.json'
                     }
                 }
                 sh 'chmod +x backend/authentication-service/gradlew'
+                sh 'chmod +x backend/account-service/gradlew'
 
                 script {
                     docker.image('authentication-service').inside("-v gradle-${env.BUILD_TAG}:/root/.gradle") {
                         sh 'cd backend/authentication-service && ./gradlew clean build -x test'
+                    }
+                }
+                script {
+                    docker.image('account-service').inside("-v gradle-${env.BUILD_TAG}:/root/.gradle") {
+                        sh 'cd backend/account-service && ./gradlew clean build -x test'
                     }
                 }
             }
@@ -48,6 +56,21 @@ pipeline {
                         sh 'docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASS'
                         sh 'docker tag authentication-service:latest kathyleesh/authentication-service:latest'
                         sh 'docker push kathyleesh/authentication-service:latest'
+                    }
+                }
+            }
+        }
+
+        stage('Docker build and push account-service') {
+            steps {
+                withCredentials([
+                    usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASS')
+                ]) {
+                    dir('backend/account-service') {
+                        sh 'docker build -t account-service:latest .'
+                        sh 'docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASS'
+                        sh 'docker tag account-service:latest kathyleesh/account-service:latest'
+                        sh 'docker push kathyleesh/account-service:latest'
                     }
                 }
             }
