@@ -9,6 +9,7 @@ const Pages = {
     FUND: 'fund',
     ALARM: 'alarm',
     MY: 'my',
+    TRANSACTION: 'transaction',
 };
 
 export default Pages;
