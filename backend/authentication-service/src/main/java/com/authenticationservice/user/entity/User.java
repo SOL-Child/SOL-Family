@@ -30,6 +30,8 @@ public class User extends Time implements UserDetails{
 
     private String phone;
 
+    private String fcmToken;
+
     @Enumerated(value = EnumType.STRING)
     private UserType userType;
 
@@ -40,13 +42,14 @@ public class User extends Time implements UserDetails{
     private Family family;
 
     @Builder
-    public User(String identification, String name, String password, String phone, UserType userType, Boolean active) {
+    public User(String identification, String name, String password, String phone, UserType userType, Boolean active, String fcmToken) {
         this.identification = identification;
         this.name = name;
         this.password = password;
         this.phone = phone;
         this.userType = userType;
         this.active = active;
+        this.fcmToken = fcmToken;
     }
 
     @Override
@@ -84,5 +87,4 @@ public class User extends Time implements UserDetails{
     public boolean isEnabled() {
         return false;
     }
-
 }
