@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './AccountBox.module.css';
+import { SignedUserInfo } from '../../../../common/types/user.types';
 
-const AccountBox = (userType: any) => {
+const AccountBox = ({ userInfo }: { userInfo: SignedUserInfo }) => {
     const navigate = useNavigate();
-    const isAccountExist = false; // 통장이 존재하는지 확인하는 flag
 
     const handleCreateAccount = () => {
         if (window.confirm('계좌 개설을 위해 신한 쏠(SOL)로 이동하시겠습니까?')) {
@@ -25,7 +25,7 @@ const AccountBox = (userType: any) => {
         navigate('/account/transfer');
     };
 
-    if (!isAccountExist) {
+    if (!userInfo.book) {
         return (
             <div className={styles.AccountBox}>
                 <div className={[styles.title, styles.lg].join(' ')}>연결된 계좌가 없어요</div>
@@ -46,13 +46,13 @@ const AccountBox = (userType: any) => {
         <div className={styles.AccountBox}>
             <div className={styles.accountTopBox}>
                 <div>
-                    <div className={styles.title}>쏠차일드의 통장</div>
-                    <div className={styles.accountNum}>123-45-678910</div>
+                    <div className={styles.title}>{userInfo.name}의 통장</div>
+                    <div className={styles.accountNum}>{userInfo.bankbook?.account}</div>
                 </div>
                 <div className={styles.accountType}>입출금 통장</div>
             </div>
             <div className={styles.accountBtBox}>
-                <div className={styles.accountCharge}>30,000원</div>
+                <div className={styles.accountCharge}>{userInfo.bankbook?.balance}원</div>
                 <div className={styles.buttonBox}>
                     <button onClick={handleSeeAccount}>내역 확인</button>
                     <button onClick={handleSendMoney}>이체하기</button>

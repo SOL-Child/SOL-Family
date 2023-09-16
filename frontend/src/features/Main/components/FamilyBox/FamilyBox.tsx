@@ -2,27 +2,18 @@ import { useState } from 'react';
 import QRScanner from '../QRScanner/QRScanner';
 import QRModal from '../QRModal/QRModal';
 import User from '../../../../common/constants/User';
-import { UserFamilyInfo } from '../../../../common/types/user.types';
+import { SignedUserInfo } from '../../../../common/types/user.types';
 import styles from './FamilyBox.module.css';
 
-const FamilyBox = (userType: any) => {
-    const unConnected = true; // 연결되어있는지 아닌지 판단하는 flag
-    const testUserType: string = User.PARENT;
-
+const FamilyBox = ({ userInfo }: { userInfo: SignedUserInfo }) => {
     const [isOpenQrScanModal, setIsOpenQrScanModal] = useState<boolean>(false); // qr 스캔 모달
     const [isQrScan, setIsQrScan] = useState<boolean>(false);
 
-    // back에서 받아온 사용자 가족 정보
-    const familyInfo: UserFamilyInfo = {
-        groupName: '🚀 우리는 쏠패밀리',
-        groupCnt: '4',
-    };
-
-    if (unConnected) {
+    if (!userInfo.family) {
         return (
             <div className={styles.FamilyBox}>
                 <div>연결된 가족 모임이 없어요</div>
-                {testUserType === User.CHILD ? (
+                {userInfo.userType === User.CHILD ? (
                     <div className={styles.qrBox}>
                         <div>
                             부모님이 생성한 QR 코드를 스캔해
@@ -82,8 +73,8 @@ const FamilyBox = (userType: any) => {
 
     return (
         <div className={styles.FamilyBox}>
-            <span className={styles.groupName}>{familyInfo.groupName}</span>&nbsp;&nbsp;
-            <span style={{ color: '#FDC500' }}>{familyInfo.groupCnt}</span>
+            <span className={styles.groupName}>🚀 우리는 쏠패밀리</span>&nbsp;&nbsp;
+            <span style={{ color: '#FDC500' }}>{userInfo.familyCnt}</span>
             {isOpenQrScanModal && (
                 <QRModal
                     width="280px"
