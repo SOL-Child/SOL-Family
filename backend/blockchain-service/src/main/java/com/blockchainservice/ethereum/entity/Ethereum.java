@@ -22,16 +22,17 @@ public class Ethereum extends Time {
 
     private String privateKey;
 
-    private String salt;
-
     private String realAccount;
 
+    @Enumerated(value = EnumType.STRING)
+    private BookType bookType;
+
     @Builder
-    public Ethereum(String identification, String address, String privateKey, String salt, String realAccount) {
+    public Ethereum(String identification, String address, String privateKey, String realAccount, BookType bookType) {
         this.identification = identification;
         this.address = address;
         this.privateKey = privateKey;
-        this.salt = salt;
         this.realAccount = realAccount;
+        this.bookType = bookType;
     }
 }
