@@ -20,12 +20,7 @@ export interface SendUserInfo {
 }
 
 // login/res
-/**
- * @todo: 사용자 정보 추가
- */
 export interface ReceiveUserInfo {
-    name: string;
-    userType: 'CHILD' | 'PARENT';
     accessToken: string;
     refreshToken: string;
 }

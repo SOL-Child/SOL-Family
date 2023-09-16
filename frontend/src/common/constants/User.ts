@@ -1,6 +1,6 @@
 const User = {
-    CHILD: 'child',
-    PARENT: 'parent',
+    CHILD: 'CHILD',
+    PARENT: 'PARENT',
 };
 
 export default User;

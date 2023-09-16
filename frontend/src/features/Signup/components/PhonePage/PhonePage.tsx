@@ -20,7 +20,7 @@ const PhonePage = ({
     const [certifNum, setCertifNum] = useState<string | undefined>(undefined); // 인증 번호
     const [isExpired, setIsExpired] = useState<boolean>(false); // 인증 번호 만료 or 실패 여부
     const [isCheckReceive, setIsCheckReceive] = useState<boolean>(false); // 인증번호 받기 체크 여부
-    const [isCorrectCertifNum, setIsCorrectCertifNum] = useState<boolean>(true); // 인증번호 성공 여부
+    const [isCorrectCertifNum, setIsCorrectCertifNum] = useState<boolean>(false); // 인증번호 성공 여부
 
     const certifBtn = useRef<HTMLButtonElement | null>(null);
     const certifChkBtn = useRef<HTMLButtonElement | null>(null);

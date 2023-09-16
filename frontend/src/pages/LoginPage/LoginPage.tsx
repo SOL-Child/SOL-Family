@@ -8,7 +8,6 @@ import LoginAPI from '../../features/Login/apis/LoginAPI';
 import LocalStorageUtil from '../../features/Login/utils/LocalStorageUtil';
 import { ReceiveUserInfo, SendUserInfo } from '../../common/types/user.types';
 
-import Pages from '../../common/constants/Pages';
 import phoneSrc from '../../common/images/SF_phone_icon.png';
 import pwSrc from '../../common/images/SF_password_icon.png';
 
@@ -73,6 +72,7 @@ const LoginPage = () => {
         try {
             const data: ReceiveUserInfo = await LoginAPI.loginUser(userInfo);
             LocalStorageUtil.saveLocalStorage(data);
+            navigate('/');
         } catch (err) {
             alert(err);
         }
