@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Modal from '../../../../common/components/Modal/Modal';
 import styles from './QRModal.module.css';
 import QrcodeAPI from '../../apis/QrcodeAPI';
+import axios from 'axios';
 
 const QRModal = ({
     width,
@@ -18,20 +19,17 @@ const QRModal = ({
 
     // qr코드 생성하는 함수
     const createQRCode = async () => {
-        // @todo: url 넣기
         try {
-            const url: Blob = await QrcodeAPI.createQrImage('');
-
-            // blob type의 값을 이미지 주소로 변환하여 저장
+            const res: Blob = await QrcodeAPI.createQrImage();
             const windowUrl = window.URL || window.webkitURL;
-            setQrUrl(windowUrl.createObjectURL(url));
+            setQrUrl(windowUrl.createObjectURL(res));
         } catch (err) {
             alert(err);
         }
     };
 
     useEffect(() => {
-        // createQRCode();
+        createQRCode();
     }, []);
 
     return (

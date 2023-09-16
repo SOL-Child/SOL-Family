@@ -1,23 +1,21 @@
 import { useState } from 'react';
+import QRScanner from '../QRScanner/QRScanner';
+import QRModal from '../QRModal/QRModal';
 import User from '../../../../common/constants/User';
 import { UserFamilyInfo } from '../../../../common/types/user.types';
-import QRModal from '../QRModal/QRModal';
 import styles from './FamilyBox.module.css';
 
 const FamilyBox = (userType: any) => {
     const unConnected = true; // 연결되어있는지 아닌지 판단하는 flag
     const testUserType: string = User.PARENT;
 
-    const [isOpenQrScanModal, setIsOpenQrScanModal] = useState(false); // qr 스캔 모달
+    const [isOpenQrScanModal, setIsOpenQrScanModal] = useState<boolean>(false); // qr 스캔 모달
+    const [isQrScan, setIsQrScan] = useState<boolean>(false);
 
     // back에서 받아온 사용자 가족 정보
     const familyInfo: UserFamilyInfo = {
         groupName: '🚀 우리는 쏠패밀리',
         groupCnt: '4',
-    };
-
-    const handleQRScan = () => {
-        setIsOpenQrScanModal(!isOpenQrScanModal);
     };
 
     if (unConnected) {
@@ -31,7 +29,13 @@ const FamilyBox = (userType: any) => {
                             <br />
                             가족 모임에 가입할 수 있어요
                         </div>
-                        <button>QR 스캔</button>
+                        <button
+                            onClick={() => {
+                                setIsQrScan(!isQrScan);
+                            }}
+                        >
+                            QR 스캔
+                        </button>
                     </div>
                 ) : (
                     <div>
@@ -41,11 +45,23 @@ const FamilyBox = (userType: any) => {
                                 <br />
                                 가족 모임을 생성해 보아요
                             </div>
-                            <button onClick={handleQRScan}>QR 생성</button>
+                            <button
+                                onClick={() => {
+                                    setIsOpenQrScanModal(!isOpenQrScanModal);
+                                }}
+                            >
+                                QR 생성
+                            </button>
                         </div>
                         <div className={styles.qrBox}>
                             <div>기존에 배우자가 생성한 모임이 있으신가요?</div>
-                            <button>QR 스캔</button>
+                            <button
+                                onClick={() => {
+                                    setIsQrScan(!isQrScan);
+                                }}
+                            >
+                                QR 스캔
+                            </button>
                         </div>
                     </div>
                 )}
@@ -59,6 +75,7 @@ const FamilyBox = (userType: any) => {
                         }}
                     />
                 )}
+                {isQrScan && <QRScanner />}
             </div>
         );
     }
@@ -77,6 +94,7 @@ const FamilyBox = (userType: any) => {
                     }}
                 />
             )}
+            {isQrScan && <QRScanner />}
         </div>
     );
 };
