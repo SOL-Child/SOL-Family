@@ -11,6 +11,7 @@ export interface UserInfo {
     passwordCheck: string;
     phone: string;
     userType: string;
+    fcmToken: string;
 }
 
 // login/req

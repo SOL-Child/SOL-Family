@@ -64,6 +64,7 @@ public class UserServiceImpl implements UserService{
                 .phone(userReqDto.getPhone())
                 .userType(userReqDto.getUserType())
                 .active(true)
+                .fcmToken(userReqDto.getFcmToken())
                 .build();
 
         jpaUserRepository.save(user);

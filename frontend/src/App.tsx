@@ -10,6 +10,7 @@ import LoanRequestPage from './pages/LoanRequestPage/LoanRequestPage';
 import FundPage from './pages/FundPage/FundPage';
 import TransactionPage from './pages/TransactionPage/TransactionPage';
 import AlarmPage from './pages/AlarmPage/AlarmPage';
+import './firebase-messaging-sw.js';
 
 function App() {
     return (
